@@ -1,0 +1,1 @@
+- [Hyprland crash 2026-04-24](project_hyprland_crash_2026-04-24.md) — diagnosed v0.54.3 bad_any_cast on XWayland ConfigureRequest; remediation deferred to later same day

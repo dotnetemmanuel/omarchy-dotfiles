@@ -1,0 +1,49 @@
+# Embedded git repos (e.g. omarchy themes cloned from upstream)
+# Commit the theme files themselves, but not nested .git/ directories
+**/.git/
+
+# Editor / OS noise
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Backups and rotated logs
+*.bak
+*.bak.*
+*.old
+*.orig
+
+# Caches that sneak into config dirs
+**/cache/
+**/Cache/
+**/.cache/
+**/*.cache
+**/mimeinfo.cache
+
+# Runtime sockets / pids (e.g. cliamp, walker)
+*.sock
+*.sock.pid
+*.pid
+
+# Build / log artifacts
+*.log
+*.tmp
+
+# Claude — extra paranoia: never commit credentials or session data even if
+# something gets accidentally moved into the claude package later
+.claude/.credentials.json
+.claude/history.jsonl
+.claude/sessions/
+.claude/session-env/
+.claude/projects/*/conversation*
+.claude/projects/*/history*
+
+# Zed auth token — file must stay on disk for Zed to work, but never commit it
+zed/.config/zed/development_credentials
+
+# Omarchy ships its themes — no need to back them up
+omarchy/.config/omarchy/themes/
+# current/theme/ is a copy of the selected theme; keep only theme.name
+omarchy/.config/omarchy/current/theme/
+omarchy/.config/omarchy/current/background

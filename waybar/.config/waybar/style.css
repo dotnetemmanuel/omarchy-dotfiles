@@ -1,0 +1,176 @@
+@import "./rose-pine.css";
+
+* {
+  background-color: transparent;
+  color: @text;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: 'CaskaydiaMono Nerd Font';
+  font-size: 12px;
+}
+
+window#waybar {
+  background-color: @base;
+}
+
+tooltip {
+  background-color: @surface;
+  border: 1px solid @highlightMed;
+  border-radius: 4px;
+  color: @text;
+  padding: 4px 8px;
+}
+
+/* ── Module groups with rounded corners ── */
+
+.modules-left,
+.modules-center,
+.modules-right {
+  background-color: @surface;
+  border: 1px solid @highlightMed;
+  border-radius: 4px;
+  margin: 4px 4px;
+  padding: 0 4px;
+}
+
+/* ── Left: omarchy icon + workspaces ── */
+
+#custom-omarchy {
+  color: @love;
+  min-width: 12px;
+  padding: 0 6px;
+}
+
+#workspaces button {
+  all: initial;
+  color: @muted;
+  padding: 0 6px;
+  margin: 0 1.5px;
+  min-width: 9px;
+  font-family: 'CaskaydiaMono Nerd Font';
+  font-size: 12px;
+}
+
+#workspaces button.active {
+  color: @rose;
+}
+
+#workspaces button.empty {
+  opacity: 0.5;
+}
+
+#workspaces button:hover {
+  color: @text;
+}
+
+/* ── Center: clock + indicators ── */
+
+#clock {
+  color: @foam;
+  padding: 0 6px;
+}
+
+#custom-update {
+  color: @gold;
+  font-size: 10px;
+  min-width: 12px;
+  padding: 0 6px;
+}
+
+#custom-voxtype {
+  color: @iris;
+  min-width: 12px;
+  padding: 0 4px;
+}
+
+#custom-voxtype.recording {
+  color: @love;
+}
+
+#custom-screenrecording-indicator,
+#custom-idle-indicator,
+#custom-notification-silencing-indicator {
+  color: @subtle;
+  min-width: 12px;
+  font-size: 10px;
+  padding: 0 4px;
+}
+
+#custom-screenrecording-indicator.active {
+  color: @love;
+}
+
+#custom-idle-indicator.active,
+#custom-notification-silencing-indicator.active {
+  color: @love;
+}
+
+/* ── Right: tray, bluetooth, network, audio, cpu, battery ── */
+
+#custom-expand-icon {
+  color: @muted;
+  padding: 0 6px;
+}
+
+#tray {
+  padding: 0 6px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#bluetooth {
+  color: @iris;
+  padding: 0 6px;
+}
+
+#network {
+  color: @pine;
+  padding: 0 6px;
+}
+
+#pulseaudio {
+  color: @gold;
+  min-width: 12px;
+  padding: 0 6px;
+}
+
+#pulseaudio.muted {
+  color: @muted;
+}
+
+#cpu {
+  color: @foam;
+  min-width: 12px;
+  padding: 0 6px;
+}
+
+#battery {
+  color: @pine;
+  min-width: 12px;
+  padding: 0 6px;
+}
+
+#battery.warning {
+  color: @gold;
+}
+
+#battery.critical {
+  color: @love;
+}
+
+.hidden {
+  opacity: 0;
+}
+#custom-weather {
+  margin-left: 7.5px;
+  margin-right: 7.5px;
+}
+
+#custom-weather.unavailable {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
