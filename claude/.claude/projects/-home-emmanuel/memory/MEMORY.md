@@ -1,1 +1,2 @@
 - [Hyprland crash 2026-04-24](project_hyprland_crash_2026-04-24.md) — diagnosed v0.54.3 bad_any_cast on XWayland ConfigureRequest; remediation deferred to later same day
+- [MPD VM share — Samba setup + recovery script 2026-05-21](project_mpd_vm_share_samba_2026-05-21.md) — Samba working; `~/Documents/mpd-samba-reapply.sh --verify` is the first-aid; runbook in ~/Documents/mpd-dev-flow-followups.md

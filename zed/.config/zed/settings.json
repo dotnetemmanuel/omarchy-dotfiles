@@ -7,21 +7,22 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "show_edit_predictions": false,
   "project_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "outline_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "collaboration_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "git_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "buffer_font_family": "Ekwarg",
   "session": {
-    "trust_all_worktrees": true
+    "trust_all_worktrees": true,
   },
   "base_keymap": "VSCode",
   "icon_theme": "Catppuccin Latte",
@@ -29,23 +30,23 @@
     "dock": "right",
     "default_model": {
       "provider": "copilot_chat",
-      "model": "claude-sonnet-4.5"
+      "model": "claude-sonnet-4.5",
     },
     "favorite_models": [
       {
         "provider": "copilot_chat",
-        "model": "claude-sonnet-4.5"
+        "model": "claude-sonnet-4.5",
       },
       {
         "provider": "copilot_chat",
-        "model": "claude-opus-4.5"
+        "model": "claude-opus-4.5",
       },
       {
         "provider": "copilot_chat",
-        "model": "claude-haiku-4.5"
-      }
+        "model": "claude-haiku-4.5",
+      },
     ],
-    "model_parameters": []
+    "model_parameters": [],
   },
   "ui_font_size": 16,
   "buffer_font_size": 15,

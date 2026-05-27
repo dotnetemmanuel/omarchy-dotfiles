@@ -28,5 +28,39 @@
         }
       ]
     }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-k ctrl-d": "editor::Format"
+    }
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "ctrl-shift-i": "editor::Format"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-k d": [
+        "editor::SelectNext",
+        {
+          "replace_newest": true
+        }
+      ]
+    }
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "ctrl-k ctrl-d": [
+        "editor::SelectNext",
+        {
+          "replace_newest": true
+        }
+      ]
+    }
   }
 ]

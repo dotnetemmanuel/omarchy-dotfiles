@@ -8,6 +8,8 @@ export PATH="$HOME/.local/bin:$PATH"
 # (don't mess with these directly, just overwrite them here!)
 source ~/.local/share/omarchy/default/bash/rc
 
+export PATH="$HOME/.local/bin:$PATH"
+
 eval "$($HOME/.local/bin/oh-my-posh init bash --config /home/emmanuel/.cache/oh-my-posh/themes/Rose-Pine.omp.json)"
 
 # Add your own exports, aliases, and functions here.
