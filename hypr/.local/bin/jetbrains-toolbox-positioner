@@ -1,0 +1,148 @@
+#!/usr/bin/env python3
+"""Listen to Hyprland events and force JetBrains Toolbox into the upper-right
+corner (just under the waybar) of whichever monitor it opens on.
+
+Toolbox restores its saved geometry after window creation, overriding
+Hyprland windowrules. This listener catches each openwindow event and re-
+issues move/resize after a short delay, defeating the restore.
+"""
+
+import json
+import os
+import socket
+import subprocess
+import sys
+import threading
+import time
+
+TARGET_CLASS = "jetbrains-toolbox"
+WIN_W = 720
+WIN_H = 760
+MARGIN_RIGHT = 10
+MARGIN_TOP = 36  # 26px waybar + 10px gap
+STAGE_WORKSPACE = "special:toolbox_stage"  # matches windowrule in hyprland.conf
+# Toolbox re-applies its own geometry after window creation, so we re-snap
+# a few times to win the race even after it's on the real workspace.
+RESNAP_DELAYS = (0.4, 1.0, 2.0)
+
+
+def hyprctl_json(*args):
+    return json.loads(subprocess.check_output(["hyprctl", "-j", *args]))
+
+
+def hyprctl(*args):
+    subprocess.run(["hyprctl", *args], check=False)
+
+
+def active_monitor():
+    for m in hyprctl_json("monitors"):
+        if m.get("focused"):
+            return m
+    return None
+
+
+def snap_to_target(address: str, mon):
+    """Resize + move window to the right-edge-under-waybar slot on mon."""
+    logical_w = mon["width"] / mon["scale"]
+    x = int(mon["x"] + logical_w - WIN_W - MARGIN_RIGHT)
+    y = int(mon["y"] + MARGIN_TOP)
+    hyprctl("dispatch", "resizewindowpixel", f"exact {WIN_W} {WIN_H},address:{address}")
+    hyprctl("dispatch", "movewindowpixel", f"exact {x} {y},address:{address}")
+
+
+def find_client(address: str):
+    try:
+        return next((c for c in hyprctl_json("clients") if c.get("address") == address), None)
+    except Exception:
+        return None
+
+
+def reposition(address: str):
+    client = find_client(address)
+    if client is None:
+        return
+    on_stage = (client.get("workspace", {}).get("name") == STAGE_WORKSPACE)
+    if on_stage:
+        # Fresh open: pick the user's focused monitor as the target.
+        mon = active_monitor()
+        if mon is None:
+            return
+        # Size + place on staging workspace first (off-screen, no flash).
+        snap_to_target(address, mon)
+        target_ws = mon.get("activeWorkspace", {}).get("name") or str(
+            mon.get("activeWorkspace", {}).get("id", "")
+        )
+        if target_ws:
+            hyprctl("dispatch", "movetoworkspacesilent", f"name:{target_ws},address:{address}")
+        hyprctl("dispatch", "focuswindow", f"address:{address}")
+    else:
+        # Already-visible window (e.g. initial_sweep on listener startup): just
+        # re-snap on whichever monitor it's currently on.
+        monitors = {m["id"]: m for m in hyprctl_json("monitors")}
+        mon = monitors.get(client["monitor"]) or active_monitor()
+        if mon is None:
+            return
+        snap_to_target(address, mon)
+    # Toolbox re-applies geometry after mapping, so re-snap a few times.
+    for delay in RESNAP_DELAYS:
+        time.sleep(delay)
+        client = find_client(address)
+        if client is None:
+            return
+        monitors = {m["id"]: m for m in hyprctl_json("monitors")}
+        cur_mon = monitors.get(client["monitor"]) or active_monitor()
+        if cur_mon is None:
+            continue
+        snap_to_target(address, cur_mon)
+
+
+def initial_sweep():
+    """Reposition any Toolbox windows that were already open at startup."""
+    try:
+        for c in hyprctl_json("clients"):
+            if c.get("class") == TARGET_CLASS:
+                threading.Thread(target=reposition, args=(c["address"],), daemon=True).start()
+    except Exception:
+        pass
+
+
+def main():
+    sig = os.environ.get("HYPRLAND_INSTANCE_SIGNATURE")
+    runtime = os.environ.get("XDG_RUNTIME_DIR")
+    if not sig or not runtime:
+        print("HYPRLAND_INSTANCE_SIGNATURE or XDG_RUNTIME_DIR not set", file=sys.stderr)
+        sys.exit(1)
+    sock_path = f"{runtime}/hypr/{sig}/.socket2.sock"
+
+    initial_sweep()
+
+    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+        sock.connect(sock_path)
+        buf = b""
+        while True:
+            chunk = sock.recv(4096)
+            if not chunk:
+                break
+            buf += chunk
+            while b"\n" in buf:
+                line, buf = buf.split(b"\n", 1)
+                line = line.decode("utf-8", errors="replace")
+                if not line.startswith("openwindow>>"):
+                    continue
+                # openwindow>>ADDRESS,WORKSPACE,CLASS,TITLE
+                payload = line[len("openwindow>>"):]
+                parts = payload.split(",", 3)
+                if len(parts) < 3:
+                    continue
+                address, _ws, cls = parts[0], parts[1], parts[2]
+                if cls != TARGET_CLASS:
+                    continue
+                threading.Thread(
+                    target=reposition,
+                    args=(f"0x{address}",),
+                    daemon=True,
+                ).start()
+
+
+if __name__ == "__main__":
+    main()

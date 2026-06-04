@@ -1,2 +1,6 @@
 - [Hyprland crash 2026-04-24](project_hyprland_crash_2026-04-24.md) — diagnosed v0.54.3 bad_any_cast on XWayland ConfigureRequest; remediation deferred to later same day
 - [MPD VM share — Samba setup + recovery script 2026-05-21](project_mpd_vm_share_samba_2026-05-21.md) — Samba working; `~/Documents/mpd-samba-reapply.sh --verify` is the first-aid; runbook in ~/Documents/mpd-dev-flow-followups.md
+- [Waybar session PATH gotcha](project_waybar_session_path_gotcha.md) — Hyprland-launched waybar lacks ~/.local/bin in PATH; ~/.local/bin overrides fail in the bar but work in terminals
+- [Sweden basemap checkpoint 2026-05-29](project_sweden_basemap_checkpoint_2026-05-29.md) — QGIS pipeline resume point: Section 05 LOD A done; resume Mon 2026-06-01 at Step 3 (LOD B)
+- [Section/Step terminology](feedback_section_step_terminology.md) — say "Section N, Step M" for the basemap docs, never "§N §M" (the § conflation caused a mis-placed step)
+- [Always output paths](feedback_always_output_paths.md) — every QGIS step states the full absolute output path (relative paths failed twice)

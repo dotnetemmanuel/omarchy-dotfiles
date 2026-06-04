@@ -38,6 +38,9 @@
 .claude/session-env/
 .claude/projects/*/conversation*
 .claude/projects/*/history*
+# Only commit MEMORY.md (the index); keep individual memory files local
+claude/.claude/projects/*/memory/*.md
+!claude/.claude/projects/*/memory/MEMORY.md
 
 # Zed auth token — file must stay on disk for Zed to work, but never commit it
 zed/.config/zed/development_credentials
