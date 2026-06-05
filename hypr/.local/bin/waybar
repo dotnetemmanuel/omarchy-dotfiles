@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Wrapper that forces Swedish locale for waybar's strftime calls.
+# Lives in ~/.local/bin (ahead of /usr/bin in PATH) so omarchy-restart-waybar
+# and the Hyprland exec-once both pick it up transparently.
+exec env LC_TIME=sv_SE.UTF-8 LC_ALL=sv_SE.UTF-8 /usr/bin/waybar "$@"

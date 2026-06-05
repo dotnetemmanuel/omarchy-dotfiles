@@ -1,0 +1,153 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "type": "rprompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "leading_diamond": "\ue0b6",
+          "template": "{{ if .Env.PNPPSHOST }} \uf8c5 {{ .Env.PNPPSHOST }} {{ end }}",
+          "foreground": "#fadad1",
+          "background": "#e95678",
+          "type": "text",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "{{ if .Env.PNPPSSITE }} \uf2dd {{ .Env.PNPPSSITE }}{{ end }}",
+          "foreground": "#fadad1",
+          "powerline_symbol": "\ue0b0",
+          "background": "#59e3e3",
+          "type": "text",
+          "style": "powerline"
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "trailing_diamond": "\ue0b4",
+          "template": "{{ if .Env.PNPPSSITE }} IdpSolutions {{ end }}",
+          "foreground": "#1c1e26",
+          "background": "#fab795",
+          "type": "text",
+          "style": "diamond"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "24h"
+          },
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b0",
+          "template": "{{ .UserName }} ",
+          "foreground": "#ffffff",
+          "background": "#e95678",
+          "type": "session",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "time_format": "15:04"
+          },
+          "template": " \ue23a {{ .CurrentDate | date .Format }} ",
+          "foreground": "#1c1e26",
+          "background": "#59e3e3",
+          "type": "time",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "style": "folder"
+          },
+          "template": " {{ .Path }} ",
+          "foreground": "#1c1e26",
+          "powerline_symbol": "\ue0b0",
+          "background": "#fab795",
+          "type": "path",
+          "style": "powerline"
+        },
+        {
+          "type": "dotnet",
+          "style": "powerline",
+          "background": "#c4a7e7",
+          "foreground": "#1c1e26",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "cache_duration": "none",
+            "fetch_version": true
+          },
+          "template": " \ue77f {{ .Full }} "
+        },
+        {
+          "properties": {
+            "branch_max_length": 25,
+            "cache_duration": "2m",
+            "fetch_stash_count": true,
+            "fetch_status": true,
+            "fetch_upstream_icon": true
+          },
+          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }} ",
+          "foreground": "#fadad1",
+          "powerline_symbol": "\ue0b0",
+          "background": "#232530",
+          "type": "git",
+          "style": "powerline",
+          "background_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}#fab795{{ end }}",
+            "{{ if and (not .Working.Changed) (not .Staging.Changed) (eq .Ahead 0) (eq .Behind 0) (ne .HEAD \"\") (not .UpstreamGone) }}#232530{{ end }}",
+            "{{ if and (not .Working.Changed) (not .Staging.Changed) (ne .HEAD \"\") }}#232530{{ end }}",
+            "{{ if gt .Ahead 0 }}#59e3e3{{ end }}",
+            "{{ if gt .Behind 0 }}#59e3e3{{ end }}"
+          ],
+          "foreground_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}#1c1e26{{ end }}",
+            "{{ if and (not .Working.Changed) (not .Staging.Changed) }}#fadad1{{ end }}"
+          ]
+        },
+        {
+          "properties": {
+            "always_enabled": true,
+            "cache_duration": "none"
+          },
+          "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
+          "foreground": "#fadad1",
+          "powerline_symbol": "\ue0b0",
+          "background": "#26bbd9",
+          "type": "node",
+          "style": "powerline"
+        },
+        {
+          "properties": {
+            "always_enabled": true,
+            "cache_duration": "none"
+          },
+          "trailing_diamond": "\ue0b4",
+          "template": "{{ if matchP \"D:\" .PWD }} \ueb44 {{ else }} {{ end }}",
+          "foreground": "#1c1e26",
+          "powerline_symbol": "\ue0b0",
+          "background": "#fbc3a7",
+          "type": "exit",
+          "style": "powerline",
+          "background_templates": [
+            "{{ if gt .Code 0 }}#e95678{{ else }}#fbc3a7{{ end }}"
+          ]
+        }
+      ]
+    }
+  ],
+  "version": 3,
+  "final_space": true
+}

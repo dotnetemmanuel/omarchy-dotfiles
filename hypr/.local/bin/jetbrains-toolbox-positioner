@@ -19,7 +19,7 @@ TARGET_CLASS = "jetbrains-toolbox"
 WIN_W = 720
 WIN_H = 760
 MARGIN_RIGHT = 10
-MARGIN_TOP = 36  # 26px waybar + 10px gap
+GAP_BELOW_BAR = 8  # gap between waybar bottom and window top
 STAGE_WORKSPACE = "special:toolbox_stage"  # matches windowrule in hyprland.conf
 # Toolbox re-applies its own geometry after window creation, so we re-snap
 # a few times to win the race even after it's on the real workspace.
@@ -44,8 +44,10 @@ def active_monitor():
 def snap_to_target(address: str, mon):
     """Resize + move window to the right-edge-under-waybar slot on mon."""
     logical_w = mon["width"] / mon["scale"]
+    # reserved is [left, top, right, bottom] in logical px — tracks waybar height
+    top_reserve = (mon.get("reserved") or [0, 0, 0, 0])[1]
     x = int(mon["x"] + logical_w - WIN_W - MARGIN_RIGHT)
-    y = int(mon["y"] + MARGIN_TOP)
+    y = int(mon["y"] + top_reserve + GAP_BELOW_BAR)
     hyprctl("dispatch", "resizewindowpixel", f"exact {WIN_W} {WIN_H},address:{address}")
     hyprctl("dispatch", "movewindowpixel", f"exact {x} {y},address:{address}")
 
