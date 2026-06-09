@@ -32,7 +32,7 @@
   // -----------------------------------------------------
   "modules-left": [
     "group/left-pill",
-    "mpris",
+    "custom/mpris"
   ],
   "modules-center": [
     "custom/omarchy",
@@ -146,16 +146,21 @@
   // Audio
   // -----------------------------------------------------
   "pulseaudio": {
-    "format": "󰕾",
+    "format": "{icon}",
     "on-click": "omarchy-launch-or-focus-tui wiremix",
     "on-click-right": "pamixer -t",
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
     "format-muted": "󰖁",
-    "headphone": "󰋋",
-    "phone": "󰏲",
-    "phone-muted": "󰏲",
-    "portable": "󰋋",
+    "format-icons": {
+      "headphone": "󰋋",
+      "headset": "󰋎",
+      "hands-free": "󰋎",
+      "phone": "󰏲",
+      "portable": "󰋋",
+      "car": "󰄋",
+      "default": "󰕾",
+    },
   },
 
   // -----------------------------------------------------
@@ -200,8 +205,20 @@
     "format": "{icon}",
     "format-discharging": "{icon}",
     "format-charging": "{icon}",
-    "format-plugged": "{icon}",
+    "format-plugged": "󰚥",
     "format-icons": {
+      "charging": [
+        "󰢜",
+        "󰂆",
+        "󰂇",
+        "󰂈",
+        "󰢝",
+        "󰂉",
+        "󰢞",
+        "󰂊",
+        "󰂋",
+        "󰂅",
+      ],
       "default": [
         "󰁺",
         "󰁻",
@@ -215,6 +232,7 @@
       ],
     },
     "format-full": "󰁹",
+    "format-charging-full": "󰂅",
     "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
     "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
     "interval": 2,
@@ -253,12 +271,7 @@
   },
   "group/left-pill": {
     "orientation": "inherit",
-    "drawer": {
-      "transition-duration": 420,
-      "children-class": "system-group-item",
-      "transition-left-to-right": false,
-    },
-    "modules": ["custom/system-expand-icon", "network", "memory", "temperature", "battery", "bluetooth", "pulseaudio", "custom/voxtype"],
+    "modules": ["network", "memory", "temperature", "battery", "bluetooth", "pulseaudio"],
   },
   "custom/system-expand-icon": {
     "format": "",
@@ -289,39 +302,29 @@
     "hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
     "input-filename": "temp1_input",
     "critical-threshold": 85,
-    "format": " {icon} {temperatureC}°C",
+    "format": "{icon} {temperatureC}°C",
     "interval": 4,
     "tooltip": true,
     "tooltip-format": "CPU Temp:  {temperatureC}°C",
     "format-icons": ["", "", "", "", ""],
     "on-click": "omarchy-launch-or-focus-tui btop",
   },
-  "mpris": {
-    "interval": 1,
-    "format": "{player_icon} {dynamic}",
-    "format-paused": "{status_icon} {artist} {title}",
+  // Live now-playing. Uses a playerctl --follow wrapper instead of the built-in
+  // "mpris" module, which pegged the CPU re-rendering on Spotify's per-second
+  // position updates. {icon} is chosen from format-icons via the JSON "alt" key.
+  "custom/mpris": {
+    "exec": "/home/emmanuel/.config/waybar/mpris-follow.sh",
+    "return-type": "json",
+    "format": "{icon} {text}",
+    "format-icons": {
+      "playing": "",
+      "paused": "",
+      "stopped": "",
+      "default": "󰎆",
+    },
     "on-click-middle": "playerctl play-pause",
     "on-click": "playerctl previous",
     "on-click-right": "playerctl next",
-    "scroll-step": 5.0,
-    "tooltip": true,
-    "tooltip-format": "{status_icon} {dynamic}\nLeft Click: previous\nMid Click: Pause\nRight Click: Next",
-    "player-icons": {
-      "chromium": "",
-      "default": "",
-      "firefox": "",
-      "kdeconnect": "",
-      "mopidy": "",
-      "mpv": "",
-      "spotify": "󰎆",
-      "vlc": "󰕼",
-    },
-    "status-icons": {
-      "paused": "",
-      "playing": "",
-      "stopped": "",
-    },
-    "dynamic-order": ["artist", "title"],
     "max-length": 60,
   },
 }

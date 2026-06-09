@@ -212,12 +212,25 @@ window#waybar {
     padding: 0 4px;
 }
 
-#mpris {
+#mpris,
+#custom-mpris {
     background: transparent;
     border: none;
     box-shadow: none;
     margin: 0 6px;
     padding: 0 4px;
+}
+
+/* Now-playing: theme green + glow while playing, default color when paused */
+#custom-mpris.playing {
+    color: @base02;
+    text-shadow: 0 0 8px @base02;
+}
+
+#custom-mpris.paused,
+#custom-mpris.stopped {
+    color: @foreground;
+    text-shadow: none;
 }
 
 #pulseaudio,
@@ -242,9 +255,13 @@ window#waybar {
 .system-group-item > *,
 .modules-left #network,
 .modules-left #memory,
+.modules-left #temperature,
+.modules-left #battery,
 .modules-left #bluetooth,
+.modules-left #pulseaudio,
+.modules-left #custom-voxtype,
 .tray-group-item {
-    margin: 0 4px;
+    margin: 0 6px;
     padding: 0 4px;
 }
 
