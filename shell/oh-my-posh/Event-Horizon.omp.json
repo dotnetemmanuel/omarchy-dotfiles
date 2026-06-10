@@ -75,7 +75,7 @@
           "template": " {{ .Path }} ",
           "foreground": "#1c1e26",
           "powerline_symbol": "\ue0b0",
-          "background": "#fab795",
+          "background": "#29d398",
           "type": "path",
           "style": "powerline"
         },

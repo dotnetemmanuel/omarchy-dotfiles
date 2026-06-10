@@ -32,6 +32,7 @@
   // -----------------------------------------------------
   "modules-left": [
     "group/left-pill",
+    "custom/idle-lock",
     "custom/mpris"
   ],
   "modules-center": [
@@ -87,6 +88,14 @@
     "on-click": "omarchy-cmd-screenrecord",
     "exec": "$OMARCHY_PATH/default/waybar/indicators/screen-recording.sh",
     "signal": 8,
+    "return-type": "json",
+  },
+  // Shows a red lock icon while idle locking (hypridle) is ON. Click to toggle.
+  "custom/idle-lock": {
+    "on-click": "omarchy-toggle-idle",
+    "exec": "/home/emmanuel/.config/waybar/idle-lock-on.sh",
+    "signal": 9,
+    "interval": 5,
     "return-type": "json",
   },
 
