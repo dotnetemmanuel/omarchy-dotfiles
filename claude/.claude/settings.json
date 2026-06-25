@@ -21,9 +21,6 @@
     "PreToolUse": [
       { "matcher": "", "hooks": [ { "type": "command", "command": "$HOME/.local/bin/claude-status-hook tool" } ] }
     ],
-    "PostToolUse": [
-      { "matcher": "", "hooks": [ { "type": "command", "command": "$HOME/.local/bin/claude-status-hook tool" } ] }
-    ],
     "Notification": [
       { "matcher": "", "hooks": [ { "type": "command", "command": "$HOME/.local/bin/claude-status-hook notify" } ] }
     ],

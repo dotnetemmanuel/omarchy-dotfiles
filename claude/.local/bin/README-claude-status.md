@@ -75,7 +75,6 @@ below. The only hard requirements are `bash`, `jq`, and a Waybar.
      "SessionStart":     [ { "hooks": [ { "type": "command", "command": "$ABS/claude-status-hook start"  } ] } ],
      "UserPromptSubmit": [ { "hooks": [ { "type": "command", "command": "$ABS/claude-status-hook prompt" } ] } ],
      "PreToolUse":       [ { "matcher": "", "hooks": [ { "type": "command", "command": "$ABS/claude-status-hook tool" } ] } ],
-     "PostToolUse":      [ { "matcher": "", "hooks": [ { "type": "command", "command": "$ABS/claude-status-hook tool" } ] } ],
      "Notification":     [ { "matcher": "", "hooks": [ { "type": "command", "command": "$ABS/claude-status-hook notify" } ] } ],
      "Stop":             [ { "hooks": [ { "type": "command", "command": "$ABS/claude-status-hook stop" } ] } ],
      "SessionEnd":       [ { "hooks": [ { "type": "command", "command": "$ABS/claude-status-hook end" } ] } ]

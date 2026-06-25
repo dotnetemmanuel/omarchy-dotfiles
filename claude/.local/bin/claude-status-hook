@@ -42,18 +42,19 @@ case "$event" in
   *)      state="working" ;;
 esac
 
-# --- cached addr + pid from the existing record (fast, no forks) ------------
-addr=""; cpid=""
-[ -f "$file" ] && IFS=$'\x1f' read -r _ _ addr _ cpid < "$file" 2>/dev/null
+# --- cached state/addr/pid from the existing record (fast, no forks) --------
+prev_state=""; addr=""; cpid=""
+[ -f "$file" ] && IFS=$'\x1f' read -r prev_state _ addr _ cpid < "$file" 2>/dev/null
 
 write_state() {  # state, addr, cpid
   printf '%s\x1f%s\x1f%s\x1f%s\x1f%s\n' "$1" "$(date +%s)" "$2" "$cwd" "$3" > "$file.tmp"
   mv -f "$file.tmp" "$file"
 }
 
-# --- FAST PATH: write + signal immediately (colour updates now) -------------
+# --- FAST PATH: write, then signal ONLY if the visible state changed --------
+# (avoids a re-render storm when a session runs many tools in a row = working)
 write_state "$state" "$addr" "$cpid"
-signal_waybar
+[ "$state" != "$prev_state" ] && signal_waybar
 
 # --- SLOW PATH: resolve window/pid, only if missing or focus changed --------
 get_ppid() { local s; s="$(< "/proc/$1/stat")" 2>/dev/null || return; s="${s##*) }"; set -- $s; printf '%s' "$2"; }
@@ -78,7 +79,6 @@ fi
 dbg "event=$event state=$state msg=[${msg:0:50}] cpid=${cpid:-none} addr=${addr:-none}"
 
 if [ "$changed" = 1 ]; then
-  write_state "$state" "$addr" "$cpid"
-  signal_waybar
+  write_state "$state" "$addr" "$cpid"   # refresh addr/pid for click-focus; no re-render needed
 fi
 exit 0
