@@ -33,6 +33,7 @@
   "modules-left": [
     "group/left-pill",
     "custom/idle-lock",
+    "custom/claude",
     "custom/mpris"
   ],
   "modules-center": [
@@ -97,6 +98,17 @@
     "signal": 9,
     "interval": 5,
     "return-type": "json",
+  },
+  // Claude Code traffic light: sunburst + "claude" + three dots.
+  // State is driven by Claude Code hooks (settings.json) via SIGRTMIN+10;
+  // the 5s interval is just a safety net. Click for a session picker.
+  "custom/claude": {
+    "exec": "/home/emmanuel/.local/bin/claude-status",
+    "return-type": "json",
+    "interval": 2,
+    "signal": 10,
+    "tooltip": true,
+    "on-click": "/home/emmanuel/.local/bin/claude-status-pick",
   },
 
   // -----------------------------------------------------

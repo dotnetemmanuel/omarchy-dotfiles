@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+# Claude Code -> Waybar traffic light: waybar exec module.
+#
+# Source of truth for *which* sessions exist = running `claude` processes
+# (comm=claude, one per session, cwd = session dir). Hook state files written by
+# claude-status-hook are layered on top for accurate state + window address,
+# matched by the session's claude PID.  So every live session always shows, even
+# one that has never fired a hook (it falls back to idle).
+#
+# Single dominant state, priority: waiting > working > idle. Dot colours follow
+# the current Omarchy theme (colors.toml); the lit dot is bright, others muted.
+
+dir="${XDG_RUNTIME_DIR:-/tmp}/claude-code-status"
+theme="$HOME/.config/omarchy/current/theme/colors.toml"
+TTL=43200
+
+# --- theme palette (Event Horizon fallbacks) --------------------------------
+getcol() { grep -E "^[[:space:]]*$1[[:space:]]*=" "$theme" 2>/dev/null \
+             | head -1 | sed -E 's/.*"([^"]+)".*/\1/'; }
+RED="$(getcol color1)"; GRN="$(getcol color2)"; YEL="$(getcol color3)"
+ACC="$(getcol accent)"; OFF="$(getcol color8)"; FG="$(getcol foreground)"
+[ -z "$RED" ] && RED="#e95678"; [ -z "$GRN" ] && GRN="#29d398"
+[ -z "$YEL" ] && YEL="#fab795"; [ -z "$ACC" ] && ACC="#26bbd9"
+[ -z "$OFF" ] && OFF="#6c6f93"; [ -z "$FG" ] && FG="#fadad1"
+
+# sunburst-ish "Claude" mark, emitted from its codepoint so it survives editing.
+# U+F069 = FontAwesome asterisk (closest to Claude's mark). Swap the hex freely,
+# e.g. f185 (sun), f4d9 (north-star), f005 (star) -- all present in your Nerd Font.
+LOGO_GLYPH="$(printf '\uf069')"
+
+san() { local s="$1"; s="${s//&/&amp;}"; s="${s//</&lt;}"; s="${s//>/&gt;}"; s="${s//\"/}"; printf '%s' "$s"; }
+
+# ~ for home, ~/<dir> for a direct child, ~/.../<dir> for anything deeper.
+shortpath() {
+  local p="$1" rest base
+  [ "$p" = "$HOME" ] && { printf '~'; return; }
+  case "$p" in
+    "$HOME"/*) rest="${p#"$HOME"/}"; base="${rest##*/}"
+               if [ "$rest" = "$base" ]; then printf '~/%s' "$base"
+               else printf '~/.../%s' "$base"; fi ;;
+    /*)        base="${p##*/}"; printf '.../%s' "${base:-/}" ;;
+    *)         printf '%s' "$p" ;;
+  esac
+}
+
+now="$(date +%s)"
+
+# --- live sessions from running claude processes ----------------------------
+get_ppid() { local s; s="$(< "/proc/$1/stat")" 2>/dev/null || return; s="${s##*) }"; set -- $s; printf '%s' "$2"; }
+# active = not stopped (Ctrl+Z), not zombie/dead
+proc_active() { local s; s="$(< "/proc/$1/stat")" 2>/dev/null || return 1; s="${s##*) }"; set -- $s; case "$1" in T|t|Z|X) return 1;; *) return 0;; esac; }
+mapfile -t CPIDS < <(pgrep -x claude 2>/dev/null)
+declare -A ISCLAUDE; for p in "${CPIDS[@]}"; do ISCLAUDE["$p"]=1; done
+# a real session has no `claude` ancestor; nested ones (subagents/headless -p) do
+is_nested() {
+  local pid hop; pid="$(get_ppid "$1")"
+  for hop in $(seq 1 20); do
+    { [ -z "$pid" ] || [ "$pid" = "1" ] || [ "$pid" = "0" ]; } && break
+    [ -n "${ISCLAUDE[$pid]}" ] && return 0
+    pid="$(get_ppid "$pid")"
+  done
+  return 1
+}
+declare -A PCWD          # claude-pid -> cwd
+for pid in "${CPIDS[@]}"; do
+  is_nested "$pid" && continue
+  proc_active "$pid" || continue
+  PCWD["$pid"]="$(readlink "/proc/$pid/cwd" 2>/dev/null)"
+done
+
+# --- hook state files, keyed by claude-pid (field 5) and by cwd (fallback) --
+declare -A SST SADDR CST CADDR
+shopt -s nullglob
+for f in "$dir"/*; do
+  [ -f "$f" ] || continue
+  case "${f##*/}" in *.tmp|*.log|.*) continue;; esac
+  IFS=$'\x1f' read -r st ep addr cwd spid < "$f" 2>/dev/null || continue
+  case "$st" in working|waiting|idle) ;; *) continue;; esac
+  # prune: TTL, or the session's process is gone
+  if [ -n "$ep" ] && [ $((now - ep)) -gt "$TTL" ]; then rm -f "$f"; continue; fi
+  if [ -n "$spid" ] && [ -z "${PCWD[$spid]+x}" ]; then rm -f "$f"; continue; fi
+  [ -n "$spid" ] && { SST["$spid"]="$st"; SADDR["$spid"]="$addr"; }
+  [ -n "$cwd" ]  && { CST["$cwd"]="$st";  CADDR["$cwd"]="$addr"; }
+done
+
+# --- merge: one entry per live process, state overlaid from hooks ------------
+sessions=()
+for pid in "${!PCWD[@]}"; do
+  cwd="${PCWD[$pid]}"
+  st="${SST[$pid]}"
+  [ -z "$st" ] && st="${CST[$cwd]}"   # fall back to cwd match
+  [ -z "$st" ] && st="idle"           # un-hooked live session -> idle
+  sessions+=("$cwd"$'\x1f'"$st")
+done
+
+any_wait=0; any_work=0; any_idle=0; rows=""
+if [ ${#sessions[@]} -gt 0 ]; then
+  while IFS=$'\x1f' read -r cwd st; do
+    case "$st" in
+      waiting) any_wait=1; dotc="$YEL" ;;
+      working) any_work=1; dotc="$RED" ;;
+      *)       any_idle=1; dotc="$GRN" ;;
+    esac
+    rows+="<span color='$dotc'>●</span>  $(san "$(shortpath "$cwd")")  <i>$st</i>\n"
+  done < <(printf '%s\n' "${sessions[@]}" | LC_ALL=C sort)
+fi
+
+# --- dominant state ---------------------------------------------------------
+if   [ "$any_wait" = 1 ]; then cls="waiting"; r=$OFF; y=$YEL; g=$OFF; tip="Claude needs your input";
+elif [ "$any_work" = 1 ]; then cls="working"; r=$RED; y=$OFF; g=$OFF; tip="Claude is working…";
+elif [ "$any_idle" = 1 ]; then cls="idle";    r=$OFF; y=$OFF; g=$GRN; tip="Claude is idle — your move";
+else                           cls="empty";   r=$OFF; y=$OFF; g=$OFF; tip="No Claude sessions";
+fi
+
+logo="<span color='$ACC'>$LOGO_GLYPH claude</span>"
+dots="<span color='$r'>●</span> <span color='$y'>●</span> <span color='$g'>●</span>"
+count="<span color='$FG'>(${#sessions[@]})</span>"
+text="$logo  $dots  $count"
+tooltip="$tip"
+[ -n "$rows" ] && tooltip="$tip\n\n${rows%\\n}"
+
+printf '{"text":"%s","class":"%s","tooltip":"%s"}\n' "$text" "$cls" "$tooltip"

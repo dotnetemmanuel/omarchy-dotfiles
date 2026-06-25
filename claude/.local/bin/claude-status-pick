@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+# Claude Code -> Waybar traffic light: on-click session picker.
+#
+# Lists every running Claude session (from `claude` processes) with its state in
+# a Walker dmenu, then jumps to the chosen one:
+#   - focus its terminal window via the cached Hyprland address, AND
+#   - if the session runs inside tmux, select its tmux window+pane too
+#     (read live from the claude process's TMUX_PANE/TMUX env).
+# Terminal- and multiplexer-agnostic.
+
+dir="${XDG_RUNTIME_DIR:-/tmp}/claude-code-status"
+
+shortpath() {
+  local p="$1" rest base
+  [ "$p" = "$HOME" ] && { printf '~'; return; }
+  case "$p" in
+    "$HOME"/*) rest="${p#"$HOME"/}"; base="${rest##*/}"
+               if [ "$rest" = "$base" ]; then printf '~/%s' "$base"
+               else printf '~/.../%s' "$base"; fi ;;
+    /*)        base="${p##*/}"; printf '.../%s' "${base:-/}" ;;
+    *)         printf '%s' "$p" ;;
+  esac
+}
+
+get_env()  { tr '\0' '\n' < "/proc/$1/environ" 2>/dev/null | sed -n "s/^$2=//p" | head -1; }
+get_ppid() { local s; s="$(< "/proc/$1/stat")" 2>/dev/null || return; s="${s##*) }"; set -- $s; printf '%s' "$2"; }
+proc_active() { local s; s="$(< "/proc/$1/stat")" 2>/dev/null || return 1; s="${s##*) }"; set -- $s; case "$1" in T|t|Z|X) return 1;; *) return 0;; esac; }
+
+# whichever dmenu-style launcher is installed; reads lines on stdin, prints the
+# chosen line. Override by exporting CLAUDE_PICK_MENU="yourmenu --dmenu ...".
+pick_menu() {
+  if   [ -n "$CLAUDE_PICK_MENU" ];   then $CLAUDE_PICK_MENU
+  elif command -v walker >/dev/null; then walker --dmenu -p "Claude sessions"
+  elif command -v fuzzel >/dev/null; then fuzzel --dmenu -p "Claude "
+  elif command -v wofi   >/dev/null; then wofi --dmenu -p "Claude"
+  elif command -v rofi   >/dev/null; then rofi -dmenu -i -p "Claude"
+  elif command -v tofi   >/dev/null; then tofi --prompt-text "Claude: "
+  elif command -v dmenu  >/dev/null; then dmenu -p "Claude"
+  else cat >/dev/null; fi
+}
+
+# hook state keyed by claude-pid and by cwd (fallback)
+declare -A SST SADDR CST CADDR
+shopt -s nullglob
+for f in "$dir"/*; do
+  [ -f "$f" ] || continue
+  case "${f##*/}" in *.tmp|*.log|.*) continue;; esac
+  IFS=$'\x1f' read -r st ep addr cwd spid < "$f" 2>/dev/null || continue
+  case "$st" in working|waiting|idle) ;; *) continue;; esac
+  [ -n "$spid" ] && { SST["$spid"]="$st"; SADDR["$spid"]="$addr"; }
+  [ -n "$cwd" ]  && { CST["$cwd"]="$st";  CADDR["$cwd"]="$addr"; }
+done
+
+# live sessions, excluding nested claudes (subagents/headless -p)
+mapfile -t CPIDS < <(pgrep -x claude 2>/dev/null)
+declare -A ISCLAUDE; for p in "${CPIDS[@]}"; do ISCLAUDE["$p"]=1; done
+is_nested() {
+  local pid hop; pid="$(get_ppid "$1")"
+  for hop in $(seq 1 20); do
+    { [ -z "$pid" ] || [ "$pid" = "1" ] || [ "$pid" = "0" ]; } && break
+    [ -n "${ISCLAUDE[$pid]}" ] && return 0
+    pid="$(get_ppid "$pid")"
+  done
+  return 1
+}
+
+# entries: "sortkey \x1f label \x1f addr \x1f tmuxpane \x1f tmuxsock"
+entries=()
+for pid in "${CPIDS[@]}"; do
+  is_nested "$pid" && continue
+  proc_active "$pid" || continue
+  cwd="$(readlink "/proc/$pid/cwd" 2>/dev/null)"
+  st="${SST[$pid]:-${CST[$cwd]}}"; [ -z "$st" ] && st="idle"
+  addr="${SADDR[$pid]:-${CADDR[$cwd]}}"
+  tpane="$(get_env "$pid" TMUX_PANE)"
+  tsock="$(get_env "$pid" TMUX)"; tsock="${tsock%%,*}"
+  case "$st" in waiting) icon="🟡";; working) icon="🔴";; *) icon="🟢";; esac
+  tag=""; [ -n "$tpane" ] && tag=" ⧉"          # mark tmux sessions
+  entries+=("$cwd"$'\x1f'"$icon  $(shortpath "$cwd")$tag  [$st]"$'\x1f'"$addr"$'\x1f'"$tpane"$'\x1f'"$tsock")
+done
+
+if [ ${#entries[@]} -eq 0 ]; then
+  command -v notify-send >/dev/null && notify-send "Claude" "No active sessions"
+  exit 0
+fi
+
+# sort by cwd into parallel arrays
+labels=(); addrs=(); panes=(); socks=()
+while IFS=$'\x1f' read -r _ label addr tpane tsock; do
+  labels+=("$label"); addrs+=("$addr"); panes+=("$tpane"); socks+=("$tsock")
+done < <(printf '%s\n' "${entries[@]}" | LC_ALL=C sort)
+
+choice="$(printf '%s\n' "${labels[@]}" | pick_menu 2>/dev/null)"
+[ -z "$choice" ] && exit 0
+# map the chosen line back to its index (works with any dmenu)
+idx=-1
+for i in "${!labels[@]}"; do [ "${labels[$i]}" = "$choice" ] && { idx=$i; break; }; done
+[ "$idx" -lt 0 ] && exit 0
+
+addr="${addrs[$idx]}"; tpane="${panes[$idx]}"; tsock="${socks[$idx]}"
+
+# 1) focus the terminal window
+if [ -n "$addr" ] && [ "$addr" != "null" ]; then
+  hyprctl dispatch focuswindow "address:$addr" >/dev/null 2>&1
+fi
+# 2) if inside tmux, jump the attached client to that session's window+pane.
+#    switch-client moves the client across sessions (select-window can't);
+#    select-pane then makes the exact pane active.
+if [ -n "$tpane" ] && [ -n "$tsock" ]; then
+  tmux -S "$tsock" switch-client -t "$tpane" 2>/dev/null
+  tmux -S "$tsock" select-pane   -t "$tpane" 2>/dev/null
+fi
+
+if [ -z "$addr" ] && [ -z "$tpane" ]; then
+  command -v notify-send >/dev/null && \
+    notify-send "Claude" "That session hasn't been focused yet — switch to it and submit once."
+fi

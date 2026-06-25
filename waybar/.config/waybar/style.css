@@ -287,12 +287,9 @@ window#waybar.empty #window {
 /* Tooltip */
 tooltip {
     background-color: @background;
-    border: none;
-    border-bottom: 2.5px solid @accent;
-    border-left: 1px solid @accent;
-    border-right: 1px solid @accent;
-    border-radius: 20px;
-    padding: 2px;
+    border: 1.5px solid @accent;
+    border-radius: 16px;
+    padding: 8px 12px;
 }
 
 .hidden {
@@ -470,8 +467,48 @@ tooltip {
     padding: 0 4px;
 }
 
+/* Claude Code traffic light.
+ * Dot colours come from the exec (Pango spans, themed via colors.toml).
+ * CSS only handles spacing + per-state motion:
+ *   working -> gentle pulse, waiting -> slight halo, idle/empty -> still. */
+#custom-claude {
+    margin: 0 4px;
+    padding: 0 4px;
+    font-size: 12px;
+}
+
+#custom-claude.working {
+    animation: claude-pulse 1.5s ease-in-out infinite;
+}
+
+#custom-claude.waiting {
+    animation: claude-halo 1.7s ease-in-out infinite;
+}
+
+@keyframes claude-pulse {
+    0%   { opacity: 1; }
+    50%  { opacity: 0.45; }
+    100% { opacity: 1; }
+}
+
+/* "slight halo" — soft glow in the theme's waiting hue (@base03) */
+@keyframes claude-halo {
+    0%   { text-shadow: 0 0 2px alpha(@base03, 0.35); }
+    50%  { text-shadow: 0 0 9px @base03, 0 0 4px @base03; }
+    100% { text-shadow: 0 0 2px alpha(@base03, 0.35); }
+}
+
+/* Thin dividers between the standalone left modules: idle-lock │ claude │ mpris.
+ * Placed after their base rules so border-left/padding-left win the cascade. */
+#custom-claude,
+#custom-mpris {
+    border-left: 1px solid alpha(@accent, 0.4);
+    padding-left: 12px;
+    margin-left: 8px;
+}
+
 /*
-* _______/\\\\\_______/\\\\\\____________/\\\__                                                  
+* _______/\\\\\_______/\\\\\\____________/\\\__
 *   _____/\\\///\\\____\////\\\___________\/\\\__                                                 
 *    ___/\\\/__\///\\\_____\/\\\___________\/\\\__                                                
 *     __/\\\______\//\\\____\/\\\___________\/\\\__                                               

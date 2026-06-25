@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# Claude Code -> Waybar traffic light: hook handler.
+#
+# Wired from ~/.claude/settings.json. Claude Code pipes the hook event JSON on
+# stdin (session_id, cwd, message, ...). One file per session under the runtime
+# dir; the waybar exec aggregates them.
+#
+# Usage: claude-status-hook <event>   event ∈ prompt|tool|notify|stop|start|end
+#
+# Speed matters (the signal is what makes the bar update): we parse with a single
+# jq, write state, and SIGNAL FIRST, then do the slower window/PID resolution
+# (which only affects click-to-focus and exact matching, not the colour).
+
+event="${1:-prompt}"
+dir="${XDG_RUNTIME_DIR:-/tmp}/claude-code-status"
+mkdir -p "$dir"
+
+signal_waybar() { pkill -RTMIN+10 waybar 2>/dev/null || true; }
+dbg() { [ -f "$dir/.debug" ] && printf '%s %s\n' "$(date +%T)" "$*" >> "$dir/debug.log" || true; }
+
+# --- payload: ONE jq call (tab-separated; @tsv escapes any tabs in fields) ---
+payload=""; [ -t 0 ] || payload="$(cat 2>/dev/null)"
+IFS=$'\t' read -r sid cwd msg < <(printf '%s' "$payload" \
+  | jq -r '[.session_id // "", .cwd // "", .message // ""] | @tsv' 2>/dev/null)
+[ -z "$sid" ] && sid="pid-$PPID"
+[ -z "$cwd" ] && cwd="$PWD"
+sid="${sid//\//_}"
+file="$dir/$sid"
+
+# --- event -> state, and whether the session's window is focused now ---------
+state=""; capture=0
+case "$event" in
+  prompt) state="working"; capture=1 ;;
+  tool)   state="working" ;;
+  start)  state="idle";    capture=1 ;;
+  stop)   state="idle" ;;
+  notify) case "$msg" in
+            *"waiting for your input"*) state="idle" ;;   # your move (green)
+            *) state="waiting" ;;                          # permission/auth (yellow)
+          esac ;;
+  end)    rm -f "$file"; signal_waybar; exit 0 ;;
+  *)      state="working" ;;
+esac
+
+# --- cached addr + pid from the existing record (fast, no forks) ------------
+addr=""; cpid=""
+[ -f "$file" ] && IFS=$'\x1f' read -r _ _ addr _ cpid < "$file" 2>/dev/null
+
+write_state() {  # state, addr, cpid
+  printf '%s\x1f%s\x1f%s\x1f%s\x1f%s\n' "$1" "$(date +%s)" "$2" "$cwd" "$3" > "$file.tmp"
+  mv -f "$file.tmp" "$file"
+}
+
+# --- FAST PATH: write + signal immediately (colour updates now) -------------
+write_state "$state" "$addr" "$cpid"
+signal_waybar
+
+# --- SLOW PATH: resolve window/pid, only if missing or focus changed --------
+get_ppid() { local s; s="$(< "/proc/$1/stat")" 2>/dev/null || return; s="${s##*) }"; set -- $s; printf '%s' "$2"; }
+find_claude_pid() {           # walk ancestry via /proc until comm==claude
+  local pid="$PPID" hop comm
+  for hop in $(seq 1 14); do
+    { [ -z "$pid" ] || [ "$pid" = "1" ] || [ "$pid" = "0" ]; } && break
+    comm="$(< "/proc/$pid/comm")" 2>/dev/null || comm=""
+    [ "$comm" = "claude" ] && { printf '%s' "$pid"; return 0; }
+    pid="$(get_ppid "$pid")"
+  done
+}
+
+changed=0
+if [ -z "$cpid" ]; then
+  c="$(find_claude_pid)"; [ -n "$c" ] && { cpid="$c"; changed=1; }
+fi
+if [ "$capture" = 1 ]; then
+  a="$(hyprctl activewindow -j 2>/dev/null | jq -r '.address // empty' 2>/dev/null)"
+  [ -n "$a" ] && [ "$a" != "$addr" ] && { addr="$a"; changed=1; }
+fi
+dbg "event=$event state=$state msg=[${msg:0:50}] cpid=${cpid:-none} addr=${addr:-none}"
+
+if [ "$changed" = 1 ]; then
+  write_state "$state" "$addr" "$cpid"
+  signal_waybar
+fi
+exit 0
