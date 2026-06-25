@@ -38,7 +38,24 @@ below. The only hard requirements are `bash`, `jq`, and a Waybar.
 - **Glyph:** a Nerd Font for the sunburst (optional — set `LOGO_GLYPH=""` in
   `claude-status` to drop it, or change the `` codepoint).
 
-## Install on any Waybar
+## Quick install (automated)
+
+From the directory holding these scripts:
+
+```bash
+./install-claude-status.sh
+```
+
+It is idempotent and backs up every file it edits. It copies the scripts to
+`~/.local/bin`, merges the hooks into `~/.claude/settings.json` (preserving any
+existing hooks), appends the CSS, and inserts the module into `config.jsonc`
+(adding `custom/claude` to `modules-right` by default), validating the result
+and restoring the backup if waybar can't parse it. Then `omarchy restart waybar`.
+
+Knobs: `BIN_DIR=`, `WAYBAR_DIR=`, `SETTINGS=`, `SIDE=modules-left`,
+`NO_CONFIG=1` (print the module snippet instead of editing `config.jsonc`).
+
+## Manual install on any Waybar
 
 1. **Scripts** — copy the three `claude-status*` files onto `PATH`
    (e.g. `~/.local/bin`) and `chmod +x` them. Note the absolute path you used.
@@ -86,10 +103,12 @@ below. The only hard requirements are `bash`, `jq`, and a Waybar.
 
 ## Customization
 
-- **Colors** — `claude-status` auto-uses the current Omarchy theme palette
-  (`~/.config/omarchy/current/theme/colors.toml`) when present; otherwise it falls
-  back to a built-in palette. Off Omarchy, edit the `RED/GRN/YEL/ACC/OFF/FG`
-  defaults near the top of `claude-status`.
+- **Colors / light themes** — with an Omarchy theme the palette is read from
+  `colors.toml`, so it adapts to **light or dark** themes automatically. Without
+  Omarchy, the dots use universal traffic-light fallbacks (red/amber/green) that
+  stay legible on any background, and the logo + `(N)` count inherit the bar's own
+  text colour (so they're never invisible on a light bar). To hard-set colours,
+  edit the `RED/GRN/YEL/ACC/OFF/FG` defaults near the top of `claude-status`.
 - **Glyph** — change `LOGO_GLYPH` in `claude-status` (`` asterisk by default;
   `` sun, `` north-star, etc.).
 - **Picker launcher** — `export CLAUDE_PICK_MENU="fuzzel --dmenu"` (etc.).

@@ -14,14 +14,23 @@ dir="${XDG_RUNTIME_DIR:-/tmp}/claude-code-status"
 theme="$HOME/.config/omarchy/current/theme/colors.toml"
 TTL=43200
 
-# --- theme palette (Event Horizon fallbacks) --------------------------------
+# --- theme palette ----------------------------------------------------------
+# With an Omarchy theme we read its palette (adapts to light OR dark themes).
+# Otherwise dot colours use universal traffic-light fallbacks that stay legible
+# on both light and dark bars, and the logo/count inherit the bar's own text
+# colour (so they're never invisible on a light background).
 getcol() { grep -E "^[[:space:]]*$1[[:space:]]*=" "$theme" 2>/dev/null \
              | head -1 | sed -E 's/.*"([^"]+)".*/\1/'; }
-RED="$(getcol color1)"; GRN="$(getcol color2)"; YEL="$(getcol color3)"
-ACC="$(getcol accent)"; OFF="$(getcol color8)"; FG="$(getcol foreground)"
-[ -z "$RED" ] && RED="#e95678"; [ -z "$GRN" ] && GRN="#29d398"
-[ -z "$YEL" ] && YEL="#fab795"; [ -z "$ACC" ] && ACC="#26bbd9"
-[ -z "$OFF" ] && OFF="#6c6f93"; [ -z "$FG" ] && FG="#fadad1"
+RED=""; GRN=""; YEL=""; ACC=""; OFF=""; FG=""
+if [ -r "$theme" ]; then
+  RED="$(getcol color1)"; GRN="$(getcol color2)"; YEL="$(getcol color3)"
+  ACC="$(getcol accent)"; OFF="$(getcol color8)"; FG="$(getcol foreground)"
+fi
+if [ -n "$RED$GRN$YEL" ]; then themed=1; else themed=0; fi
+[ -z "$RED" ] && RED="#e23a2e"   # red    (legible on light + dark)
+[ -z "$GRN" ] && GRN="#2a9d4a"   # green
+[ -z "$YEL" ] && YEL="#e0a000"   # amber  (not pale peach -> visible on white)
+[ -z "$OFF" ] && OFF="#888888"   # muted dot
 
 # sunburst-ish "Claude" mark, emitted from its codepoint so it survives editing.
 # U+F069 = FontAwesome asterisk (closest to Claude's mark). Swap the hex freely,
@@ -112,9 +121,16 @@ elif [ "$any_idle" = 1 ]; then cls="idle";    r=$OFF; y=$OFF; g=$GRN; tip="Claud
 else                           cls="empty";   r=$OFF; y=$OFF; g=$OFF; tip="No Claude sessions";
 fi
 
-logo="<span color='$ACC'>$LOGO_GLYPH claude</span>"
+# logo + count: themed colours when we have a palette, else inherit the bar's
+# text colour so they stay visible on any background (light or dark).
+if [ "$themed" = 1 ]; then
+  logo="<span color='$ACC'>$LOGO_GLYPH claude</span>"
+  count="<span color='$FG'>(${#sessions[@]})</span>"
+else
+  logo="$LOGO_GLYPH claude"
+  count="(${#sessions[@]})"
+fi
 dots="<span color='$r'>●</span> <span color='$y'>●</span> <span color='$g'>●</span>"
-count="<span color='$FG'>(${#sessions[@]})</span>"
 text="$logo  $dots  $count"
 tooltip="$tip"
 [ -n "$rows" ] && tooltip="$tip\n\n${rows%\\n}"
