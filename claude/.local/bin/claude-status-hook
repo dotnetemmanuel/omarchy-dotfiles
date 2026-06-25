@@ -54,7 +54,8 @@ write_state() {  # state, addr, cpid
 # --- FAST PATH: write, then signal ONLY if the visible state changed --------
 # (avoids a re-render storm when a session runs many tools in a row = working)
 write_state "$state" "$addr" "$cpid"
-[ "$state" != "$prev_state" ] && signal_waybar
+if [ "$state" != "$prev_state" ]; then signal_waybar; _sig=Y; else _sig=n; fi
+dbg "FIRED ev=$event ${prev_state:-none}->$state sig=$_sig sid=${sid:0:8}"
 
 # --- SLOW PATH: resolve window/pid, only if missing or focus changed --------
 get_ppid() { local s; s="$(< "/proc/$1/stat")" 2>/dev/null || return; s="${s##*) }"; set -- $s; printf '%s' "$2"; }
@@ -76,8 +77,6 @@ if [ "$capture" = 1 ]; then
   a="$(hyprctl activewindow -j 2>/dev/null | jq -r '.address // empty' 2>/dev/null)"
   [ -n "$a" ] && [ "$a" != "$addr" ] && { addr="$a"; changed=1; }
 fi
-dbg "event=$event state=$state msg=[${msg:0:50}] cpid=${cpid:-none} addr=${addr:-none}"
-
 if [ "$changed" = 1 ]; then
   write_state "$state" "$addr" "$cpid"   # refresh addr/pid for click-focus; no re-render needed
 fi

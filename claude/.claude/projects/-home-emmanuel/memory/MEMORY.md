@@ -8,3 +8,4 @@
 - [Always output paths](feedback_always_output_paths.md) — every QGIS step states the full absolute output path (relative paths failed twice)
 - [Zed Aether active-line fix](project_zed_aether_active_line_fix.md) — never use `null` for editor.active_line.background in aether.zed.json; Zed's default reintroduces the row glow. Use explicit `#1c1e26`.
 - [Omarchy Caps Lock / Compose wiring](project_omarchy_caps_lock.md) — Caps Lock = Compose via kb_options=compose:caps; fcitx5 is the XCompose backend. To unset Hyprland variables, assign empty (`kb_options =`), don't just comment the line.
+- [No co-author trailer](feedback_no_coauthor_trailer.md) — omit Co-Authored-By from git commit messages (user rejected a commit to remove it)
