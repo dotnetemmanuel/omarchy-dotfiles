@@ -14,6 +14,18 @@ dir="${XDG_RUNTIME_DIR:-/tmp}/claude-code-status"
 theme="$HOME/.config/omarchy/current/theme/colors.toml"
 TTL=43200
 
+# Emit an empty module so waybar hides the widget entirely (no glyph, padding or
+# divider), then exit. Defined first so the fast idle path below can use it.
+hide() { printf '{"text":"","class":"empty","tooltip":""}\n'; exit 0; }
+
+# --- fast idle path ---------------------------------------------------------
+# Cheapest possible check: if no `claude` process exists at all, there can be no
+# session, so bail immediately -- one fork (pgrep) and out, skipping the theme
+# parse (~12 forks) and all /proc work. This is the common case on an idle
+# machine, where the widget is hidden and we don't want it costing anything.
+mapfile -t CPIDS < <(pgrep -x claude 2>/dev/null)
+[ ${#CPIDS[@]} -eq 0 ] && hide
+
 # --- theme palette ----------------------------------------------------------
 # With an Omarchy theme we read its palette (adapts to light OR dark themes).
 # Otherwise dot colours use universal traffic-light fallbacks that stay legible
@@ -58,7 +70,6 @@ now="$(date +%s)"
 get_ppid() { local s; s="$(< "/proc/$1/stat")" 2>/dev/null || return; s="${s##*) }"; set -- $s; printf '%s' "$2"; }
 # active = not stopped (Ctrl+Z), not zombie/dead
 proc_active() { local s; s="$(< "/proc/$1/stat")" 2>/dev/null || return 1; s="${s##*) }"; set -- $s; case "$1" in T|t|Z|X) return 1;; *) return 0;; esac; }
-mapfile -t CPIDS < <(pgrep -x claude 2>/dev/null)
 declare -A ISCLAUDE; for p in "${CPIDS[@]}"; do ISCLAUDE["$p"]=1; done
 # a real session has no `claude` ancestor; nested ones (subagents/headless -p) do
 is_nested() {
@@ -101,6 +112,9 @@ for pid in "${!PCWD[@]}"; do
   [ -z "$st" ] && st="idle"           # un-hooked live session -> idle
   sessions+=("$cwd"$'\x1f'"$st")
 done
+
+# No live session -> remove the widget from the bar entirely.
+[ ${#sessions[@]} -eq 0 ] && hide
 
 any_wait=0; any_work=0; any_idle=0; rows=""
 if [ ${#sessions[@]} -gt 0 ]; then
