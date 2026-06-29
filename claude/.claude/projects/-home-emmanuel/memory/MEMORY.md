@@ -3,6 +3,7 @@
 - [MPD VM share — Samba setup + recovery script 2026-05-21](project_mpd_vm_share_samba_2026-05-21.md) — Samba working; `~/Documents/mpd-samba-reapply.sh --verify` is the first-aid; runbook in ~/Documents/mpd-dev-flow-followups.md
 - [Waybar session PATH gotcha](project_waybar_session_path_gotcha.md) — Hyprland-launched waybar lacks ~/.local/bin in PATH; ~/.local/bin overrides fail in the bar but work in terminals
 - [Waybar CPU / mpris fix 2026-06-08](project_waybar_cpu_mpris_fix.md) — built-in mpris+Spotify pegged a core; replaced with playerctl --follow script (~/.config/waybar/mpris-follow.sh); voxtype respawn loop removed; {icon} needs {text} not {}
+- [Claude-session waybar widget](project_claude_status_waybar_widget.md) — custom/claude traffic light (~/.local/bin/claude-status); auto-hides when no live session (empty text → waybar drops module); idle ~0.15%/core, no waybar restart to test
 - [Sweden basemap checkpoint 2026-05-29](project_sweden_basemap_checkpoint_2026-05-29.md) — QGIS pipeline resume point: Section 05 LOD A done; resume Mon 2026-06-01 at Step 3 (LOD B)
 - [Section/Step terminology](feedback_section_step_terminology.md) — say "Section N, Step M" for the basemap docs, never "§N §M" (the § conflation caused a mis-placed step)
 - [Always output paths](feedback_always_output_paths.md) — every QGIS step states the full absolute output path (relative paths failed twice)
