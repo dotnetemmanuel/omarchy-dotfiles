@@ -1,3 +1,4 @@
+- [Brio 100 Discord camera fix 2026-06-30](project_brio_discord_camera_fix.md) — Discord webapp (Vivaldi PWA) showed laptop cam despite Brio selected; per-origin stale deviceId + soft getUserMedia fallback to /dev/video0; fixed by resetting discord.com camera permission
 - [AUR Atomic Arch check 2026-06-13](project_aur_atomic_arch_check_2026-06-13.md) — scanned machine for June 2026 AUR supply-chain attack (js-digest/atomic-lockfile); CLEAN, no AUR builds in attack window
 - [Hyprland crash 2026-04-24](project_hyprland_crash_2026-04-24.md) — diagnosed v0.54.3 bad_any_cast on XWayland ConfigureRequest; remediation deferred to later same day
 - [MPD VM share — Samba setup + recovery script 2026-05-21](project_mpd_vm_share_samba_2026-05-21.md) — Samba working; `~/Documents/mpd-samba-reapply.sh --verify` is the first-aid; runbook in ~/Documents/mpd-dev-flow-followups.md
