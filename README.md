@@ -15,13 +15,19 @@ claude/.claude/skills/  -> ~/.claude/skills/
 ## Bootstrap on a new machine
 
 ```bash
-sudo pacman -S --needed stow
 git clone git@github.com:dotnetemmanuel/omarchy-dotfiles.git ~/dotfiles
 cd ~/dotfiles
-stow -t ~ */
+./install.sh
 ```
 
-Stow will refuse to overwrite existing files — if a target already exists, back it up or delete it first, then re-run.
+`install.sh` installs stow if needed and symlinks every package into `$HOME`.
+By default stow refuses to overwrite an existing file. Since a fresh Omarchy
+ships its own default configs, those will conflict. Run `./install.sh --adopt`
+to absorb the existing files into the repo instead of aborting, then check
+`git diff` to see what changed and discard anything you did not want.
+
+The clone location does not have to be `~/dotfiles` anymore (paths are resolved
+relative to `$HOME` via stow, not hardcoded).
 
 ## Packages
 
@@ -34,6 +40,22 @@ Tools: `btop`, `fastfetch`, `lazygit`, `lazydocker`, `git`
 Editors: `nvim`, `zed`
 
 Claude Code: `claude` (cherry-picked — settings, keybindings, skills, memory only; no auth, sessions, or conversation logs)
+
+## JetBrains themes (not stow packages)
+
+`jetbrains-retro82-theme/` and `jetbrains-aether-theme/` are theme **source
+projects**, not `$HOME` config, so they carry a `.stow-local-ignore` and are
+skipped by stow. Their full source (`src/`) and the built `.jar` are committed
+to git, so they are safe as long as the repo is pushed to GitHub. To reinstall
+them into your Toolbox-managed IDEs on a new machine:
+
+```bash
+./jetbrains-retro82-theme/build.sh
+./jetbrains-aether-theme/build.sh
+```
+
+Each script rebuilds the `.jar` from `src/` and copies it into every JetBrains
+IDE found under `~/.local/share/JetBrains/`. Restart the IDE and pick the theme.
 
 ## What's excluded
 
