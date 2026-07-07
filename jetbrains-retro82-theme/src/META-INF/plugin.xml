@@ -1,0 +1,20 @@
+<idea-plugin>
+  <id>com.emmanuel.retro82-theme</id>
+  <name>Retro 82 Theme</name>
+  <version>1.0.0</version>
+  <vendor email="emmanuel@mindfulstack.se">emmanuel</vendor>
+  <description><![CDATA[
+    <h2>Retro 82 for JetBrains</h2>
+    <p>A warm retro dark theme (navy, teal, cream, orange) matching the
+    omarchy retro-82 system theme. Ships two variants: a classic UI theme
+    and an Islands variant (parentTheme "Islands Dark") for the new UI.
+    Editor colors via the bundled Retro 82 scheme.</p>
+  ]]></description>
+  <idea-version since-build="252.0" />
+  <depends>com.intellij.modules.platform</depends>
+  <extensions defaultExtensionNs="com.intellij">
+    <themeProvider id="retro82-emmanuel" path="/META-INF/retro82.theme.json" />
+    <themeProvider id="retro82-islands-emmanuel" path="/META-INF/retro82-islands.theme.json" />
+    <bundledColorScheme path="/colors/retro-82" />
+  </extensions>
+</idea-plugin>

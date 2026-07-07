@@ -10,7 +10,7 @@ source ~/.local/share/omarchy/default/bash/rc
 
 export PATH="$HOME/.local/bin:$PATH"
 
-eval "$($HOME/.local/bin/oh-my-posh init bash --config $HOME/dotfiles/shell/oh-my-posh/Event-Horizon.omp.json)"
+eval "$($HOME/.local/bin/oh-my-posh init bash --config $HOME/dotfiles/shell/oh-my-posh/Retro-82.omp.json)"
 
 # Add your own exports, aliases, and functions here.
 #

@@ -1,0 +1,164 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "palette": {
+    "bg": "#05182e",
+    "surface": "#01204e",
+    "fg": "#f6dcac",
+    "cream": "#f6dcac",
+    "red": "#f85525",
+    "teal": "#028391",
+    "lightteal": "#8cbfb8",
+    "orange": "#e97b3c",
+    "accent": "#faa968"
+  },
+  "blocks": [
+    {
+      "type": "rprompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "leading_diamond": "",
+          "template": "{{ if .Env.PNPPSHOST }}  {{ .Env.PNPPSHOST }} {{ end }}",
+          "foreground": "p:cream",
+          "background": "p:red",
+          "type": "text",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "{{ if .Env.PNPPSSITE }}  {{ .Env.PNPPSSITE }}{{ end }}",
+          "foreground": "p:cream",
+          "powerline_symbol": "",
+          "background": "p:lightteal",
+          "type": "text",
+          "style": "powerline"
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "trailing_diamond": "",
+          "template": "{{ if .Env.PNPPSSITE }} IdpSolutions {{ end }}",
+          "foreground": "p:bg",
+          "background": "p:orange",
+          "type": "text",
+          "style": "diamond"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "24h"
+          },
+          "leading_diamond": "",
+          "trailing_diamond": "",
+          "template": "{{ .UserName }} ",
+          "foreground": "p:cream",
+          "background": "p:red",
+          "type": "session",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "time_format": "15:04"
+          },
+          "template": "  {{ .CurrentDate | date .Format }} ",
+          "foreground": "p:bg",
+          "background": "p:lightteal",
+          "type": "time",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "style": "folder"
+          },
+          "template": " {{ .Path }} ",
+          "foreground": "p:bg",
+          "powerline_symbol": "",
+          "background": "p:teal",
+          "type": "path",
+          "style": "powerline"
+        },
+        {
+          "type": "dotnet",
+          "style": "powerline",
+          "background": "p:accent",
+          "foreground": "p:bg",
+          "powerline_symbol": "",
+          "properties": {
+            "cache_duration": "none",
+            "fetch_version": true
+          },
+          "template": "  {{ .Full }} "
+        },
+        {
+          "properties": {
+            "branch_max_length": 25,
+            "cache_duration": "2m",
+            "fetch_stash_count": true,
+            "fetch_status": true,
+            "fetch_upstream_icon": true
+          },
+          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} ",
+          "foreground": "p:cream",
+          "powerline_symbol": "",
+          "background": "p:surface",
+          "type": "git",
+          "style": "powerline",
+          "background_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:orange{{ end }}",
+            "{{ if and (not .Working.Changed) (not .Staging.Changed) (eq .Ahead 0) (eq .Behind 0) (ne .HEAD \"\") (not .UpstreamGone) }}p:surface{{ end }}",
+            "{{ if and (not .Working.Changed) (not .Staging.Changed) (ne .HEAD \"\") }}p:surface{{ end }}",
+            "{{ if gt .Ahead 0 }}p:lightteal{{ end }}",
+            "{{ if gt .Behind 0 }}p:lightteal{{ end }}"
+          ],
+          "foreground_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:bg{{ end }}",
+            "{{ if and (not .Working.Changed) (not .Staging.Changed) }}p:cream{{ end }}"
+          ]
+        },
+        {
+          "properties": {
+            "always_enabled": true,
+            "cache_duration": "none"
+          },
+          "template": "  {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
+          "foreground": "p:cream",
+          "powerline_symbol": "",
+          "background": "p:accent",
+          "type": "node",
+          "style": "powerline"
+        },
+        {
+          "properties": {
+            "always_enabled": true,
+            "cache_duration": "none"
+          },
+          "trailing_diamond": "",
+          "template": "{{ if matchP \"D:\" .PWD }}  {{ else }} {{ end }}",
+          "foreground": "p:bg",
+          "powerline_symbol": "",
+          "background": "p:accent",
+          "type": "exit",
+          "style": "powerline",
+          "background_templates": [
+            "{{ if gt .Code 0 }}p:red{{ else }}p:accent{{ end }}"
+          ]
+        }
+      ]
+    }
+  ],
+  "version": 3,
+  "final_space": true
+}
