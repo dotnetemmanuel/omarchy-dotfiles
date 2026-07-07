@@ -1,0 +1,35 @@
+# Carbon Theme for Omarchy
+# Based on the Carbon VS Code theme
+
+# Primary colors
+foreground = "#c9cccd"
+background = "#172030"
+
+# Cursor
+cursor = "#c9cccd"
+
+# Selection colors
+selection_foreground = "#c9cccd"
+selection_background = "#214760"
+
+# Accent color (used for highlights, borders, etc.)
+accent = "#db6e89"
+
+# ANSI Terminal Colors (0-7: Normal, 8-15: Bright)
+color0 = "#172030"    # black
+color1 = "#DB6378"    # red
+color2 = "#D0D6B5"    # green
+color3 = "#F2C4B3"    # yellow
+color4 = "#73A7A7"    # blue
+color5 = "#716994"    # magenta
+color6 = "#8fd6e0"    # cyan
+color7 = "#c9cccd"    # white
+
+color8 = "#465063"    # bright black
+color9 = "#DB6378"    # bright red
+color10 = "#D0D6B5"   # bright green
+color11 = "#F2C4B3"   # bright yellow
+color12 = "#73A7A7"   # bright blue
+color13 = "#716994"   # bright magenta
+color14 = "#8fd6e0"   # bright cyan
+color15 = "#cdd3d3"   # bright white

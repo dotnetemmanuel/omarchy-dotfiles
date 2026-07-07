@@ -1,0 +1,344 @@
+//      dMMMMMP dMP dMP dMMMMMP dMMMMb dMMMMMMP            
+//     dMP     dMP dMP dMP     dMP dMP   dMP               
+//    dMMMP   dMP dMP dMMMP   dMP dMP   dMP                
+//   dMP      YMvAP" dMP     dMP dMP   dMP                 
+//  dMMMMMP    VP"  dMMMMMP dMP dMP   dMP                  
+//                                                         
+//      dMP dMP .aMMMb  dMMMMb  dMP dMMMMMP .aMMMb  dMMMMb 
+//     dMP dMP dMP"dMP dMP.dMP amr   .dMP" dMP"dMP dMP dMP 
+//    dMMMMMP dMP dMP dMMMMK" dMP  .dMP"  dMP dMP dMP dMP  
+//   dMP dMP dMP.aMP dMP"AMF dMP .dMP"   dMP.aMP dMP dMP   
+//  dMP dMP  VMMMP" dMP dMP dMP dMMMMMP  VMMMP" dMP dMP    
+//                                                        
+//  Original config by @N1R4 (https://github.com/nirabyte)
+//
+//  Modified by @OldJobobo (https://github.com/OldJobobo)
+
+{
+  // -----------------------------------------------------
+  // Bar: layout + geometry
+  // -----------------------------------------------------
+  "reload_style_on_change": true,
+  "layer": "top",
+  "position": "top",
+  "spacing": 0,
+  "margin-top": 8,
+  "margin-left": 0,
+  "margin-right": 0,
+  "height": 34,
+
+  // -----------------------------------------------------
+  // Bar: module placement
+  // -----------------------------------------------------
+  "modules-left": [
+    "group/left-pill",
+    "mpris",
+  ],
+  "modules-center": [
+    "custom/omarchy",
+    "hyprland/workspaces",
+    "clock",
+    "custom/update",
+    "custom/screenrecording-indicator",
+  ],
+  "modules-right": [
+    "group/tray-expander",
+  ],
+
+  // -----------------------------------------------------
+  // Hyprland
+  // -----------------------------------------------------
+  "hyprland/workspaces": {
+    "disable-scroll": false,
+    "all-outputs": true,
+    "on-click": "activate",
+    "format": "{id}",
+    "window-rewrite-default": "{}",
+    "workspace-taskbar": {
+      "enable": false,
+      "format": "{icon}",
+      "icon-size": 16,
+      "icon-theme": "YAMIS",
+    },
+    "sort-by-number": true,
+    "persistent-workspaces": {
+      "*": [1, 2, 3, 4, 5, 6, 7, 8],
+    },
+  },
+
+  // -----------------------------------------------------
+  // Custom: Omarchy + indicators
+  // -----------------------------------------------------
+  "custom/omarchy": {
+    "format": "",
+    // "format": "",
+    "on-click": "omarchy-menu",
+    "tooltip-format": "Menu",
+  },
+  "custom/update": {
+    "format": " ",
+    "exec": "omarchy-update-available",
+    "on-click": "omarchy-launch-floating-terminal-with-presentation omarchy-update",
+    "tooltip-format": "Omarchy update available",
+    "signal": 7,
+    "interval": 21600,
+  },
+  "custom/screenrecording-indicator": {
+    "on-click": "omarchy-cmd-screenrecord",
+    "exec": "$OMARCHY_PATH/default/waybar/indicators/screen-recording.sh",
+    "signal": 8,
+    "return-type": "json",
+  },
+
+  // -----------------------------------------------------
+  // System: stats + sensors
+  // -----------------------------------------------------
+  "cpu": {
+    "interval": 3,
+    "format": "CPU {icon}  ",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
+    "on-click": "omarchy-launch-or-focus-tui btop",
+  },
+  "memory": {
+    "format": "",
+    "interval": 3,
+    "on-click": "omarchy-launch-or-focus-tui btop",
+    "tooltip": true,
+  },
+  "network": {
+    "format": "󰤨",
+    "format-wifi": "󰤨",
+    "format-ethernet": "󰈀",
+    "format-disconnected": "󰤭",
+    "interval": 5,
+    "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-disconnected": "Disconnected",
+    "on-click": "omarchy-launch-wifi",
+  },
+  "bluetooth": {
+    "format": "",
+    "format-off": "󰂲",
+    "format-disabled": "󰂲",
+    "format-connected": "󰂱",
+    "format-no-controller": "",
+    "tooltip-format": "Devices connected: {num_connections}",
+    "on-click": "omarchy-launch-bluetooth",
+  },
+
+  // -----------------------------------------------------
+  // Audio
+  // -----------------------------------------------------
+  "pulseaudio": {
+    "format": "󰕾",
+    "on-click": "omarchy-launch-or-focus-tui wiremix",
+    "on-click-right": "pamixer -t",
+    "tooltip-format": "Playing at {volume}%",
+    "scroll-step": 5,
+    "format-muted": "󰖁",
+    "headphone": "󰋋",
+    "phone": "󰏲",
+    "phone-muted": "󰏲",
+    "portable": "󰋋",
+  },
+
+  // -----------------------------------------------------
+  // Time + date
+  // -----------------------------------------------------
+  "clock": {
+    "format": "{:%I:%M %p}",
+    "format-alt": "󰸗 {:%a %e-%b %Y}",
+    "interval": 60,
+    "tooltip": true,
+    "tooltip-format": "{:%Y-%m-%d %A}\n{calendar}",
+
+    // Calendar settings
+    "calendar": {
+      "mode": "monthW",
+      "mode-mon-col": 3,
+      "on-scroll": 1,
+
+      "format": {
+        "months": "{}",
+        "weeks": "W{}",
+        "weekdays": "{}",
+        "today": "<span color='#ffead3'><b>{}</b></span>",
+      },
+    },
+
+    // Mouse controls inside the calendar tooltip
+    "actions": {
+      "on-click-right": "mode", // right-click → toggle year ↔ month
+      "on-scroll-up": "shift_up", // scroll up   → future year/month
+      "on-scroll-down": "shift_down", // scroll down → past year/month
+      "on-click-middle": "shift_reset", // middle-click → jump back to today / current view
+    },
+  },
+
+  // -----------------------------------------------------
+  // Power
+  // -----------------------------------------------------
+  // Note: some icons are set to match my workflow e.g limit charging (80%)  󰚦 / 󱈏
+  "battery": {
+    "format": "{icon}",
+    "format-discharging": "{icon}",
+    "format-charging": "{icon}",
+    "format-plugged": "{icon}",
+    "format-icons": {
+      "default": [
+        "󰁺",
+        "󰁻",
+        "󰁼",
+        "󰁽",
+        "󰁾",
+        "󰁿",
+        "󰂀",
+        "󰂁",
+        "󰂂",
+      ],
+    },
+    "format-full": "󰁹",
+    "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
+    "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
+    "interval": 2,
+    "on-click": "omarchy-menu-tofi profile",
+    "on-click-right": "omarchy-menu-tofi power",
+    "states": {
+      "warning": 20,
+      "critical": 10,
+    },
+  },
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "{profile}",
+    "tooltip": true,
+    "format-icons": {
+      "performance": "󰓅",
+      "balanced": "󰾅",
+      "power-saver": "󰾆",
+    },
+  },
+
+  // -----------------------------------------------------
+  // Groups + tray
+  // -----------------------------------------------------
+  "group/tray-expander": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 420,
+      "children-class": "tray-group-item",
+    },
+    "modules": ["custom/expand-icon", "tray"],
+  },
+  "custom/expand-icon": {
+    "format": "",
+    "tooltip": false,
+  },
+  "group/left-pill": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 420,
+      "children-class": "system-group-item",
+      "transition-left-to-right": false,
+    },
+    "modules": ["custom/system-expand-icon", "network", "memory", "temperature", "battery", "bluetooth", "pulseaudio", "custom/voxtype"],
+  },
+  "custom/system-expand-icon": {
+    "format": "",
+    "tooltip": false,
+  },
+  "tray": {
+    "icon-size": 18,
+    "spacing": 17,
+  },
+
+  // -----------------------------------------------------
+  // Optional modules (disabled)
+  // -----------------------------------------------------
+  "custom/voxtype": {
+    "exec": "omarchy-voxtype-status",
+    "return-type": "json",
+    "format": "{icon}",
+    "format-icons": {
+      "idle": "",
+      "recording": "󰍬",
+      "transcribing": "󰔟",
+    },
+    "tooltip": true,
+    "on-click-right": "omarchy-voxtype-config",
+    "on-click": "omarchy-voxtype-model",
+  },
+  "temperature": {
+    "hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
+    "input-filename": "temp1_input",
+    "critical-threshold": 85,
+    "format": " {icon} {temperatureC}°C",
+    "interval": 4,
+    "tooltip": true,
+    "tooltip-format": "CPU Temp:  {temperatureC}°C",
+    "format-icons": ["", "", "", "", ""],
+    "on-click": "omarchy-launch-or-focus-tui btop",
+  },
+  "mpris": {
+    "interval": 1,
+    "format": "{player_icon} {dynamic}",
+    "format-paused": "{status_icon} {artist} {title}",
+    "on-click-middle": "playerctl play-pause",
+    "on-click": "playerctl previous",
+    "on-click-right": "playerctl next",
+    "scroll-step": 5.0,
+    "tooltip": true,
+    "tooltip-format": "{status_icon} {dynamic}\nLeft Click: previous\nMid Click: Pause\nRight Click: Next",
+    "player-icons": {
+      "chromium": "",
+      "default": "",
+      "firefox": "",
+      "kdeconnect": "",
+      "mopidy": "",
+      "mpv": "",
+      "spotify": "󰎆",
+      "vlc": "󰕼",
+    },
+    "status-icons": {
+      "paused": "",
+      "playing": "",
+      "stopped": "",
+    },
+    "dynamic-order": ["artist", "title"],
+    "max-length": 60,
+  },
+}
+//  _______/\\\\\_______/\\\\\\____________/\\\__                                                  
+//   _____/\\\///\\\____\////\\\___________\/\\\__                                                 
+//    ___/\\\/__\///\\\_____\/\\\___________\/\\\__                                                
+//     __/\\\______\//\\\____\/\\\___________\/\\\__                                               
+//      _\/\\\_______\/\\\____\/\\\______/\\\\\\\\\__                                              
+//       _\//\\\______/\\\_____\/\\\_____/\\\////\\\__                                             
+//        __\///\\\__/\\\_______\/\\\____\/\\\__\/\\\__                                            
+//         ____\///\\\\\/______/\\\\\\\\\_\//\\\\\\\/\\_                                           
+//          ______\/////_______\/////////___\///////\//__                                          
+//  ______/\\\\\\\\\\\________________/\\\_______________________/\\\______________________        
+//   _____\/////\\\///________________\/\\\______________________\/\\\______________________       
+//    _________\/\\\___________________\/\\\______________________\/\\\______________________      
+//     _________\/\\\_________/\\\\\____\/\\\____________/\\\\\____\/\\\____________/\\\\\____     
+//      _________\/\\\_______/\\\///\\\__\/\\\\\\\\\____/\\\///\\\__\/\\\\\\\\\____/\\\///\\\__    
+//       _________\/\\\______/\\\__\//\\\_\/\\\////\\\__/\\\__\//\\\_\/\\\////\\\__/\\\__\//\\\_   
+//        __/\\\___\/\\\_____\//\\\__/\\\__\/\\\__\/\\\_\//\\\__/\\\__\/\\\__\/\\\_\//\\\__/\\\__  
+//         _\//\\\\\\\\\_______\///\\\\\/___\/\\\\\\\\\___\///\\\\\/___\/\\\\\\\\\___\///\\\\\/___ 
+//          __\/////////__________\/////_____\/////////______\/////_____\/////////______\/////_____
