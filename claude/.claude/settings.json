@@ -1,9 +1,4 @@
 {
-  "enabledPlugins": {
-    "superpowers@claude-plugins-official": true
-  },
-  "effortLevel": "high",
-  "theme": "dark-ansi",
   "permissions": {
     "allow": [
       "Bash(sudo -c qemu:///system)",
@@ -13,22 +8,72 @@
   },
   "hooks": {
     "SessionStart": [
-      { "hooks": [ { "type": "command", "command": "$HOME/.local/bin/claude-status-hook start" } ] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/claude-status-hook start"
+          }
+        ]
+      }
     ],
     "UserPromptSubmit": [
-      { "hooks": [ { "type": "command", "command": "$HOME/.local/bin/claude-status-hook prompt" } ] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/claude-status-hook prompt"
+          }
+        ]
+      }
     ],
     "PreToolUse": [
-      { "matcher": "", "hooks": [ { "type": "command", "command": "$HOME/.local/bin/claude-status-hook tool" } ] }
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/claude-status-hook tool"
+          }
+        ]
+      }
     ],
     "Notification": [
-      { "matcher": "", "hooks": [ { "type": "command", "command": "$HOME/.local/bin/claude-status-hook notify" } ] }
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/claude-status-hook notify"
+          }
+        ]
+      }
     ],
     "Stop": [
-      { "hooks": [ { "type": "command", "command": "$HOME/.local/bin/claude-status-hook stop" } ] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/claude-status-hook stop"
+          }
+        ]
+      }
     ],
     "SessionEnd": [
-      { "hooks": [ { "type": "command", "command": "$HOME/.local/bin/claude-status-hook end" } ] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/claude-status-hook end"
+          }
+        ]
+      }
     ]
-  }
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
+  },
+  "effortLevel": "high",
+  "theme": "dark-ansi"
 }
