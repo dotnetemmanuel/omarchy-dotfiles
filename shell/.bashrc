@@ -19,8 +19,10 @@ eval "$($HOME/.local/bin/oh-my-posh init bash --config $HOME/.config/oh-my-posh/
 
 
 export NVM_DIR="$HOME/.config/nvm"
+set -h  # nvm calls "hash -r" on load, which errors under the "set +h" omarchy sets for mise
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+set +h
 export PATH="$PATH:$HOME/.dotnet/tools"
 export PATH="$PATH:$HOME/Android/Sdk/platform-tools"
 
