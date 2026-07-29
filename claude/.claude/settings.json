@@ -3,7 +3,8 @@
     "allow": [
       "Bash(sudo -c qemu:///system)",
       "Bash(sudo virsh -c qemu:///system destroy win11)",
-      "Bash(sudo virsh -c qemu:///system list --all)"
+      "Bash(sudo virsh -c qemu:///system list --all)",
+      "Bash(blip:*)"
     ]
   },
   "hooks": {
