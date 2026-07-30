@@ -13,11 +13,13 @@ zip -qr "$jar" META-INF colors
 echo "built $jar ($(wc -c < "$jar") bytes)"
 unzip -l "$jar"
 
-# Install into each Toolbox-managed IDE on disk.
-for ide_cfg in "$HOME"/.config/JetBrains/*/; do
-  ide="$(basename "$ide_cfg")"
-  plugins_dir="$HOME/.local/share/JetBrains/$ide"
-  [ -d "$plugins_dir" ] || continue
-  cp "$jar" "$plugins_dir/aether-theme.jar"
-  echo "installed $plugins_dir/aether-theme.jar"
+# Install into each Toolbox-managed IDE on disk. Android Studio is Google-vendored.
+for vendor in JetBrains Google; do
+  for ide_cfg in "$HOME"/.config/"$vendor"/*/; do
+    ide="$(basename "$ide_cfg")"
+    plugins_dir="$HOME/.local/share/$vendor/$ide"
+    [ -d "$plugins_dir" ] || continue
+    cp "$jar" "$plugins_dir/aether-theme.jar"
+    echo "installed $plugins_dir/aether-theme.jar"
+  done
 done

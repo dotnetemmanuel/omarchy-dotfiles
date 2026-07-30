@@ -131,6 +131,11 @@
         <option name="EFFECT_TYPE" value="1" />
       </value>
     </option>
+    <option name="ComposeStateReadScopeHighlightingTextAttributes">
+      <value>
+        <option name="BACKGROUND" value="0a3a45" />
+      </value>
+    </option>
     <option name="DEFAULT_ATTRIBUTE">
       <value>
         <option name="FOREGROUND" value="f6dcac" />
@@ -474,6 +479,175 @@
       <value>
         <option name="FOREGROUND" value="e97b3c" />
         <option name="BACKGROUND" value="5f8f96" />
+      </value>
+    </option>
+    <option name="IntelliJComposableCallTextAttributes">
+      <value>
+        <option name="FOREGROUND" value="faa968" />
+      </value>
+    </option>
+    <option name="KOTLIN_ANDROID_EXTENSIONS_PROPERTY_CALL">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+      </value>
+    </option>
+    <option name="KOTLIN_ANNOTATION">
+      <value>
+        <option name="FOREGROUND" value="f85525" />
+      </value>
+    </option>
+    <option name="KOTLIN_BACKING_FIELD_VARIABLE">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+      </value>
+    </option>
+    <option name="KOTLIN_CLOSURE_DEFAULT_PARAMETER">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+        <option name="FONT_TYPE" value="2" />
+      </value>
+    </option>
+    <option name="KOTLIN_CONSTRUCTOR">
+      <value>
+        <option name="FOREGROUND" value="e97b3c" />
+      </value>
+    </option>
+    <option name="KOTLIN_DSL_STYLE_CONSTRUCTOR_CALL">
+      <value>
+        <option name="FOREGROUND" value="e97b3c" />
+      </value>
+    </option>
+    <option name="KOTLIN_DSL_STYLE_FUNCTION_CALL">
+      <value>
+        <option name="FOREGROUND" value="f85525" />
+      </value>
+    </option>
+    <option name="KOTLIN_DYNAMIC_FUNCTION_CALL">
+      <value>
+        <option name="FOREGROUND" value="f85525" />
+      </value>
+    </option>
+    <option name="KOTLIN_DYNAMIC_PROPERTY_CALL">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+      </value>
+    </option>
+    <option name="KOTLIN_EXTENSION_FUNCTION_CALL">
+      <value>
+        <option name="FOREGROUND" value="f85525" />
+        <option name="FONT_TYPE" value="2" />
+      </value>
+    </option>
+    <option name="KOTLIN_EXTENSION_PROPERTY">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+        <option name="FONT_TYPE" value="2" />
+      </value>
+    </option>
+    <option name="KOTLIN_FUNCTION_LITERAL_BRACES_AND_ARROW">
+      <value>
+        <option name="FOREGROUND" value="a7c9c6" />
+        <option name="FONT_TYPE" value="1" />
+      </value>
+    </option>
+    <option name="KOTLIN_INSTANCE_PROPERTY">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+      </value>
+    </option>
+    <option name="KOTLIN_INSTANCE_PROPERTY_CUSTOM_PROPERTY_DECLARATION">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+      </value>
+    </option>
+    <option name="KOTLIN_LABEL">
+      <value>
+        <option name="FOREGROUND" value="faa968" />
+      </value>
+    </option>
+    <option name="KOTLIN_LOCAL_VARIABLE">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+      </value>
+    </option>
+    <option name="KOTLIN_MUTABLE_VARIABLE">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+        <option name="EFFECT_COLOR" value="5f8f96" />
+        <option name="EFFECT_TYPE" value="1" />
+      </value>
+    </option>
+    <option name="KOTLIN_NAMED_ARGUMENT">
+      <value>
+        <option name="FOREGROUND" value="8cbfb8" />
+      </value>
+    </option>
+    <option name="KOTLIN_OBJECT">
+      <value>
+        <option name="FOREGROUND" value="e97b3c" />
+      </value>
+    </option>
+    <option name="KOTLIN_PACKAGE_FUNCTION_CALL">
+      <value>
+        <option name="FOREGROUND" value="f85525" />
+      </value>
+    </option>
+    <option name="KOTLIN_PACKAGE_PROPERTY">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+      </value>
+    </option>
+    <option name="KOTLIN_PACKAGE_PROPERTY_CUSTOM_PROPERTY_DECLARATION">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+      </value>
+    </option>
+    <option name="KOTLIN_PARAMETER">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+        <option name="FONT_TYPE" value="2" />
+      </value>
+    </option>
+    <option name="KOTLIN_SMART_CAST_RECEIVER">
+      <value>
+        <option name="BACKGROUND" value="0a3a45" />
+      </value>
+    </option>
+    <option name="KOTLIN_SMART_CAST_VALUE">
+      <value>
+        <option name="BACKGROUND" value="0a3a45" />
+      </value>
+    </option>
+    <option name="KOTLIN_SMART_CONSTANT">
+      <value>
+        <option name="FOREGROUND" value="f6dcac" />
+      </value>
+    </option>
+    <option name="KOTLIN_SUSPEND_FUNCTION_CALL">
+      <value>
+        <option name="FOREGROUND" value="f85525" />
+        <option name="FONT_TYPE" value="2" />
+      </value>
+    </option>
+    <option name="KOTLIN_TYPE_PARAMETER">
+      <value>
+        <option name="FOREGROUND" value="e97b3c" />
+      </value>
+    </option>
+    <option name="KOTLIN_VARIABLE_AS_FUNCTION">
+      <value>
+        <option name="FOREGROUND" value="f85525" />
+      </value>
+    </option>
+    <option name="KOTLIN_VARIABLE_AS_FUNCTION_LIKE">
+      <value>
+        <option name="FOREGROUND" value="f85525" />
+      </value>
+    </option>
+    <option name="KOTLIN_WRAPPED_INTO_REF">
+      <value>
+        <option name="EFFECT_COLOR" value="5f8f96" />
+        <option name="EFFECT_TYPE" value="1" />
       </value>
     </option>
     <option name="LINE_FULL_COVERAGE">
