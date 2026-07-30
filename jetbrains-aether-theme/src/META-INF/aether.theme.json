@@ -2,7 +2,7 @@
   "name": "Aether",
   "dark": true,
   "author": "emmanuel",
-  "editorScheme": "/colors/Horizon.icls",
+  "editorScheme": "/colors/Horizon.xml",
   "colors": {
     "transparent": "#00000000",
     "translucent": "#00000050",
