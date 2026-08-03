@@ -7,6 +7,27 @@ Never use an em dash (the long dash) in any output: prose, code comments, commit
 messages, docs, file contents, PR descriptions. Use a comma, colon, parentheses,
 or rephrase the sentence. No exceptions.
 
+## Explain in plain language, not jargon
+When raising a problem, a trade-off, or anything needing my decision, describe what
+actually happens to a person using the thing. Lead with the concrete scenario, then
+name the code if it still matters. I am a developer: the issue is not vocabulary, it
+is that a wall of symbol names and internal terms hides what you are telling me.
+
+Never make me decode a question before I can answer it. If I have to ask what you
+mean, you wrote it wrong. Keep type names, method names, field names, HTTP verbs and
+status codes out of the framing; put them on a follow-up line for whoever needs them.
+Say what breaks, for whom, and what the fix costs.
+
+Bad:
+    AddQuizItem does not validate IsSaved, so a toolbox QuestionDefinition can be
+    attached to a QuizItem, and UpdateQuestionDefinition then mutates the shared row.
+Good:
+    You add a saved question to a quiz, then reword it inside the quiz. The new wording
+    also overwrites the copy in your toolbox, because the quiz never made its own copy.
+
+This applies hardest to questions and options put in front of me. Every option label
+and description has to make sense on its own, without reading the code.
+
 ## No single quotes in commit messages
 Never put a single quote (apostrophe) character in commit message content. Use
 double quotes for quoting inside a message. When committing from the shell, write

@@ -1,20 +1,68 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(sudo -c qemu:///system)",
-      "Bash(sudo virsh -c qemu:///system destroy win11)",
-      "Bash(sudo virsh -c qemu:///system list --all)",
-      "Bash(blip:*)"
-    ]
+  "effortLevel": "high",
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
   },
-  "model": "opus",
   "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "command": "$HOME/.local/bin/claude-status-hook notify",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "$HOME/.local/bin/claude-status-hook tool",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "command": "$HOME/.local/bin/claude-status-hook end",
+            "type": "command"
+          }
+        ]
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "$HOME/.local/bin/claude-status-hook start"
+            "command": "$HOME/.local/bin/claude-status-hook start",
+            "type": "command"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "bash '/home/emmanuel/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "$HOME/.local/bin/claude-status-hook stop",
+            "type": "command"
           }
         ]
       }
@@ -23,59 +71,21 @@
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "$HOME/.local/bin/claude-status-hook prompt"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.local/bin/claude-status-hook tool"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.local/bin/claude-status-hook notify"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.local/bin/claude-status-hook stop"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.local/bin/claude-status-hook end"
+            "command": "$HOME/.local/bin/claude-status-hook prompt",
+            "type": "command"
           }
         ]
       }
     ]
   },
-  "enabledPlugins": {
-    "superpowers@claude-plugins-official": true,
-    "rust-analyzer-lsp@claude-plugins-official": true
+  "model": "opus",
+  "permissions": {
+    "allow": [
+      "Bash(sudo -c qemu:///system)",
+      "Bash(sudo virsh -c qemu:///system destroy win11)",
+      "Bash(sudo virsh -c qemu:///system list --all)",
+      "Bash(blip:*)"
+    ]
   },
-  "effortLevel": "high",
   "theme": "dark-ansi"
 }

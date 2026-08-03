@@ -15,3 +15,4 @@
 - [JetBrains on Wayland: popups + scaling 2026-07-29](project_jetbrains_wayland_scaling.md) — WLToolkit misplaces menus; pin `-Dawt.toolkit.name=XToolkit` (bundled `auto` resolves to WLToolkit) + `uiScale=1.2` since omarchy sets xwayland force_zero_scaling
 - [/home is btrfs + snapper](reference_home_btrfs_snapper.md) — df lags after deletions (snapshots pin extents); du overcounts reflink-shared trees
 - [No co-author trailer](feedback_no_coauthor_trailer.md) — omit Co-Authored-By from git commit messages (user rejected a commit to remove it)
+- [Docker prune is unsafe here](project_docker_prune_unsafe.md) — never `docker image prune -a`; it kills the VeygrTestTileFactory tile pipeline images (klokantech/tippecanoe is an 8-year-old tag, likely unpullable)
