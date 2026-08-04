@@ -45,6 +45,11 @@ claude/.claude/projects/*/memory/*.md
 # Zed auth token — file must stay on disk for Zed to work, but never commit it
 zed/.config/zed/development_credentials
 
+# herdr keeps live session state next to its config; only config.toml is ours
+herdr/.config/herdr/session.json
+herdr/.config/herdr/release-notes.json
+herdr/.config/herdr/.plugins.lock
+
 # Omarchy ships its themes — no need to back them up
 omarchy/.config/omarchy/themes/
 # current/theme/ is a copy of the selected theme; keep only theme.name
