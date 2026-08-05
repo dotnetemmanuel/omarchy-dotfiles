@@ -10,7 +10,17 @@ source ~/.local/share/omarchy/default/bash/rc
 
 export PATH="$HOME/.local/bin:$PATH"
 
-eval "$($HOME/.local/bin/oh-my-posh init bash --config $HOME/.config/oh-my-posh/Retro-82.omp.json)"
+# eval "$($HOME/.local/bin/oh-my-posh init bash --config $HOME/.config/oh-my-posh/Retro-82.omp.json)"
+
+# Profile follows the current Omarchy theme; set STARSHIP_STYLE=plain for the flat variant.
+_starship_profile="$HOME/.config/starship/$(cat "$HOME/.config/omarchy/current/theme.name" 2>/dev/null)-${STARSHIP_STYLE:-powerline}.toml"
+if [ -f "$_starship_profile" ]; then
+  export STARSHIP_CONFIG="$_starship_profile"
+else
+  unset STARSHIP_CONFIG
+fi
+unset _starship_profile
+eval "$(starship init bash)"
 
 # Add your own exports, aliases, and functions here.
 #
