@@ -143,6 +143,31 @@ When a review finds a defect, do not patch the line you were handed. Work out wh
 rule was broken and who else depends on it. Four of those five rounds were caused by
 the previous round's fix, each one locally correct and blind to what it touched.
 
+# Running review agents cheaply
+
+Set 2026-08-06, after a day where the reviewers cost roughly 700k tokens, browser
+screenshots 60 to 80k, and everything written to me about 10k. Keep the scrutiny,
+cut the repetition.
+
+## One reviewer, not two
+Send server-only work to a correctness review alone, and copy, CSS or layout work to
+a UI review alone. Use both only when a change is genuinely risky and user-facing at
+the same time. A second reviewer on a change outside its lens earns nothing.
+
+## Batch the fixes, then go back once
+Collect every finding from a round, fix them all, and return once. Do not go back
+after each individual finding. That habit turned a single review into six rounds.
+Keep looping until the reviewer is satisfied, but make each round a full one.
+
+## Do not screenshot whole pages by reflex
+Zoom the region, read the page text, or measure in the page itself. Full captures are
+for showing me something, or for the first look at a layout you have not seen.
+
+## What this does not touch
+None of it trims the review itself. The rounds that cost the tokens also found one
+student's answer visible to another, a mark that could land on the wrong question, and
+a gate whose removal would have silently broken a live lesson. Cut passes, not looking.
+
 # Calling an HTTP API with blip
 
 Applies only in a repo that has a `.blip.toml` at its root. Without that file
