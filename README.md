@@ -31,7 +31,7 @@ relative to `$HOME` via stow, not hardcoded).
 
 ## Packages
 
-Desktop / WM: `hypr`, `waybar`, `walker`, `mako`, `swayosd`, `omarchy`, `omarchy-extras`, `hyprdynamicmonitors`, `hyprland-preview-share-picker`, `elephant`, `fcitx5`, `autostart`, `fontconfig`, `environment.d`, `imv`
+Desktop / WM: `hypr`, `waybar`, `walker`, `mako`, `swayosd`, `omarchy`, `omarchy-extras`, `hyprdynamicmonitors`, `hyprland-preview-share-picker`, `elephant`, `fcitx5`, `autostart`, `fontconfig`, `environment.d`, `imv`, `wireplumber`
 
 Terminals / shell: `alacritty`, `ghostty`, `kitty`, `starship`, `shell`, `tmux`
 
