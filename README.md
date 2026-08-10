@@ -41,6 +41,20 @@ Editors: `nvim`, `zed`
 
 Claude Code: `claude` (cherry-picked — settings, keybindings, skills, memory only; no auth, sessions, or conversation logs)
 
+## QGIS MCP (not a stow package)
+
+`qgis-mcp/setup.sh` reinstalls the QGIS MCP integration, which lives in three
+places outside this repo: the plugin in the QGIS profile, the profile settings
+that enable it, and the server registration in `~/.claude.json`. None of those
+are backed up here, so run the script on a new machine (with QGIS closed):
+
+```bash
+./qgis-mcp/setup.sh
+```
+
+It pulls the plugin from upstream, so re-running it also updates the plugin.
+Set `QGIS_PROFILE` to target a profile other than `default`.
+
 ## JetBrains themes (not stow packages)
 
 `jetbrains-retro82-theme/` and `jetbrains-aether-theme/` are theme **source
