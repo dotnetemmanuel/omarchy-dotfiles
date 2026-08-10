@@ -84,7 +84,8 @@
   },
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
+    "superpowers@claude-plugins-official": true,
+    "fizzy@37signals": true
   },
   "extraKnownMarketplaces": {
     "37signals": {
