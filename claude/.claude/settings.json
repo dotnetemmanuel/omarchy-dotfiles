@@ -1,84 +1,4 @@
 {
-  "effortLevel": "high",
-  "enabledPlugins": {
-    "rust-analyzer-lsp@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
-  },
-  "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.local/bin/claude-status-hook notify",
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.local/bin/claude-status-hook tool",
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.local/bin/claude-status-hook end",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.local/bin/claude-status-hook start",
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "command": "bash '/home/emmanuel/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.local/bin/claude-status-hook stop",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "command": "$HOME/.local/bin/claude-status-hook prompt",
-            "type": "command"
-          }
-        ]
-      }
-    ]
-  },
-  "model": "opus",
   "permissions": {
     "allow": [
       "Bash(sudo -c qemu:///system)",
@@ -87,5 +7,93 @@
       "Bash(blip:*)"
     ]
   },
+  "model": "opus",
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/claude-status-hook notify"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/claude-status-hook tool"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/claude-status-hook end"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/claude-status-hook start"
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/home/emmanuel/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/claude-status-hook stop"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/claude-status-hook prompt"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "37signals": {
+      "source": {
+        "source": "github",
+        "repo": "basecamp/claude-plugins"
+      }
+    }
+  },
+  "effortLevel": "high",
   "theme": "dark-ansi"
 }
