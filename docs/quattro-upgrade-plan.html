@@ -1076,7 +1076,8 @@ base-size = 13</code></pre>
 
       <h3 style="margin-top:1.6em">Event Horizon needs one line, and it is not the one you would guess</h3>
       <p>Event Horizon is not yours either, it comes from <code>oldjobobo/omarchy-event-horizon-theme</code>, and its author has already done the Hyprland half: the repo ships a <code>hyprland.lua</code> next to the old <code>hyprland.conf</code>, so borders, blur, shadows and all those custom animation curves carry over untouched.</p>
-      <p>The colours are not converted, upstream or locally, and there is one specific thing wrong with letting the compatibility path handle them. Event Horizon sets <code>color0</code> to <code>#1c1e26</code>, which is <em>exactly</em> its background. Panel and surface backgrounds are derived from <code>color0</code> when nothing better is defined, so every panel would be painted the same colour as the desktop behind it and simply disappear. Retro 82 gets away with this because its <code>color0</code> at least differs from its background. Event Horizon does not.</p>
+      <p>The colours are not converted yet, upstream or locally, and the author has said a Quattro-ready version is coming, possibly by the stable release. <strong>So the block below is a fallback, not a task.</strong> Use it only if the release beats the author to it.</p>
+      <p>It matters because there is one specific thing wrong with letting the compatibility path handle Event Horizon's colours. It sets <code>color0</code> to <code>#1c1e26</code>, which is <em>exactly</em> its background. Panel and surface backgrounds are derived from <code>color0</code> when nothing better is defined, so every panel would be painted the same colour as the desktop behind it and simply disappear. Retro 82 gets away with this because its <code>color0</code> at least differs from its background. Event Horizon does not.</p>
 
       <div class="fileblock">
         <div class="filepath"><b>Edit</b> /home/emmanuel/dotfiles/omarchy/.config/omarchy/themes/event-horizon/colors.toml</div>
@@ -1108,7 +1109,15 @@ magenta = "#ee64ac"
 brown = "#7d5b4a"</code></pre>
       </div>
 
-      <p>One wrinkle if the author ever does ship a Quattro update: that theme is both a git clone and vendored into your dotfiles, 47 files tracked in both places, and your local copy is already ahead of upstream because you added the Aether JetBrains scheme on top. Upstream has not moved since June, so plan to do this yourself rather than wait for a pull.</p>
+      <div class="note">
+        <h4>The author is doing this, so wait rather than hand-edit</h4>
+        <p>oldjobobo has said a Quattro-ready version is coming, possibly in time for the stable release. That makes the colour block above a fallback, not a task: apply it only if the release lands first or the update slips. Doing it by hand now buys you a merge conflict in the file most likely to be rewritten.</p>
+        <p>The pull itself will be small. You are one commit ahead of upstream, the Aether JetBrains scheme you added on top, and a handful of commits behind. Everything else in your clone is upstream's. Two things to tidy first so the merge stays that clean:</p>
+        <ul>
+          <li>You have uncommitted edits to <code>aether.zed.json</code> and <code>ghostty.conf</code> sitting in the theme's working tree. Commit them, or they will collide with whatever arrives.</li>
+          <li>The theme is <em>both</em> a git clone and vendored into your dotfiles, 47 files tracked in both places. After you pull inside the theme, those files show up as ordinary modifications in the dotfiles repo and need committing there too. Nothing breaks if you forget, the two copies just drift.</li>
+        </ul>
+      </div>
       <p><b>Carbon</b> and <b>Rose Pine Dark</b> are plain directories with no upstream at all. Same treatment, whenever you next switch to one.</p>
     </div>
   </div>
