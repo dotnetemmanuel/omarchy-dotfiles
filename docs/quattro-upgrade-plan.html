@@ -1,0 +1,1165 @@
+<title>Omarchy Quattro: upgrade report and plan</title>
+<style>
+  :root {
+    --bg: #f7f7f5;
+    --surface: #ffffff;
+    --surface-2: #ececeb;
+    --ink: #0d1f33;
+    --muted: #5a6b7c;
+    --faint: #8b98a5;
+    --rule: #ddddd9;
+    --accent: #9a5a14;
+    --accent-bright: #faa968;
+    --keeps: #026b77;
+    --works: #8a5a05;
+    --breaks: #c23a12;
+    --code-bg: #f1f1ee;
+    --code-ink: #16324e;
+    --mono: "CaskaydiaMono Nerd Font Propo", "CaskaydiaCove Nerd Font", ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --sans: system-ui, "Noto Sans", "DejaVu Sans", "Segoe UI", sans-serif;
+  }
+
+  :root:not([data-theme="light"]) {
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #05182e;
+      --surface: #0a2340;
+      --surface-2: #0e2c4e;
+      --ink: #dfe7ef;
+      --muted: #93a9be;
+      --faint: #6b839a;
+      --rule: #133b60;
+      --accent: #faa968;
+      --accent-bright: #faa968;
+      --keeps: #45b6c2;
+      --works: #faa968;
+      --breaks: #ff7a52;
+      --code-bg: #041324;
+      --code-ink: #cfe0ee;
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #05182e;
+    --surface: #0a2340;
+    --surface-2: #0e2c4e;
+    --ink: #dfe7ef;
+    --muted: #93a9be;
+    --faint: #6b839a;
+    --rule: #133b60;
+    --accent: #faa968;
+    --accent-bright: #faa968;
+    --keeps: #45b6c2;
+    --works: #faa968;
+    --breaks: #ff7a52;
+    --code-bg: #041324;
+    --code-ink: #cfe0ee;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 28px 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ---------- masthead ---------- */
+
+  header.masthead {
+    padding: 72px 0 40px;
+    border-bottom: 3px solid var(--ink);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  h1 {
+    font-family: var(--mono);
+    font-size: clamp(30px, 5vw, 46px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    padding-top: 18px;
+  }
+
+  .facts div {
+    padding-right: 32px;
+    margin-right: 32px;
+    border-right: 1px solid var(--rule);
+  }
+
+  .facts div:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+
+  .facts dt {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin: 0 0 4px;
+  }
+
+  .facts dd {
+    font-family: var(--mono);
+    font-size: 15px;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- sections ---------- */
+
+  section {
+    padding-top: 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  h2 {
+    font-family: var(--mono);
+    font-size: 25px;
+    letter-spacing: -0.015em;
+    font-weight: 700;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--mono);
+    font-size: 17px;
+    font-weight: 700;
+    margin: 14px 0 0;
+    letter-spacing: -0.01em;
+  }
+
+  h4 {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    margin: 10px 0 0;
+    color: var(--muted);
+  }
+
+  p { margin: 0; max-width: 74ch; }
+
+  ul, ol { margin: 0; padding-left: 22px; max-width: 74ch; display: flex; flex-direction: column; gap: 8px; }
+
+  li::marker { color: var(--faint); }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  strong { font-weight: 650; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: var(--code-bg);
+    color: var(--code-ink);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  pre {
+    margin: 0;
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
+
+  .filepath {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-bottom: none;
+    padding: 7px 12px;
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    flex-wrap: wrap;
+    overflow-x: auto;
+  }
+
+  .filepath b {
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 10px;
+  }
+
+  .fileblock { display: flex; flex-direction: column; }
+  .fileblock pre { border-left-width: 1px; border-top: none; }
+
+  /* ---------- tables ---------- */
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--rule); background: var(--surface); }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14.5px;
+    min-width: 620px;
+  }
+
+  th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    font-weight: 700;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  td code { font-size: 12.5px; }
+
+  /* ---------- status chips ---------- */
+
+  .chip {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 3px 8px;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .chip.keeps { color: var(--keeps); }
+  .chip.works { color: var(--works); }
+  .chip.breaks { color: var(--breaks); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 22px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--rule); }
+  .legend span { font-size: 13.5px; color: var(--muted); display: flex; gap: 9px; align-items: center; }
+
+  /* ---------- callouts ---------- */
+
+  .note {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .note.alarm { border-left-color: var(--breaks); }
+
+  .note h4 { margin: 0; color: var(--ink); font-size: 15px; }
+
+  /* ---------- answer block ---------- */
+
+  .answer {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--accent);
+    padding: 26px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .answer p:first-of-type { font-size: 18px; }
+
+  /* ---------- steps ---------- */
+
+  .step {
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    gap: 0 22px;
+    border-top: 1px solid var(--rule);
+    padding-top: 22px;
+  }
+
+  .step-num {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    padding-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .step-body { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .step-body h3 { margin: 0; font-size: 18px; }
+
+  @media (max-width: 640px) {
+    .step { grid-template-columns: 1fr; gap: 8px; }
+    .facts div { border-right: none; padding-right: 0; margin-right: 24px; }
+    .wrap { padding: 0 18px 80px; }
+    header.masthead { padding-top: 44px; }
+  }
+
+  footer {
+    margin-top: 72px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--faint);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">Upgrade report and plan</p>
+  <h1>Omarchy Quattro on this machine</h1>
+  <p class="standfirst">Quattro replaces eight desktop programs with one, moves Omarchy from a git checkout into Arch packages, and turns every Hyprland config file into Lua. Here is what it does to your files, what it takes away, and the order we do it in on release day.</p>
+  <dl class="facts">
+    <div><dt>Installed now</dt><dd>3.8.4</dd></div>
+    <div><dt>Target</dt><dd>4.0.0</dd></div>
+    <div><dt>Read against</dt><dd>quattro @ 4727bad5</dd></div>
+    <div><dt>Updated</dt><dd>2026-08-12</dd></div>
+  </dl>
+</header>
+
+<section>
+  <h2>Your question first: does upgrading touch your files and apps?</h2>
+
+  <div class="answer">
+    <p><strong>Your documents, code, photos, browser profiles, VM disks and Samba share are not touched at all.</strong> The upgrade never goes near your home directory outside <code>~/.config</code> and a few state folders.</p>
+
+    <p><strong>Your config files are mostly left alone, but not entirely.</strong> The upgrader checks each config against a list of file fingerprints of every config Omarchy has ever shipped. If your file is byte-identical to one of those, it is treated as untouched stock and gets replaced with the new default. If you changed even one character, it is left exactly as it is. Anything it does replace is copied to <code>&lt;name&gt;.omarchy-upgrade-to-quattro.&lt;timestamp&gt;.bak</code> next to the original first.</p>
+
+    <p><strong>Some of your apps get uninstalled.</strong> Roughly sixty packages that Quattro no longer ships are removed, and several are things you use daily: Waybar, Walker, Mako, SwayOSD, hypridle, hyprlock, playerctl, wiremix, pavucontrol, satty, the screen recorders, VLC, LocalSend, Zoom, lazydocker. Most are removed because Quickshell now does that job natively. A few, like VLC and Zoom, are simply no longer default and you can reinstall them in one command.</p>
+
+    <p><strong>Claude Code is safe.</strong> The retired list includes the <code>claude-code</code> Arch package, but yours came from the native installer and lives at <code>~/.local/share/claude</code>, so pacman never sees it.</p>
+
+    <p><strong>The one thing that genuinely breaks is your desktop customisation.</strong> Waybar is gone, so this morning's bar work does not carry over. Your Hyprland config files stop being read once you reboot into Lua. Both need rebuilding, and section five below is that rebuild, written out.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What Quattro actually is</h2>
+
+  <p>Four structural changes, each of which invalidates a different assumption your setup makes.</p>
+
+  <h3>One shell process instead of eight programs</h3>
+  <p>Quickshell now hosts the bar, launcher, menus, notifications, on-screen volume and brightness display, control panels, lock screen and polkit agent in a single long-running process. That single process replaces Waybar, Walker, Mako, SwayOSD, hyprlock, hypridle, swaybg and polkit-gnome. It is configured by one file, <code>~/.config/omarchy/shell.json</code>, and extended by plugins that are ordinary git repositories dropped in <code>~/.config/omarchy/plugins/</code>.</p>
+
+  <h3>Omarchy moves from a git checkout into pacman packages</h3>
+  <p>Today <code>~/.local/share/omarchy</code> is a git clone you update by pulling. After the upgrade it is a symlink to <code>/usr/share/omarchy</code>, and Omarchy arrives as two Arch packages, <code>omarchy</code> and <code>omarchy-settings</code>. A pacman hook now blocks a bare <code>sudo pacman -Syu</code> and tells you to run <code>omarchy update</code> instead. Fresh defaults reach new users through <code>/etc/skel</code>; existing users get them through per-user migration scripts.</p>
+
+  <h3>Hyprland is configured in Lua</h3>
+  <p>Every <code>.conf</code> becomes a <code>.lua</code>: <code>hyprland.lua</code>, <code>monitors.lua</code>, <code>input.lua</code>, <code>bindings.lua</code>, <code>looknfeel.lua</code>, <code>autostart.lua</code>. Instead of sourcing Omarchy's defaults with <code>source =</code> lines, your <code>hyprland.lua</code> calls <code>require("default.hypr.omarchy")</code> and then loads your own modules after it, so Omarchy can improve its defaults without rewriting your files. Settings come through <code>hl.config{...}</code>, keybindings through <code>o.bind(...)</code>, window rules through <code>o.window(...)</code>. Hyprland on this machine already supports it: the stub file is at <code>/usr/share/hypr/stubs/hl.meta.lua</code>.</p>
+
+  <h3>Generated theme state moves out of your config</h3>
+  <p><code>~/.config/omarchy/current</code> becomes <code>~/.local/state/omarchy/current</code>. Your own themes, hooks, plugins and shell layout stay in <code>~/.config/omarchy</code>, which is the folder Omarchy now explicitly expects you to keep in a dotfile manager. That split is good news for your stow setup: the generated churn leaves the repo.</p>
+
+  <p>Alongside those, Quattro adds a unified menu and launcher on <code>SUPER + SPACE</code>, text scaling across shell, GTK and terminals, a bar you can drag to any screen edge, three new apps (a Markdown editor, a video trimmer, a calculator), and swaps the default terminal to foot and the default Wi-Fi stack to NetworkManager.</p>
+</section>
+
+<section>
+  <h2>Exactly what the upgrader does to files</h2>
+
+  <p>The whole upgrade is one self-contained script, <code>omarchy-upgrade-to-quattro</code>, 2444 lines of it. Four rules govern everything it does under <code>~/.config</code>.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Rule</th><th>Applies to</th><th>What happens to your copy</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Refresh if unmodified</strong></td>
+        <td>Files whose contents match a fingerprint of any Omarchy default ever shipped</td>
+        <td>Backed up, then overwritten with the Quattro default. A modified file never matches, so it is skipped.</td>
+      </tr>
+      <tr>
+        <td><strong>Always copy</strong></td>
+        <td>The new entry points: the six <code>hypr/*.lua</code> files, <code>hypr/.luarc.json</code>, <code>omarchy/shell.json</code>, <code>omarchy/extensions/omarchy-menu.jsonc</code></td>
+        <td>Written unconditionally. If something is already there it is backed up first. None of these exist on your machine yet, so nothing of yours is at risk here.</td>
+      </tr>
+      <tr>
+        <td><strong>Fill gaps only</strong></td>
+        <td>Everything else Quattro ships under <code>config/</code></td>
+        <td>Copied only where you have no file at that path. Existing files are never considered.</td>
+      </tr>
+      <tr>
+        <td><strong>Retire</strong></td>
+        <td><code>uwsm/env</code>, <code>uwsm/default</code>, <code>mimeapps.list</code>, <code>fontconfig/fonts.conf</code>, <code>omarchy.ttf</code>, <code>xdg-terminals.list</code>, <code>environment.d/fcitx.conf</code>, the three Omarchy <code>systemd/user</code> units</td>
+        <td>No longer shipped, so no new copy arrives. Your existing file stays where it is, doing nothing. Custom lines in <code>uwsm/env</code> are the exception: they get carried into a new <code>uwsm/env.d/99-omarchy-upgrade-env</code>.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note alarm">
+    <h4>The stow wrinkle</h4>
+    <p>Six of your <code>~/.config</code> entries are directory symlinks into <code>~/dotfiles</code>, including <code>hypr</code> and <code>omarchy</code>. When the upgrader writes <code>~/.config/hypr/monitors.lua</code>, it follows that symlink and the file lands inside your dotfiles repo, as an untracked file in the <code>hypr</code> stow package. That is convenient rather than harmful, but it means the repo will be dirty with roughly ten new files right after the upgrade, and you should not <code>git clean</code> in a panic.</p>
+    <p>The one real hazard is single-file symlinks. The refresh rule deletes the target before copying, and deleting a stow symlink silently unlinks that file from your repo. Only <code>~/.config/omarchy.ttf</code>, <code>~/.config/mimeapps.list</code>, <code>~/.config/starship.toml</code> and <code>~/.config/herdr/config.toml</code> are single-file links, the first two are on the retire list, and the rest are yours and modified, so on paper none of them get touched. Step 2 of the plan verifies that rather than trusting it.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Apps that get uninstalled</h2>
+
+  <p>The retired list is about sixty packages long, but most of it is things you never installed. Intersecting it against your actual package database gives <strong>exactly 31 removals</strong>, and only four of them cost you anything you would notice.</p>
+
+  <div class="legend">
+    <span><span class="chip keeps">Native now</span> Quickshell does this job, nothing lost</span>
+    <span><span class="chip works">Check</span> Worth a look afterwards</span>
+    <span><span class="chip breaks">Config lost</span> The program goes and your customisation with it</span>
+  </div>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Removed from this machine</th><th>Status</th><th>What takes over</th></tr></thead>
+    <tbody>
+      <tr><td><code>waybar</code></td><td><span class="chip breaks">Config lost</span></td><td>The Quickshell bar, configured in <code>shell.json</code>. Your two-bar setup, custom CSS and three exec scripts do not carry over.</td></tr>
+      <tr><td><code>omarchy-walker</code> and all nine <code>elephant-*</code></td><td><span class="chip breaks">Config lost</span></td><td>The built-in launcher on <code>SUPER + SPACE</code>. Your <code>walker</code> and <code>elephant</code> stow packages and their per-theme CSS become dead weight.</td></tr>
+      <tr><td><code>mako</code></td><td><span class="chip breaks">Config lost</span></td><td>Native notifications with a history centre. Your <code>mako</code> stow package and the per-theme <code>mako.ini</code> files go unused.</td></tr>
+      <tr><td><code>swayosd</code></td><td><span class="chip breaks">Config lost</span></td><td>Native on-screen display. Same story for your <code>swayosd</code> package and per-theme CSS.</td></tr>
+      <tr><td><code>hypridle</code>, <code>hyprlock</code></td><td><span class="chip keeps">Native now</span></td><td>Idle and lock live in <code>shell.json</code> under <code>idle.screensaver</code> and <code>idle.lock</code>. This retires your login-time "kill hypridle" hack and the Waybar lock toggle that went with it.</td></tr>
+      <tr><td><code>playerctl</code></td><td><span class="chip keeps">Native now</span></td><td>The <code>omarchy.media</code> widget reads MPRIS directly, so your <code>mpris-follow.sh</code> polling wrapper is no longer needed.</td></tr>
+      <tr><td><code>polkit-gnome</code>, <code>swaybg</code></td><td><span class="chip keeps">Native now</span></td><td>Both are shell plugins now.</td></tr>
+      <tr><td><code>wiremix</code>, <code>pavucontrol</code></td><td><span class="chip keeps">Native now</span></td><td>The audio bar widget has a mixer panel. Note your Waybar audio click action pointed at <code>wiremix</code>.</td></tr>
+      <tr><td><code>satty</code></td><td><span class="chip keeps">Native now</span></td><td>Screenshot annotation is built in, including the region picker your <code>area-to-clipboard</code> script wraps. Test that script early.</td></tr>
+      <tr><td><code>impala</code>, <code>iwd</code>, <code>bluetui</code></td><td><span class="chip keeps">Native now</span></td><td>NetworkManager plus the network and Bluetooth panels.</td></tr>
+      <tr><td><code>dust</code></td><td><span class="chip works">Check</span></td><td>Dropped from defaults. <code>dua-cli</code> arrives in its place, or reinstall <code>dust</code> in one command.</td></tr>
+      <tr><td><code>opencode</code></td><td><span class="chip works">Check</span></td><td>The pacman copy goes. Your <code>~/.local/bin/opencode</code> is an unowned script and stays, but check it still resolves to something real.</td></tr>
+      <tr><td><code>ttf-jetbrains-mono-nerd</code></td><td><span class="chip keeps">Native now</span></td><td>Replaced by a slimmer basic variant. <strong>Your bar font is safe</strong>: CaskaydiaMono ships in <code>ttf-cascadia-mono-nerd</code>, a separate package that is not on the list.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Things I expected to be at risk and are not: <code>vlc</code>, <code>zoom</code>, <code>localsend-bin</code>, <code>wf-recorder</code>, <code>wl-screenrec</code>, <code>blueberry</code> and <code>claude-code</code> are all simply not installed here. <code>lazydocker</code> is installed from the repos, not the AUR <code>-bin</code> that is retired, and it is in Quattro's own base set, so it stays and your <code>lazydocker</code> stow config keeps working.</p>
+
+  <p>Nothing from the AUR is touched: <code>google-chrome</code>, <code>jetbrains-toolbox</code>, <code>slack-desktop-wayland</code>, <code>pgadmin4</code>, <code>proton-pass</code>, <code>supabase</code>, <code>tippecanoe</code>, <code>osmium-tool</code>, <code>logiops</code>, <code>hyprmoncfg</code> and <code>hyprdynamicmonitors-bin</code> all survive.</p>
+
+  <h3>What arrives</h3>
+  <p>Twenty-six new packages come in with the base set. Most are the shell itself (<code>quickshell-git</code>) and the new defaults (<code>foot</code>, <code>herdr</code>, <code>nvim</code>, the <code>oma*</code> apps). Worth knowing about: <code>obs-studio</code>, <code>kdenlive</code>, <code>moonlight-qt</code> and <code>yt-dlp</code> are now defaults, and <code>docker-buildx</code> plus <code>qemu-user-static-binfmt</code> arrive alongside your existing Docker setup rather than replacing anything.</p>
+</section>
+
+<section>
+  <h2>The Veygr stack and the tile pipeline</h2>
+
+  <p>You asked what happens to the geospatial and database packages. The answer is the cleanest in this whole document: <strong>not one of them is touched.</strong> I intersected your full package list against the retired list directly rather than reasoning about it.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Stack</th><th>Packages</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td>Tile and geodata tooling</td><td><code>tippecanoe</code>, <code>osmium-tool</code>, <code>gdal</code>, <code>python-gdal</code>, <code>pdal</code>, <code>proj</code>, <code>geos</code>, <code>libspatialite</code>, <code>qgis</code>, <code>python-owslib</code></td><td><span class="chip keeps">Untouched</span></td></tr>
+      <tr><td>Database</td><td><code>postgresql</code>, <code>postgresql-libs</code>, <code>python-psycopg2</code>, all four <code>pgadmin4</code> packages</td><td><span class="chip keeps">Untouched</span></td></tr>
+      <tr><td>Containers</td><td><code>docker</code>, <code>docker-compose</code>, <code>lazydocker</code>, <code>ufw-docker</code>, <code>supabase</code></td><td><span class="chip keeps">Untouched</span>, and all five are in Quattro's own base set</td></tr>
+      <tr><td>Language runtimes</td><td><code>mise</code>, <code>nodejs</code>, <code>npm</code>, <code>uv</code>, every <code>python-*</code></td><td><span class="chip keeps">Untouched</span></td></tr>
+      <tr><td>Your twelve running Supabase containers and their volumes</td><td>Docker state under <code>/var/lib/docker</code></td><td><span class="chip works">Stop them first</span></td></tr>
+      <tr><td>QGIS plugins and profiles</td><td><code>~/.local/share/QGIS</code>, including the MCP bridge you set up</td><td><span class="chip keeps">Untouched</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Two real cautions, neither of which is about packages being removed.</p>
+
+  <div class="note">
+    <h4>Shut the Supabase stack down cleanly first</h4>
+    <p>Twelve containers are up right now, including Postgres 17 holding your data. The upgrade runs a full system upgrade and ends in a reboot, which means those containers get stopped by systemd on the way down rather than by you. Postgres survives that fine nine times out of ten, and the tenth time you spend an evening on recovery. <code>supabase stop</code> before you start the upgrade costs thirty seconds.</p>
+  </div>
+
+  <div class="note alarm">
+    <h4>omarchy update will bump your mise tool versions</h4>
+    <p>This one outlives the upgrade. Quattro's blessed update path runs <code>mise up</code> as a standard step, every time. So from now on, an <code>omarchy update</code> can move the Node or Python version your project builds against, on a day you were only trying to get a security patch. If Veygr depends on specific versions, pin them in the project's <code>mise.toml</code> before release day so <code>mise up</code> has nothing to move.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Making the portrait monitor work</h2>
+
+  <p>Two separate problems hide behind this question, and only one of them is hard.</p>
+
+  <h3>The layout is a solved problem</h3>
+  <p>Resolution, position, the 270 degree rotation, the scale 1 that keeps it sharp, and the workspace pinning are all handled by <code>monitors.lua</code> in step 6 of the plan. Hyprland's Lua config has direct equivalents for every line of your current <code>monitors.conf</code>: <code>hl.monitor</code> for the monitor and <code>hl.workspace_rule</code> for the pinning. Expect the first boot after the upgrade to show a wrong layout, because a stock <code>monitors.lua</code> lands before yours does, and expect it to be right again five minutes later.</p>
+
+  <h3>The bar size is the hard part</h3>
+  <p>Here is the actual physics of why this screen is awkward. The Lenovo is 1920x1200 across 25 inches, so about 90 pixels per inch, and it runs at scale 1 because anything below 1.0 draws oversized and shrinks to fit, which visibly softens text. The Samsung is 138 PPI at scale 1.25 and the laptop panel is around 140 PPI at scale 1.2. Run the numbers on a 28 pixel bar and it measures 0.31 inches on the portrait screen against 0.25 on the Samsung and 0.24 on the laptop. That 30 percent is exactly what you were fixing this morning.</p>
+
+  <p>In Quattro the bar height comes from a single shell-wide property read by every screen's bar surface, and the layout is a flat list applied to <code>Quickshell.screens</code> with no filter. There is no per-monitor key in <code>shell.json</code> and no theme setting that varies by output. So there are three honest routes.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Route</th><th>What it costs</th><th>What you get</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>One bar, tuned globally</strong><br>Set <code>base-size</code> in <code>~/.config/omarchy/shell.toml</code></td>
+        <td>Nothing. One line, live reload, survives theme changes.</td>
+        <td>A single size that is a compromise. Given the portrait screen sits furthest away in your setup, a bar that reads slightly large on it may be the right answer anyway.</td>
+      </tr>
+      <tr>
+        <td><strong>A per-screen widget</strong><br>Custom QML module reading its own <code>Screen.name</code></td>
+        <td>An afternoon, and one small QML file per widget you want to differ.</td>
+        <td>Control over which widgets appear on which screen, but <em>not</em> over the bar's height or the shared font size. Half a fix.</td>
+      </tr>
+      <tr>
+        <td><strong>Fork the bar</strong><br><code>omarchy plugin clone omarchy.bar</code></td>
+        <td>You own about 4200 lines of QML, and re-merging upstream changes is manual: the clone is not tracked against upstream the way an added plugin is.</td>
+        <td>Exactly this morning's result. The clone keeps the built-in identity, so every keybinding and CLI command keeps working.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p><strong>My recommendation is route one on release day and a decision a week later.</strong> Quattro's default bar is 26 pixels against Waybar's 30, so the portrait screen may already look better than it does today without you doing anything. Live with one bar for a week. If it still bothers you, forking is a real option and I will do it with you, but taking on a QML fork in the first week of a release whose code is still moving daily is how you end up merging conflicts instead of working.</p>
+
+  <p>There is a fourth route worth naming and dismissing: raising the Samsung and laptop scales so the Lenovo is relatively smaller. It works arithmetically and makes everything on your two good screens physically bigger, which is not a trade you want.</p>
+
+  <p>One useful thing Quattro adds here: <code>omarchy display text size &lt;px&gt;</code> moves the shell font, the GTK text scaling factor and your terminal font point size together, in one command, live. It is global rather than per-monitor, but it makes finding the compromise a matter of trying numbers rather than editing three configs.</p>
+</section>
+
+<section>
+  <h2>Default apps: three change, and we change them back</h2>
+
+  <p>You said your default apps should not change. Three of them do, and one of those quietly rewires a lot more than it looks like.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Default</th><th>Today</th><th>After the upgrade</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Web browser</td>
+        <td>Vivaldi</td>
+        <td><strong>Chromium</strong></td>
+        <td>The upgrader runs <code>xdg-settings set default-web-browser chromium.desktop</code> unconditionally, with no check for what you already had.</td>
+      </tr>
+      <tr>
+        <td>Terminal</td>
+        <td>Ghostty</td>
+        <td><strong>foot</strong></td>
+        <td>Your <code>~/.config/xdg-terminals.list</code> is byte-identical to a stock Omarchy file, so the upgrader recognises it as untouched and deletes it. The new system-wide list names foot.</td>
+      </tr>
+      <tr>
+        <td>mailto: links</td>
+        <td>Unset</td>
+        <td><strong>HEY</strong></td>
+        <td>Same block, also unconditional.</td>
+      </tr>
+      <tr>
+        <td>Text files, images, folders</td>
+        <td>Zed, imv, Nautilus</td>
+        <td><span class="chip keeps">Unchanged</span></td>
+        <td>Your <code>mimeapps.list</code> does not match any Omarchy default, so the upgrader recognises it as yours and puts it back after backing it up.</td>
+      </tr>
+      <tr>
+        <td>Editor behind <code>SUPER + SHIFT + N</code></td>
+        <td>Zed</td>
+        <td><span class="chip works">Rebind</span></td>
+        <td>Quattro binds that key to its own editor, now nvim. Four lines of Lua in step 6 take it back.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note alarm">
+    <h4>The browser change is bigger than one default</h4>
+    <p>Both <code>omarchy-launch-browser</code> and <code>omarchy-launch-webapp</code> read the default browser at launch time, and the webapp launcher explicitly supports Vivaldi. So today every one of your web app bindings, ChatGPT, HEY mail and calendar, YouTube, X, WhatsApp, Google Photos, Discord, opens as a Vivaldi app window. After the upgrade they all open as Chromium windows instead, with different window classes, which means the three "launch or focus" bindings stop finding your existing windows and your saved web app entries in <code>~/.local/share/applications</code> go stale.</p>
+    <p>All of it is undone by one command, run once after the upgrade: <code>xdg-settings set default-web-browser vivaldi-stable.desktop</code>.</p>
+  </div>
+
+  <div class="note alarm">
+    <h4>That command is also what breaks your stow symlink</h4>
+    <p>This is the concrete instance of the hazard flagged earlier. <code>xdg-settings</code> writes by creating a temporary file and moving it into place. Moving a file onto a symlink replaces the symlink. So the moment the upgrader sets Chromium as your browser, <code>~/.config/mimeapps.list</code> stops being a link into <code>~/dotfiles/xdg/</code> and becomes an ordinary file, and every mime default you set from then on is invisible to git.</p>
+    <p>The repair is two commands and belongs in the first-boot pass, before you forget which file is which: copy the live file over the repo copy, then re-link it.</p>
+<pre><code>cp --remove-destination ~/.config/mimeapps.list ~/dotfiles/xdg/.config/mimeapps.list
+rm ~/.config/mimeapps.list
+cd ~/dotfiles &amp;&amp; stow xdg</code></pre>
+  </div>
+
+  <p>Everything else you launch is untouched. <strong>Zed</strong> is the Arch <code>zed</code> package and is not on the retired list. <strong>Rider, DataGrip and Android Studio</strong> live under <code>~/.local/share/JetBrains/Toolbox/apps/</code> and are managed by <code>jetbrains-toolbox</code> from the AUR, which the upgrade does not touch. Same for Chrome, Slack, pgAdmin, QGIS and Proton Pass.</p>
+</section>
+
+<section>
+  <h2>The VM, the Samba share, and the firewall</h2>
+
+  <p>You asked specifically about these. Short version: the storage and the VM are untouched, and the only thing worth guarding is a firewall rule.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Piece</th><th>Effect</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>The <code>win11</code> guest, its disk image and its NVRAM</td><td><span class="chip keeps">Untouched</span></td><td>Nothing in the upgrade goes near <code>/var/lib/libvirt</code> or guest XML.</td></tr>
+      <tr><td><code>libvirt</code>, <code>qemu-*</code>, <code>virt-manager</code>, <code>swtpm</code>, <code>edk2-ovmf</code>, <code>bridge-utils</code></td><td><span class="chip keeps">Untouched</span></td><td>None appear in the retired list, and Quattro's base package set does not conflict with them.</td></tr>
+      <tr><td>Your <code>mpd-share</code> Samba export and <code>~/mpd-share</code></td><td><span class="chip keeps">Untouched</span></td><td><code>/etc/samba/smb.conf</code> is outside everything the upgrade writes, and the <code>samba</code> package is not retired.</td></tr>
+      <tr><td>The <code>ufw</code> rule that lets the VM reach Samba on <code>virbr0</code></td><td><span class="chip works">Verify</span></td><td>The upgrade reapplies Omarchy's firewall defaults: deny all incoming, allow outgoing, plus LocalSend and Docker DNS. It only adds rules, it never flushes, so your existing allow rule should survive. "Should" is why we snapshot the rules first.</td></tr>
+      <tr><td>Orphan cleanup during later <code>omarchy update</code> runs</td><td><span class="chip works">Verify</span></td><td>The upgrade marks Quattro's own package set as explicitly installed. Anything you installed as a dependency of something now removed could later be offered for orphan removal. It always prompts, never removes silently, but read the list.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>One genuinely useful side effect: <code>omarchy update</code> takes a Snapper snapshot before every run, and the Quattro upgrader takes one of its own before it changes anything. You are on btrfs with snapper and limine already installed, so rollback is a boot menu entry rather than a reinstall.</p>
+</section>
+
+<section>
+  <h2>Where it will actually hurt</h2>
+
+  <p>Five specific things on this machine, in the order they will annoy you.</p>
+
+  <h3>Your two-bar setup cannot be reproduced</h3>
+  <p>This is the real loss. Quattro's bar is built once per screen from one layout, with no way to give one monitor a different set of widgets or a different size. The relevant code is a flat <code>Variants { model: Quickshell.screens }</code> with no filter, and the height comes from a single shell-wide property. So the compact bar you built for the portrait Lenovo this morning has no equivalent in stock Quattro. The section on the portrait monitor below lays out the three ways round it.</p>
+
+  <h3>Your Claude traffic light needs two fixes</h3>
+  <p>Custom bar modules survive in a good way: you can declare one inline in <code>shell.json</code> with <code>type: "command"</code>, and it accepts Waybar-style JSON on stdout, so <code>claude-status</code> keeps its output contract. Two things do change.</p>
+  <p>First, the coloured dots. Your script emits Pango markup (<code>&lt;span color='#...'&gt;</code>), and the bar renders text through a Qt <code>Text</code> element, which reads HTML rather than Pango. Qt will strip the colour and leave you three identical dots. The fix is one substitution in the script: <code>&lt;font color="#..."&gt;</code>, which Qt does understand.</p>
+  <p>Second, the update trigger. Today your Claude Code hooks fire <code>SIGRTMIN+10</code> at Waybar for an instant repaint, with the 2 second interval as a safety net. Command modules have no signal input, only a timer, so the hook becomes decoration and the interval becomes the actual refresh rate. At 2 seconds you will not notice. Only <code>class: "active"</code> is honoured for styling, which is exactly what your idle-lock module already emits.</p>
+
+  <h3>Your Retro 82 copy will overwrite the one Quattro ships</h3>
+  <p>Retro 82 is not your theme, it is an Omarchy theme, and it has <em>already been converted</em> on the Quattro branch: a rewritten <code>colors.toml</code> in the new semantic names, and <code>hyprland.conf</code> replaced by <code>hyprland.lua</code>. You get that for free. The problem is that you also keep a personal copy of it at <code>~/.config/omarchy/themes/retro-82/</code>, 35 files tracked in your dotfiles.</p>
+  <p>Switching themes in Quattro copies the official theme into place first, then copies your folder over the top, file by file. Your folder contains a <code>colors.toml</code> in today's format, so yours wins and the converted one is discarded.</p>
+  <p>Nothing breaks. There is a thorough compatibility path that maps the old ANSI names onto the new ones, mixes the bright variants out of the base colours, and works out light or dark from the background's luminance. What you lose is the hand-tuning. The clearest example: panel and surface backgrounds fall back to your <code>color0</code>, a grey-purple <code>#303442</code>, where the converted theme deliberately picks the navy <code>#0a2540</code> that matches the rest of Retro 82.</p>
+  <p>Only two files in that folder are actually yours: <code>retro-82.icls</code> for JetBrains and <code>retro-82.zed.json</code> for Zed. The rest is a stale duplicate of the stock theme plus generated per-app files that Quattro rebuilds from templates anyway.</p>
+  <p>Your three genuinely custom themes are <b>Event Horizon</b>, <b>Carbon</b> and <b>Rose Pine Dark</b>. None has an upstream equivalent, so nobody converts those for you, and they will land on the compatibility path described above. That is fine until you actually switch to one. Note that no Quattro theme ships a <code>shell.toml</code> at all, so surface roles and sizing come from the shell's own defaults unless you override them yourself. Your per-theme <code>waybar.css</code>, <code>walker.css</code>, <code>mako.ini</code>, <code>swayosd.css</code> and <code>hyprlock.conf</code> files become dead files.</p>
+
+  <h3>hyprdynamicmonitors writes to a file nobody reads</h3>
+  <p>It is configured to generate <code>~/.config/hypr/monitors.conf</code> from Go templates when your monitor set changes. After the upgrade Hyprland reads <code>monitors.lua</code>, so the profile switching would silently stop working. It is currently disabled and inactive, so this costs you nothing today. If you ever want it back, the templates are yours to edit and only need to emit <code>hl.monitor{...}</code> calls instead of <code>monitor=</code> lines.</p>
+
+  <h3>Some of your keybindings now collide with defaults</h3>
+  <p>Quattro puts the merged menu and launcher on <code>SUPER + SPACE</code> and gives herdr, the tmux replacement it now ships, <code>SUPER + CTRL + RETURN</code>. You already have a herdr config in your dotfiles, so that one is a nice landing. Your <code>SUPER + ALT + RETURN</code> tmux binding still works. Anything of yours that clashes needs <code>hl.unbind</code> before rebinding, same principle as today.</p>
+</section>
+
+<section>
+  <h2>The plan</h2>
+
+  <p>Nine steps across three moments: what we do this week, what we do on release day, and what we do after the first successful boot. Every file is given with its full path and marked create or edit.</p>
+
+  <div class="note">
+    <h4>Scope decision, 11 August</h4>
+    <p>Steps 1 to 6 are the committed path: get there safely, keep your keybindings, keep your default apps. The bar layout in step 7, the theme work in step 8 and the monitor sizing question are deliberately left until after the first boot, when we can see what Quattro actually does on these three screens rather than guessing. The monitors part of step 6 still gets written on the day, because without it your screens come up in the wrong arrangement.</p>
+  </div>
+
+  <h3>Before release day</h3>
+
+  <div class="step">
+    <div class="step-num">01</div>
+    <div class="step-body">
+      <h3>Commit everything and tag the pre-Quattro state</h3>
+      <p>The dotfiles repo currently has uncommitted changes in <code>hypr/hyprland.conf</code>, <code>hypr/monitors.conf</code> and this morning's Waybar work. Get all of it committed so the Quattro port is a clean, reviewable diff on top of a known-good 3.8.4 setup, and tag it so you can always read the old config.</p>
+<pre><code>cd ~/dotfiles
+git add -A
+git commit
+git tag omarchy-3.8.4-final
+git push --follow-tags</code></pre>
+      <p>Push needs your SSH key unlocked first: run <code>ssh-add</code> in a real terminal, since the <code>!</code> prefix cannot take a passphrase.</p>
+      <p>While you are in the repos: pin the tool versions in any Veygr <code>mise.toml</code> that currently floats. From Quattro onward, <code>omarchy update</code> runs <code>mise up</code> as a routine step, so an unpinned Node or Python version can move under a project on a day you were only patching the system.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">02</div>
+    <div class="step-body">
+      <h3>Snapshot the things the upgrader will not back up</h3>
+      <p>Config files get their own <code>.bak</code>. Firewall rules, the package list and the Samba config do not. This writes them to one folder you can diff against afterwards.</p>
+      <div class="fileblock">
+        <div class="filepath"><b>Create</b> /home/emmanuel/dotfiles/omarchy-extras/pre-quattro-snapshot.sh</div>
+<pre><code>#!/bin/bash
+set -euo pipefail
+
+out="$HOME/pre-quattro-$(date +%Y%m%d)"
+mkdir -p "$out"
+
+pacman -Qqe            &gt;"$out/pkgs-explicit.txt"
+pacman -Qqm            &gt;"$out/pkgs-aur.txt"
+pacman -Qq             &gt;"$out/pkgs-all.txt"
+systemctl --user list-unit-files --state=enabled &gt;"$out/user-units.txt"
+systemctl list-unit-files --state=enabled        &gt;"$out/system-units.txt"
+
+sudo ufw status verbose &gt;"$out/ufw.txt"
+sudo cp -a /etc/ufw     "$out/ufw-etc"
+sudo cp -a /etc/samba   "$out/samba"
+sudo chown -R "$USER" "$out/ufw-etc" "$out/samba"
+
+virsh -c qemu:///system dumpxml win11 &gt;"$out/win11.xml"
+
+find "$HOME/.config" -maxdepth 2 -type l -lname '*dotfiles*' \
+  -printf '%p -&gt; %l\n' | sort &gt;"$out/stow-links.txt"
+
+echo "Snapshot written to $out"</code></pre>
+      </div>
+      <p>Keep the folder outside the dotfiles repo so it never gets stowed. After the upgrade, <code>diff</code> the ufw and stow-links files: those two catch the two hazards, a lost firewall rule and a broken stow symlink.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">03</div>
+    <div class="step-body">
+      <h3>Confirm a bootable snapshot exists</h3>
+      <p>The upgrader takes a Snapper snapshot itself, but confirm the boot menu can actually reach one before you need it. You are on btrfs with limine and limine-snapper-sync, so this should already be true.</p>
+<pre><code>sudo snapper -c root list | tail -5
+grep -c 'snapshot' /boot/limine.conf</code></pre>
+      <p>If the second command returns 0, stop and fix that before upgrading. A rollback you cannot boot into is not a rollback.</p>
+    </div>
+  </div>
+
+  <h3>Release day</h3>
+
+  <div class="step">
+    <div class="step-num">04</div>
+    <div class="step-body">
+      <h3>Run the upgrade</h3>
+      <p>Quattro ships its own upgrader, <code>omarchy-upgrade-to-quattro</code>, which is deliberately self-contained so it can be curled onto a 3.x machine. The dev channel URL published with the beta is <code>https://omarchy.org/upgrade-to-quattro-dev</code>; on release day the stable equivalent will be announced, and we use that rather than the dev one.</p>
+<pre><code># confirm the URL from the release announcement first, then:
+curl -fsSL https://omarchy.org/upgrade-to-quattro | bash</code></pre>
+      <p>Do not pass <code>--yes</code>. Watch it. The steps that matter are the package removal transaction (read the list before confirming) and the theme refresh at the end. Expect it to want a reboot; take it.</p>
+      <p>Three things to do before starting, in this order:</p>
+<pre><code>supabase stop                          # twelve containers, one of them Postgres
+virsh -c qemu:///system shutdown win11 # let Windows close its own files
+df -h /                                # the script needs 10 GiB and stops if short</code></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">05</div>
+    <div class="step-body">
+      <h3>First boot triage</h3>
+      <p>Straight after the reboot, before touching any config, answer four questions in order. Each has a fallback that does not involve rolling back.</p>
+      <ul>
+        <li><strong>Do all three monitors come up?</strong> Quattro copied a stock <code>monitors.lua</code> in, and your <code>monitors.conf</code> is no longer read, so expect the wrong layout on the first boot. That is step 6.</li>
+        <li><strong>Is the bar there?</strong> If not, <code>omarchy-shell-ipc</code> plus <code>journalctl --user -u omarchy-shell -b</code> tells you why.</li>
+        <li><strong>Does the VM still start?</strong> <code>virsh -c qemu:///system start win11</code>, then check the Samba mount from inside the guest.</li>
+        <li><strong>Did the firewall keep your rule?</strong> <code>sudo ufw status verbose</code> and diff against the snapshot from step 2.</li>
+      </ul>
+      <p>Also run <code>ls ~/dotfiles/hypr/.config/hypr/</code> and <code>ls ~/dotfiles/omarchy/.config/omarchy/</code>. The new Lua files and <code>shell.json</code> should be sitting there as untracked files, having arrived through your stow symlinks. If they landed in <code>~/.config</code> as real files instead, a symlink got replaced and we fix that before going further.</p>
+
+      <h4>Then put your defaults back, before anything else</h4>
+      <p>These four commands undo the three default-app changes and repair the symlink the first of them breaks. Do this before you start porting config, so you are testing bindings against the browser and terminal you actually use.</p>
+<pre><code># Browser: the upgrade forced Chromium. This also fixes every web app binding.
+xdg-settings set default-web-browser vivaldi-stable.desktop
+
+# Terminal: the upgrade deleted your preference file, so foot took over.
+printf '%s\n%s\n%s\n' \
+  '# Terminal emulator preference order for xdg-terminal-exec' \
+  '# The first found and valid terminal will be used' \
+  'com.mitchellh.ghostty.desktop' &gt; ~/.config/xdg-terminals.list
+
+# Repair the mimeapps.list symlink that xdg-settings replaced with a real file.
+cp --remove-destination ~/.config/mimeapps.list ~/dotfiles/xdg/.config/mimeapps.list
+rm ~/.config/mimeapps.list &amp;&amp; cd ~/dotfiles &amp;&amp; stow xdg</code></pre>
+      <p>Then confirm: <code>xdg-settings get default-web-browser</code> says vivaldi, <code>SUPER + RETURN</code> opens Ghostty, and <code>ls -l ~/.config/mimeapps.list</code> shows an arrow pointing into <code>dotfiles</code>. Worth adding <code>xdg-terminals.list</code> to the <code>xdg</code> stow package in step 9 so the terminal preference is version controlled next time.</p>
+    </div>
+  </div>
+
+  <h3>Porting the configuration</h3>
+
+  <div class="step">
+    <div class="step-num">06</div>
+    <div class="step-body">
+      <h3>Rewrite the Hyprland config in Lua</h3>
+      <p>Six files. All are edits, because the upgrader has already put stock versions in place through your stow symlink. The old <code>.conf</code> files stay on disk until step 9, so you can read them side by side.</p>
+
+      <div class="fileblock">
+        <div class="filepath"><b>Edit</b> /home/emmanuel/dotfiles/hypr/.config/hypr/monitors.lua</div>
+<pre><code>-- Left to right: Lenovo T25d-10 in portrait, Samsung 32", laptop panel.
+-- Vertical offsets centre the shorter screens against the portrait one.
+
+local lenovo_portrait = "desc:Lenovo Group Limited LEN T25d-10 VKDX1960"
+local samsung = "desc:Samsung Electric Company U32R59x H1AK500000"
+local laptop = "desc:Lenovo Group Limited MNE007JA1-3"
+
+-- Keep the portrait Lenovo at scale 1: below 1.0 the desktop is drawn
+-- oversized and shrunk to fit, which softens every glyph on it.
+hl.monitor({ output = lenovo_portrait, mode = "1920x1200@59.95", position = "0x0", scale = 1, transform = 3 })
+hl.monitor({ output = samsung, mode = "3840x2160@60", position = "1200x96", scale = 1.25 })
+hl.monitor({ output = laptop, mode = "1920x1200@60", position = "4272x460", scale = 1.2 })
+
+local pinned = {
+  [lenovo_portrait] = { 1, 2, 3 },
+  [samsung] = { 4, 5, 6 },
+  [laptop] = { 7, 8, 9 },
+}
+
+for output, workspaces in pairs(pinned) do
+  for _, workspace in ipairs(workspaces) do
+    hl.workspace_rule({ workspace = tostring(workspace), monitor = output, persistent = true })
+  end
+end</code></pre>
+      </div>
+      <p>Two notes. <code>hl.workspace_rule</code> is the Lua equivalent of the old <code>workspace=</code> lines, and its <code>persistent</code> field replaces what you were doing with Waybar's <code>persistent-workspaces</code>, so the numbers stay visible on the bar even when the workspace is empty. Also delete the stock <code>hl.env("GDK_SCALE", ...)</code> line the template ships with: it hardcodes 2, which is wrong for all three of your screens.</p>
+
+      <div class="fileblock">
+        <div class="filepath"><b>Edit</b> /home/emmanuel/dotfiles/hypr/.config/hypr/input.lua</div>
+<pre><code>hl.config({
+  input = {
+    kb_layout = "se",
+    kb_options = "",
+    repeat_rate = 40,
+    repeat_delay = 600,
+    numlock_by_default = true,
+
+    touchpad = {
+      scroll_factor = 0.4,
+    },
+  },
+})
+
+o.window("(Alacritty|kitty|foot)", { scroll_touchpad = 1.5 })
+o.window("com.mitchellh.ghostty", { scroll_touchpad = 0.2 })</code></pre>
+      </div>
+      <p>Setting <code>kb_options</code> to an empty string is doing real work here, same as today: Quattro's default is <code>compose:caps,shift:both_capslock_cancel</code>, and your current config deliberately clears it so Caps Lock is Caps Lock.</p>
+
+      <div class="fileblock">
+        <div class="filepath"><b>Edit</b> /home/emmanuel/dotfiles/hypr/.config/hypr/looknfeel.lua</div>
+<pre><code>hl.config({
+  general = {
+    gaps_in = 2,
+    gaps_out = 6,
+    border_size = 2,
+  },
+
+  decoration = {
+    rounding = 2,
+    active_opacity = 1.0,
+    inactive_opacity = 1.0,
+    dim_inactive = false,
+    blur = { enabled = false },
+  },
+})
+
+-- Omarchy dims some windows by tag; override so nothing multiplies below 1.0.
+for _, tag in ipairs({ "default-opacity", "terminal", "firefox-based-browser", "chromium-based-browser" }) do
+  o.window({ tag = tag }, { opacity = "1 1 override override" })
+end</code></pre>
+      </div>
+      <p>The opacity loop is the part most likely to need adjusting against the real 4.0 source: the tag names and the override syntax are both things Quattro may have restated. Check <code>/usr/share/omarchy/default/hypr/apps.lua</code> on the day before trusting it.</p>
+
+      <p>I diffed all 26 of your bindings against Quattro's defaults line by line. <strong>Twenty of them are now defaults that do exactly what yours do</strong>, including every web app: ChatGPT, Grok, HEY mail and calendar, YouTube, X and X Post, WhatsApp, Google Messages, Google Photos, plus Spotify, Signal, Obsidian, 1Password, the terminal, the file manager and both browser bindings. Those lines get deleted, not ported. Six need writing, and four of those exist only to win a fight with a new default.</p>
+
+      <div class="fileblock">
+        <div class="filepath"><b>Edit</b> /home/emmanuel/dotfiles/hypr/.config/hypr/bindings.lua</div>
+<pre><code>-- Only what differs from Omarchy's defaults. Everything else, including every
+-- web app binding, is already bound identically and is intentionally absent.
+
+-- Default is the Omarchy editor, now nvim.
+hl.unbind("SUPER + SHIFT + N")
+o.bind("SUPER + SHIFT + N", "Editor", { launch = "zeditor" })
+
+-- Default is Omawrite.
+hl.unbind("SUPER + SHIFT + W")
+o.bind("SUPER + SHIFT + W", "Typora", { launch = "typora --enable-wayland-ime" })
+
+-- Default is lazydocker.
+hl.unbind("SUPER + SHIFT + D")
+o.bind("SUPER + SHIFT + D", "Discord", { webapp = "https://discord.com/channels/@me" })
+
+-- Default is the Google Maps web app.
+hl.unbind("SUPER + SHIFT + S")
+o.bind("SUPER + SHIFT + S", "Screenshot region to clipboard", os.getenv("HOME") .. "/.local/bin/area-to-clipboard")
+
+-- Default opens tmux without inheriting the terminal's directory.
+hl.unbind("SUPER + ALT + RETURN")
+o.bind("SUPER + ALT + RETURN", "Tmux", 'xdg-terminal-exec --dir="$(omarchy-cmd-terminal-cwd)" tmux new')
+
+-- No default equivalent.
+o.bind("SUPER + SHIFT + J", "Jotter", { focus = "^dev.jotter.Jotter$", launch = os.getenv("HOME") .. "/.local/bin/jotter" })</code></pre>
+      </div>
+
+      <p>Two new defaults arrive on keys you had free: <code>SUPER + CTRL + RETURN</code> opens herdr, the tmux replacement Quattro ships, and <code>SUPER + SHIFT + SPACE</code> toggles the bar. Your herdr config is already in the repo, so that one lands well.</p>
+      <p>Verify rather than trust the diff: run <code>omarchy menu keybindings --print</code> on the first boot and compare. If a default already passes the working directory to tmux, delete the last <code>unbind</code> and <code>bind</code> pair rather than keeping a line that only restates it.</p>
+
+      <div class="fileblock">
+        <div class="filepath"><b>Edit</b> /home/emmanuel/dotfiles/hypr/.config/hypr/autostart.lua</div>
+<pre><code>-- Position JetBrains Toolbox under the bar on whichever monitor it opens on.
+o.launch_on_start(os.getenv("HOME") .. "/.local/bin/jetbrains-toolbox-positioner")</code></pre>
+      </div>
+      <p>The hypridle kill is deliberately not carried over. Idle is now the shell's job and is configured in <code>shell.json</code> in step 7. The positioner script itself measures the bar height, so check it still finds the right number once the Quickshell bar is up.</p>
+
+      <div class="fileblock">
+        <div class="filepath"><b>Edit</b> /home/emmanuel/dotfiles/hypr/.config/hypr/hyprland.lua</div>
+<pre><code>-- (keep the stock header, the bootstrap dofile, and the require block as shipped)
+
+-- JetBrains Toolbox: float, open on a hidden workspace so the positioner can
+-- size and place it off-screen, then move it onto the active workspace.
+o.window("^(jetbrains-toolbox)$", { float = true })
+o.window("^(jetbrains-toolbox)$", { workspace = "special:toolbox_stage silent" })
+
+hl.env("SSH_AUTH_SOCK", (os.getenv("XDG_RUNTIME_DIR") or "") .. "/ssh-agent.socket")</code></pre>
+      </div>
+      <p>Append only. Leave the shipped <code>require</code> block untouched, since that is the seam Omarchy uses to keep improving its defaults without touching your file.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">07</div>
+    <div class="step-body">
+      <h3>Rebuild the bar in shell.json</h3>
+      <p>Same module order as today, reading left to right, with native widgets wherever one exists and inline command modules for the two things only you have. One bar for all three screens, per the constraint above.</p>
+
+      <div class="fileblock">
+        <div class="filepath"><b>Edit</b> /home/emmanuel/dotfiles/omarchy/.config/omarchy/shell.json</div>
+<pre><code>{
+  "version": 1,
+  "idle": {
+    "screensaver": 0,
+    "lock": 0
+  },
+  "bar": {
+    "position": "top",
+    "transparent": false,
+    "centerAnchor": "omarchy.clock",
+    "layout": {
+      "left": [
+        { "id": "omarchy.network" },
+        { "id": "omarchy.monitor" },
+        { "id": "omarchy.power" },
+        { "id": "omarchy.bluetooth" },
+        { "id": "omarchy.audio" },
+        {
+          "id": "claude",
+          "type": "command",
+          "exec": "$HOME/.local/bin/claude-status",
+          "interval": 2,
+          "onClick": "$HOME/.local/bin/claude-status-pick",
+          "fontSize": 12
+        }
+      ],
+      "center": [
+        { "id": "omarchy.menu" },
+        { "id": "omarchy.workspaces" },
+        {
+          "id": "omarchy.clock",
+          "format": "HH:mm",
+          "formatAlt": "ddd d MMM yyyy"
+        },
+        { "id": "omarchy.system-update" },
+        { "id": "omarchy.indicators" },
+        { "id": "omarchy.media" }
+      ],
+      "right": [
+        { "id": "omarchy.tray" }
+      ]
+    }
+  },
+  "plugins": []
+}</code></pre>
+      </div>
+
+      <h4>What moved where</h4>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Waybar module today</th><th>Quattro</th></tr></thead>
+        <tbody>
+          <tr><td><code>network</code></td><td><code>omarchy.network</code></td></tr>
+          <tr><td><code>memory</code>, <code>cpu</code>, <code>temperature</code></td><td><code>omarchy.monitor</code>, one widget with a panel behind it</td></tr>
+          <tr><td><code>battery</code>, <code>power-profiles-daemon</code></td><td><code>omarchy.power</code></td></tr>
+          <tr><td><code>bluetooth</code>, <code>pulseaudio</code></td><td><code>omarchy.bluetooth</code>, <code>omarchy.audio</code></td></tr>
+          <tr><td><code>custom/idle-lock</code></td><td>The stay-awake indicator inside <code>omarchy.indicators</code>, plus the two idle timeouts above</td></tr>
+          <tr><td><code>custom/claude</code></td><td>Inline command module. Optionally add <code>omarchy.agents</code> too, which is a native panel for Claude and Codex usage and rate limits.</td></tr>
+          <tr><td><code>custom/mpris</code></td><td><code>omarchy.media</code>, native MPRIS with playback controls</td></tr>
+          <tr><td><code>custom/omarchy</code></td><td><code>omarchy.menu</code></td></tr>
+          <tr><td><code>hyprland/workspaces</code></td><td><code>omarchy.workspaces</code>, persistence now set in <code>monitors.lua</code></td></tr>
+          <tr><td><code>clock</code></td><td><code>omarchy.clock</code></td></tr>
+          <tr><td><code>custom/update</code></td><td><code>omarchy.system-update</code></td></tr>
+          <tr><td><code>custom/screenrecording-indicator</code></td><td>The recording indicator inside <code>omarchy.indicators</code></td></tr>
+          <tr><td><code>group/tray-expander</code></td><td><code>omarchy.tray</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p>Setting both idle values to <code>0</code> preserves what your hypridle kill was doing: nothing locks or blanks on idle. If you would rather have a screensaver without a lock, set <code>screensaver</code> to a number of seconds and leave <code>lock</code> at 0.</p>
+
+      <h4>The Pango fix for the traffic light</h4>
+      <div class="fileblock">
+        <div class="filepath"><b>Edit</b> /home/emmanuel/.local/bin/claude-status</div>
+<pre><code># Qt renders the bar label as HTML, not Pango, so span colours are dropped.
+# Emit font tags instead: &lt;span color='#RRGGBB'&gt;  becomes  &lt;font color="#RRGGBB"&gt;
+sed -i -e "s|&lt;span color='\(#[0-9a-fA-F]\{6\}\)'&gt;|&lt;font color=\"\1\"&gt;|g" \
+       -e 's|&lt;/span&gt;|&lt;/font&gt;|g' ~/.local/bin/claude-status</code></pre>
+      </div>
+      <p>That is the mechanical shape of the change, not a command to run blind. On the day we read the script, apply it properly, and confirm the dots come out coloured before moving on. If Qt turns out to strip the tag entirely, the fallback is a small QML module at <code>~/.config/omarchy/bar/modules/claude.qml</code>, which gets full control of colour and can also be driven by a file watcher rather than a timer, restoring the instant hook-driven update.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">08</div>
+    <div class="step-body">
+      <h3>Get out of the way of Quattro's Retro 82</h3>
+      <p>This is the reverse of what you would expect. There are no colours to author, because Basecamp already converted Retro 82 on the Quattro branch. Your job is to stop your own stale copy from overwriting theirs, and to keep the only two files in it that are genuinely yours.</p>
+
+      <div class="fileblock">
+        <div class="filepath"><b>Edit</b> /home/emmanuel/dotfiles/omarchy/.config/omarchy/themes/retro-82/ (strip to two files)</div>
+<pre><code>cd ~/dotfiles/omarchy/.config/omarchy/themes/retro-82
+
+# The JetBrains and Zed themes are yours, everything else is a stale
+# duplicate of the stock theme or a regenerated per-app file.
+mkdir -p /tmp/retro82-keep
+mv retro-82.icls retro-82.zed.json /tmp/retro82-keep/
+
+cd .. && rm -rf retro-82 && mkdir retro-82
+mv /tmp/retro82-keep/* retro-82/
+
+omarchy theme set "Retro 82"</code></pre>
+      </div>
+
+      <p>After that, the official theme supplies the colours and your two editor files still overlay on top, which is exactly what the overlay order is for. Check the result on a panel background: navy means the converted theme came through, grey-purple means a <code>colors.toml</code> is still shadowing it.</p>
+
+      <p>Sizing is the one thing worth adding yourself, and it does <em>not</em> belong in the theme. No Quattro theme ships a <code>shell.toml</code>, and putting size in one means it resets every time you switch themes. Size is a property of your eyes and your desk. It belongs in the user-level override, which the shell watches and reloads live:</p>
+
+      <div class="fileblock">
+        <div class="filepath"><b>Create</b> /home/emmanuel/dotfiles/omarchy/.config/omarchy/shell.toml</div>
+<pre><code>[font]
+base-size = 13</code></pre>
+      </div>
+      <p>Or skip the file and run <code>omarchy display text size 13</code>, which writes exactly that and moves your GTK text scaling and terminal font point size in lockstep with it. That command is the fastest way to find the number that works across all three screens: try one, look at the portrait Lenovo, try another.</p>
+
+      <h3 style="margin-top:1.6em">Event Horizon needs one line, and it is not the one you would guess</h3>
+      <p>Event Horizon is not yours either, it comes from <code>oldjobobo/omarchy-event-horizon-theme</code>, and its author has already done the Hyprland half: the repo ships a <code>hyprland.lua</code> next to the old <code>hyprland.conf</code>, so borders, blur, shadows and all those custom animation curves carry over untouched.</p>
+      <p>The colours are not converted, upstream or locally, and there is one specific thing wrong with letting the compatibility path handle them. Event Horizon sets <code>color0</code> to <code>#1c1e26</code>, which is <em>exactly</em> its background. Panel and surface backgrounds are derived from <code>color0</code> when nothing better is defined, so every panel would be painted the same colour as the desktop behind it and simply disappear. Retro 82 gets away with this because its <code>color0</code> at least differs from its background. Event Horizon does not.</p>
+
+      <div class="fileblock">
+        <div class="filepath"><b>Edit</b> /home/emmanuel/dotfiles/omarchy/.config/omarchy/themes/event-horizon/colors.toml</div>
+<pre><code># Append. The existing color0..color15 keys stay and keep working.
+
+mode = "dark"
+
+# The one that actually matters: without it, panels are painted the
+# same colour as the desktop and vanish.
+lighter_background = "#232530"
+
+dark_background = "#16181f"
+darker_background = "#101116"
+
+muted = "#6c6f93"
+selection = "#2e303e"
+
+dark_foreground = "#6c6f93"
+light_foreground = "#fadad1"
+bright_foreground = "#ffffff"
+
+red = "#e95678"
+orange = "#fab795"
+yellow = "#fac29a"
+green = "#29d398"
+cyan = "#59e3e3"
+blue = "#26bbd9"
+magenta = "#ee64ac"
+brown = "#7d5b4a"</code></pre>
+      </div>
+
+      <p>One wrinkle if the author ever does ship a Quattro update: that theme is both a git clone and vendored into your dotfiles, 47 files tracked in both places, and your local copy is already ahead of upstream because you added the Aether JetBrains scheme on top. Upstream has not moved since June, so plan to do this yourself rather than wait for a pull.</p>
+      <p><b>Carbon</b> and <b>Rose Pine Dark</b> are plain directories with no upstream at all. Same treatment, whenever you next switch to one.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">09</div>
+    <div class="step-body">
+      <h3>Clean up the dotfiles repo</h3>
+      <p>Do this last, once everything works, so nothing gets deleted while you still need it for reference. Five stow packages become obsolete and four files inside <code>hypr</code> do too.</p>
+<pre><code>cd ~/dotfiles
+
+# Retired programs: the packages are gone, so unstow before deleting.
+stow -D waybar walker mako swayosd elephant autostart
+git rm -r waybar walker mako swayosd elephant autostart
+
+# Superseded by Lua.
+git rm hypr/.config/hypr/{hyprland,monitors,input,bindings,looknfeel,autostart}.conf
+git rm hypr/.config/hypr/{hypridle,hyprlock,workspaces}.conf
+
+# Per-theme files for programs that no longer exist.
+git rm omarchy/.config/omarchy/themes/*/{waybar.css,walker.css,mako.ini,swayosd.css,hyprlock.conf}
+
+# Generated theme state moved to ~/.local/state and should not be versioned.
+git rm -r --cached omarchy/.config/omarchy/current
+
+git add -A
+git commit
+git tag omarchy-4.0-ported</code></pre>
+      <p>Two survivors worth keeping: <code>omarchy-extras/.config/omarchy.ttf</code> is now shipped by the package, so it can go too, and <code>environment.d/.config/environment.d/fcitx.conf</code> is on the retire list but harmless, so leave it until you have confirmed fcitx5 still switches input methods.</p>
+      <p>The <code>current</code> removal uses <code>--cached</code> because the folder is regenerated state that now lives in <code>~/.local/state/omarchy/current</code>. Add it to <code>.gitignore</code> in the same commit.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>If it goes wrong</h2>
+
+  <p>Three levels, cheapest first.</p>
+
+  <ul>
+    <li><strong>The desktop is broken but the machine boots.</strong> Everything about the shell is one file. Move <code>~/.config/omarchy/shell.json</code> aside and restart the shell to get the stock bar back. For Hyprland, comment out your <code>require</code> lines in <code>hyprland.lua</code> to fall back to pure Omarchy defaults.</li>
+    <li><strong>Hyprland will not start at all.</strong> Switch to a TTY with <code>Ctrl + Alt + F2</code>, log in, and replace <code>~/.config/hypr/hyprland.lua</code> with <code>/usr/share/omarchy/config/hypr/hyprland.lua</code>. That is the shipped default and it always works.</li>
+    <li><strong>The system is unusable.</strong> Reboot, pick the pre-upgrade Snapper snapshot from the limine menu. You end up back on 3.8.4 with the packages and configs you had, and the dotfiles repo tag from step 1 tells you nothing was lost.</li>
+  </ul>
+
+  <p>One thing the plan deliberately does not do: upgrade before the stable release. The beta upgrader exists and works, but the migration list is still growing daily, and a machine that upgrades on the release commit gets every migration in the right order rather than a partial set followed by catch-up.</p>
+</section>
+
+<footer>
+  <div>Sources: basecamp/omarchy quattro branch at 0d45f097, bin/omarchy-upgrade-to-quattro, docs/file-layout.md, docs/update-process.md, docs/omarchy-shell.md, shell/plugins/bar/Bar.qml, PR #6231.</div>
+  <div>System read: omarchy 3.8.4, 234 explicit packages, 16 from the AUR, one libvirt guest, one Samba export on virbr0.</div>
+</footer>
+
+</div>
