@@ -57,7 +57,7 @@ Set `QGIS_PROFILE` to target a profile other than `default`.
 
 ## JetBrains themes (not stow packages)
 
-`jetbrains-retro82-theme/` and `jetbrains-aether-theme/` are theme **source
+`jetbrains-retro82-theme/` and `jetbrains-event-horizon-theme/` are theme **source
 projects**, not `$HOME` config, so they carry a `.stow-local-ignore` and are
 skipped by stow. Their full source (`src/`) and the built `.jar` are committed
 to git, so they are safe as long as the repo is pushed to GitHub. To reinstall
@@ -65,7 +65,7 @@ them into your Toolbox-managed IDEs on a new machine:
 
 ```bash
 ./jetbrains-retro82-theme/build.sh
-./jetbrains-aether-theme/build.sh
+./jetbrains-event-horizon-theme/build.sh
 ```
 
 Each script rebuilds the `.jar` from `src/` and copies it into every JetBrains

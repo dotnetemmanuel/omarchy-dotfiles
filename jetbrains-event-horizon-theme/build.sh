@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Build and install the Aether JetBrains theme plugin.
-# Local-use only — no marketplace metadata, no signing.
+# Build and install the Event Horizon JetBrains theme plugin.
+# Local-use only, no marketplace metadata, no signing.
 set -euo pipefail
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 src="$here/src"
-jar="$here/aether-theme.jar"
+jar="$here/event-horizon-theme.jar"
 
 cd "$src"
 rm -f "$jar"
@@ -19,7 +19,8 @@ for vendor in JetBrains Google; do
     ide="$(basename "$ide_cfg")"
     plugins_dir="$HOME/.local/share/$vendor/$ide"
     [ -d "$plugins_dir" ] || continue
-    cp "$jar" "$plugins_dir/aether-theme.jar"
-    echo "installed $plugins_dir/aether-theme.jar"
+    rm -f "$plugins_dir/aether-theme.jar"
+    cp "$jar" "$plugins_dir/event-horizon-theme.jar"
+    echo "installed $plugins_dir/event-horizon-theme.jar"
   done
 done

@@ -1,8 +1,8 @@
 {
-  "name": "Aether",
+  "name": "Event Horizon",
   "dark": true,
   "author": "emmanuel",
-  "editorScheme": "/colors/Horizon.xml",
+  "editorScheme": "/colors/event-horizon.xml",
   "colors": {
     "transparent": "#00000000",
     "translucent": "#00000050",

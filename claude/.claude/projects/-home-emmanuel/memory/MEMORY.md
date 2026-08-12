@@ -10,7 +10,7 @@
 - [Sweden basemap checkpoint 2026-05-29](project_sweden_basemap_checkpoint_2026-05-29.md) — QGIS pipeline resume point: Section 05 LOD A done; resume Mon 2026-06-01 at Step 3 (LOD B)
 - [Section/Step terminology](feedback_section_step_terminology.md) — say "Section N, Step M" for the basemap docs, never "§N §M" (the § conflation caused a mis-placed step)
 - [Always output paths](feedback_always_output_paths.md) — every QGIS step states the full absolute output path (relative paths failed twice)
-- [Zed Aether active-line fix](project_zed_aether_active_line_fix.md) — never use `null` for editor.active_line.background in aether.zed.json; Zed's default reintroduces the row glow. Use explicit `#1c1e26`.
+- [Zed Event Horizon active-line fix](project_zed_event_horizon_active_line_fix.md) — never use `null` for editor.active_line.background in event-horizon.zed.json; Zed's default reintroduces the row glow. Use explicit `#1c1e26`.
 - [Omarchy Caps Lock / Compose wiring](project_omarchy_caps_lock.md) — Caps Lock = Compose via kb_options=compose:caps; fcitx5 is the XCompose backend. To unset Hyprland variables, assign empty (`kb_options =`), don't just comment the line.
 - [JetBrains on Wayland: popups + scaling 2026-07-29](project_jetbrains_wayland_scaling.md) — WLToolkit misplaces menus; pin `-Dawt.toolkit.name=XToolkit` (bundled `auto` resolves to WLToolkit) + `uiScale=1.2` since omarchy sets xwayland force_zero_scaling
 - [/home is btrfs + snapper](reference_home_btrfs_snapper.md) — df lags after deletions (snapshots pin extents); du overcounts reflink-shared trees

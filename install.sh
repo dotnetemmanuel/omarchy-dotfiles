@@ -30,4 +30,4 @@ echo
 echo "done. If you used --adopt, run: git diff   to review what got absorbed."
 echo "JetBrains themes are not stowed. Rebuild/install them with:"
 echo "  ./jetbrains-retro82-theme/build.sh"
-echo "  ./jetbrains-aether-theme/build.sh"
+echo "  ./jetbrains-event-horizon-theme/build.sh"

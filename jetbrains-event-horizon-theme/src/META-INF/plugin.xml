@@ -1,0 +1,20 @@
+<idea-plugin>
+  <id>com.emmanuel.event-horizon-theme</id>
+  <name>Event Horizon Theme</name>
+  <version>1.0.0</version>
+  <vendor email="emmanuel@mindfulstack.se">emmanuel</vendor>
+  <description><![CDATA[
+    <h2>Event Horizon for JetBrains</h2>
+    <p>A warm dark theme based on the Horizon Dark palette, matching the
+    omarchy event-horizon system theme. Ships two variants: a classic UI theme
+    and an Islands variant (parentTheme "Islands Dark") for the new UI.
+    Editor colors via the bundled Event Horizon scheme.</p>
+  ]]></description>
+  <idea-version since-build="252.0" />
+  <depends>com.intellij.modules.platform</depends>
+  <extensions defaultExtensionNs="com.intellij">
+    <themeProvider id="event-horizon-emmanuel" path="/META-INF/event-horizon.theme.json" />
+    <themeProvider id="event-horizon-islands-emmanuel" path="/META-INF/event-horizon-islands.theme.json" />
+    <bundledColorScheme path="/colors/event-horizon" />
+  </extensions>
+</idea-plugin>
