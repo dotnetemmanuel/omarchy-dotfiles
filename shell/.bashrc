@@ -8,6 +8,9 @@ export PATH="$HOME/.local/bin:$PATH"
 # (don't mess with these directly, just overwrite them here!)
 source ~/.local/share/omarchy/default/bash/rc
 
+# Omarchy sets ignoreboth, which only skips a repeat run back to back.
+HISTCONTROL=ignoreboth:erasedups
+
 export PATH="$HOME/.local/bin:$PATH"
 
 # eval "$($HOME/.local/bin/oh-my-posh init bash --config $HOME/.config/oh-my-posh/Retro-82.omp.json)"
@@ -40,3 +43,6 @@ export PATH="$PATH:$HOME/Android/Sdk/platform-tools"
 export DOTNET_ROOT=/usr/share/dotnet
 
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+# Append: starship, the window title and zoxide are already in this array.
+PROMPT_COMMAND+=('history -a')
