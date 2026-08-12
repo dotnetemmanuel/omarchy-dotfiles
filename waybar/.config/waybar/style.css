@@ -115,7 +115,7 @@
   color: @alert;
 }
 
-/* Now playing sits inside the centre group, so it needs a rule to read as its own thing */
+/* Kept out of the centre group so a long title cannot shift the workspaces */
 #custom-mpris {
   border-left: 1px solid alpha(@foreground, 0.25);
   margin-left: 11px;

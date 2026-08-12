@@ -26,16 +26,15 @@
     "spacing": 0,
     "height": 30,
 
-    "modules-left": ["group/left-pill", "custom/idle-lock", "custom/claude"],
+    "modules-left": ["group/left-pill", "custom/idle-lock"],
     "modules-center": [
       "custom/omarchy",
       "hyprland/workspaces",
       "clock",
       "custom/update",
-      "custom/screenrecording-indicator",
-      "custom/mpris"
+      "custom/screenrecording-indicator"
     ],
-    "modules-right": ["group/tray-expander"]
+    "modules-right": ["custom/mpris", "group/tray-expander"]
   },
 
   {
@@ -49,18 +48,17 @@
     "spacing": 0,
     "height": 25,
 
-    "modules-left": ["group/left-pill", "custom/idle-lock", "custom/claude"],
+    "modules-left": ["group/left-pill", "custom/idle-lock"],
     "modules-center": [
       "custom/omarchy",
       "hyprland/workspaces",
       "clock",
       "custom/update",
-      "custom/screenrecording-indicator",
-      "custom/mpris"
+      "custom/screenrecording-indicator"
     ],
-    "modules-right": ["group/tray-expander"],
+    "modules-right": ["custom/mpris", "group/tray-expander"],
 
-    "custom/mpris": { "max-length": 26 },
+    "custom/mpris": { "max-length": 22 },
     "tray": { "icon-size": 13, "spacing": 8 }
   }
 ]

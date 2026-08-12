@@ -301,6 +301,6 @@
     "on-click-middle": "playerctl play-pause",
     "on-click": "playerctl previous",
     "on-click-right": "playerctl next",
-    "max-length": 60,
+    "max-length": 40,
   },
 }
