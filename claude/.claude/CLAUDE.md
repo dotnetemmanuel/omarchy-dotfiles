@@ -149,6 +149,13 @@ Set 2026-08-06, after a day where the reviewers cost roughly 700k tokens, browse
 screenshots 60 to 80k, and everything written to me about 10k. Keep the scrutiny,
 cut the repetition.
 
+## Always ask for a verdict, never a list
+Every review agent must answer with `SAFE TO COMMIT` or `DO NOT COMMIT` as its first
+line, before anything else. Put that instruction in the prompt every time. A list of
+observations with no verdict leaves me deciding how serious each finding is, from a
+summary written by someone who read the code when I did not. Keep the rounds going
+until a reviewer says SAFE TO COMMIT, and only then hand me anything to try.
+
 ## One reviewer, not two
 Send server-only work to a correctness review alone, and copy, CSS or layout work to
 a UI review alone. Use both only when a change is genuinely risky and user-facing at
