@@ -386,8 +386,8 @@
   <dl class="facts">
     <div><dt>Installed now</dt><dd>3.8.4</dd></div>
     <div><dt>Target</dt><dd>4.0.0</dd></div>
-    <div><dt>Read against</dt><dd>quattro @ 4727bad5</dd></div>
-    <div><dt>Updated</dt><dd>2026-08-12</dd></div>
+    <div><dt>Read against</dt><dd>rc @ 7e89cd20</dd></div>
+    <div><dt>Updated</dt><dd>2026-08-13</dd></div>
   </dl>
 </header>
 
@@ -580,6 +580,12 @@
   <p>There is a fourth route worth naming and dismissing: raising the Samsung and laptop scales so the Lenovo is relatively smaller. It works arithmetically and makes everything on your two good screens physically bigger, which is not a trade you want.</p>
 
   <p>One useful thing Quattro adds here: <code>omarchy display text size &lt;px&gt;</code> moves the shell font, the GTK text scaling factor and your terminal font point size together, in one command, live. It is global rather than per-monitor, but it makes finding the compromise a matter of trying numbers rather than editing three configs.</p>
+
+  <div class="note">
+    <h4>Decided on 13 August: take the stock bar</h4>
+    <p>Emmanuel has chosen to run Quattro's own bar as it ships and tune it afterwards for the portrait screen, rather than reproducing the Waybar setup. That removes most of what section five was for. Nothing gets ported: the two-bar arrangement, the pill and drawer styling and the 231 lines of CSS are simply let go, and the layout becomes whichever widgets he picks in <code>shell.json</code>.</p>
+    <p>Six of the old modules have a built-in doing the same job, and three helper scripts stop being needed because the shell reads music and handles idle and lock itself. The only real casualties are the two indicators with no equivalent, the Claude status one and the voxtype one. Both can come back later as small plugins if he misses them, and neither is worth building in the first week.</p>
+  </div>
 </section>
 
 <section>
@@ -593,7 +599,7 @@
     <tbody>
       <tr>
         <td>Web browser</td>
-        <td>Vivaldi</td>
+        <td>Helium</td>
         <td><strong>Chromium</strong></td>
         <td>The upgrader runs <code>xdg-settings set default-web-browser chromium.desktop</code> unconditionally, with no check for what you already had.</td>
       </tr>
@@ -627,8 +633,16 @@
 
   <div class="note alarm">
     <h4>The browser change is bigger than one default</h4>
-    <p>Both <code>omarchy-launch-browser</code> and <code>omarchy-launch-webapp</code> read the default browser at launch time, and the webapp launcher explicitly supports Vivaldi. So today every one of your web app bindings, ChatGPT, HEY mail and calendar, YouTube, X, WhatsApp, Google Photos, Discord, opens as a Vivaldi app window. After the upgrade they all open as Chromium windows instead, with different window classes, which means the three "launch or focus" bindings stop finding your existing windows and your saved web app entries in <code>~/.local/share/applications</code> go stale.</p>
-    <p>All of it is undone by one command, run once after the upgrade: <code>xdg-settings set default-web-browser vivaldi-stable.desktop</code>.</p>
+    <p>Both <code>omarchy-launch-browser</code> and <code>omarchy-launch-webapp</code> read the default browser at launch time, and the webapp launcher supports Helium by name. So today every one of your web app bindings, ChatGPT, Grok, HEY mail and calendar, YouTube, X, Discord, opens as a Helium app window. After the upgrade they all open as Chromium windows instead, with different window classes, which means the three "launch or focus" bindings stop finding your existing windows and your saved web app entries in <code>~/.local/share/applications</code> go stale.</p>
+    <p>All of it is undone by one command, run once after the upgrade: <code>xdg-settings set default-web-browser helium.desktop</code>.</p>
+    <p>You switched from Vivaldi to Helium on 13 August, after this document was first written. Every mention of the browser below is now Helium. The one entry that did not move is the Kumospace shortcut in <code>~/.local/share/applications</code>, which hardcodes <code>/opt/vivaldi/vivaldi</code> and will keep opening Vivaldi until it is rewritten by hand.</p>
+  </div>
+
+  <div class="note alarm">
+    <h4>Never point your default browser at a script that launches your default browser</h4>
+    <p>A Quattro user hit an endless loop this week: they had made a launcher of their own whose command was <code>omarchy-launch-browser</code>, and that launcher ended up being the answer to "which browser is the default". So the script asked what the default browser was, got told it was itself, and started another copy of itself, until the machine was full of them.</p>
+    <p>The specific way they got there is already closed. Quattro sets <code>$BROWSER</code> to the launcher, and the lookup used to honour <code>$BROWSER</code>, so it could answer with the wrapper even when nothing was configured that way. That was fixed on 24 July, three weeks before the RC, and the fix is in the build you would install today. Nothing on this machine can trigger it either: no launcher of yours calls <code>omarchy-launch-browser</code>, <code>$BROWSER</code> is unset, and your default resolves to <code>/usr/bin/helium-browser</code>.</p>
+    <p>What is not fixed is the underlying shape. The script still has no check for pointing at itself, so the loop is available to anyone who sets a self-referring launcher as their browser on purpose. The rule to keep: a browser default must name a real browser, never a wrapper. That matters here because you have a habit of wrapping launchers, and because after the upgrade you will be resetting this default by hand.</p>
   </div>
 
   <div class="note alarm">
@@ -801,7 +815,7 @@ df -h /                                # the script needs 10 GiB and stops if sh
       <h4>Then put your defaults back, before anything else</h4>
       <p>These four commands undo the three default-app changes and repair the symlink the first of them breaks. Do this before you start porting config, so you are testing bindings against the browser and terminal you actually use.</p>
 <pre><code># Browser: the upgrade forced Chromium. This also fixes every web app binding.
-xdg-settings set default-web-browser vivaldi-stable.desktop
+xdg-settings set default-web-browser helium.desktop
 
 # Terminal: the upgrade deleted your preference file, so foot took over.
 printf '%s\n%s\n%s\n' \
@@ -812,7 +826,7 @@ printf '%s\n%s\n%s\n' \
 # Repair the mimeapps.list symlink that xdg-settings replaced with a real file.
 cp --remove-destination ~/.config/mimeapps.list ~/dotfiles/xdg/.config/mimeapps.list
 rm ~/.config/mimeapps.list &amp;&amp; cd ~/dotfiles &amp;&amp; stow xdg</code></pre>
-      <p>Then confirm: <code>xdg-settings get default-web-browser</code> says vivaldi, <code>SUPER + RETURN</code> opens Ghostty, and <code>ls -l ~/.config/mimeapps.list</code> shows an arrow pointing into <code>dotfiles</code>. Worth adding <code>xdg-terminals.list</code> to the <code>xdg</code> stow package in step 9 so the terminal preference is version controlled next time.</p>
+      <p>Then confirm: <code>xdg-settings get default-web-browser</code> says <code>helium.desktop</code>, <code>SUPER + RETURN</code> opens Ghostty, and <code>ls -l ~/.config/mimeapps.list</code> shows an arrow pointing into <code>dotfiles</code>. Worth adding <code>xdg-terminals.list</code> to the <code>xdg</code> stow package in step 9 so the terminal preference is version controlled next time.</p>
     </div>
   </div>
 
