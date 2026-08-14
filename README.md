@@ -60,9 +60,12 @@ Set `QGIS_PROFILE` to target a profile other than `default`.
 `omarchy/.config/omarchy/plugins/` is ignored except for plugins written here.
 
 **Ours:** `io.github.dotnetemmanuel.sysmon` is tracked. It puts the processor
-temperature in the bar and folds out processor load, memory, graphics and
-temperatures, reading everything from sysfs via its own `stats.sh`. Enable it on
-a new machine with `omarchy plugin enable io.github.dotnetemmanuel.sysmon`.
+temperature in the bar and folds out load per hardware thread (hover a bar for
+its share), memory, graphics, temperatures, and the five heaviest processes
+labelled by working directory so two agents in different projects are told
+apart. Readings come from `/proc` and sysfs via its own `stats.sh`; right-click
+the bar entry for btop. Enable it on a new machine with `omarchy plugin enable
+io.github.dotnetemmanuel.sysmon`.
 
 **Upstream clones** are not tracked, so a plugin `shell.json` references by id
 has to be cloned back before the bar can show it:
