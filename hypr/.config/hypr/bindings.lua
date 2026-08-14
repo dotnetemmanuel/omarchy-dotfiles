@@ -17,3 +17,6 @@ hl.unbind("SUPER + SHIFT + S")
 o.bind("SUPER + SHIFT + S", "Area to clipboard", home .. "/.local/bin/area-to-clipboard")
 
 o.bind("SUPER + SHIFT + J", "jotter", { focus = "^dev.jotter.Jotter$", launch = home .. "/.local/bin/jotter" })
+
+hl.unbind("SUPER + SHIFT + C")
+o.bind("SUPER + SHIFT + C", "Calendar", { focus = "^Omacal$", launch = home .. "/.local/bin/omacal" })
