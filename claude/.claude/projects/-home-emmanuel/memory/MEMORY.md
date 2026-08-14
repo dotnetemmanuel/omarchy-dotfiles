@@ -16,3 +16,4 @@
 - [/home is btrfs + snapper](reference_home_btrfs_snapper.md) — df lags after deletions (snapshots pin extents); du overcounts reflink-shared trees
 - [No co-author trailer](feedback_no_coauthor_trailer.md) — omit Co-Authored-By from git commit messages (user rejected a commit to remove it)
 - [Docker prune is unsafe here](project_docker_prune_unsafe.md) — never `docker image prune -a`; it kills the VeygrTestTileFactory tile pipeline images (klokantech/tippecanoe is an 8-year-old tag, likely unpullable)
+- [proton-pass AUR build 2026-08-14](project_proton_pass_aur_build.md) — needs patched sha256 (GitHub tarballs are not byte-stable) plus SHARP_IGNORE_GLOBAL_LIBVIPS=1; build with makepkg not yay

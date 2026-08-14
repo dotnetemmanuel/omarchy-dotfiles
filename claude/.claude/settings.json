@@ -96,5 +96,6 @@
     }
   },
   "effortLevel": "high",
-  "theme": "dark-ansi"
+  "theme": "dark-ansi",
+  "skipDangerousModePermissionPrompt": true
 }
