@@ -55,5 +55,7 @@ omarchy/.config/omarchy/themes/
 # current/theme/ is a copy of the selected theme; keep only theme.name
 omarchy/.config/omarchy/current/theme/
 omarchy/.config/omarchy/current/background
+# Bar plugins are upstream clones; see the README for how to get them back
+omarchy/.config/omarchy/plugins/
 
 .fizzy.yaml

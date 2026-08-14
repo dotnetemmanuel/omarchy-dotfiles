@@ -35,6 +35,9 @@
           "id": "omarchy.tray"
         },
         {
+          "id": "io.github.fabean.herdr"
+        },
+        {
           "id": "omarchy.agents"
         },
         {
@@ -55,7 +58,7 @@
       ]
     },
     "position": "top",
-    "transparent": true
+    "transparent": false
   },
   "idle": {
     "lock": 300,

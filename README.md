@@ -55,6 +55,19 @@ are backed up here, so run the script on a new machine (with QGIS closed):
 It pulls the plugin from upstream, so re-running it also updates the plugin.
 Set `QGIS_PROFILE` to target a profile other than `default`.
 
+## Bar plugins (not in this repo)
+
+`omarchy/.config/omarchy/plugins/` is ignored: the plugins there are upstream
+clones, not config. `shell.json` references them by id, so a plugin listed in the
+bar has to be cloned back before the bar can show it:
+
+```bash
+git clone https://github.com/fabean/omarchy-herdr.git \
+  ~/.config/omarchy/plugins/io.github.fabean.herdr
+```
+
+The directory name must match the `id` in `shell.json`, not the repo name.
+
 ## Samba share for the Windows VM (not a stow package)
 
 `samba-vm-share/setup.sh` restores the share that the Windows 11 QEMU/KVM guest
