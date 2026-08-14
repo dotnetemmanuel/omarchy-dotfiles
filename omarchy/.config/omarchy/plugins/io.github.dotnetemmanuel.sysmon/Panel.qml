@@ -197,7 +197,6 @@ Panel {
           ))
         }
       }
-      onActivateRequested: Quickshell.execDetached(["omarchy-launch-or-focus-tui", "btop"])
       onCloseRequested: root.close()
       onTabRequested: function(direction) { root.switchPanel(direction) }
       onTextKey: function(text) { if (text === "r" || text === "R") root.refresh() }
