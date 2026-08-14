@@ -19,6 +19,9 @@
           "id": "omarchy.weather"
         },
         {
+          "id": "io.github.dotnetemmanuel.media"
+        },
+        {
           "id": "omarchy.system-update"
         }
       ],
@@ -68,5 +71,11 @@
     "screensaver": 150
   },
   "plugins": [],
-  "version": 1
+  "version": 1,
+  "disabledPlugins": [
+    "omarchy.media"
+  ],
+  "cloneSourceRestores": [
+    "io.github.dotnetemmanuel.media"
+  ]
 }

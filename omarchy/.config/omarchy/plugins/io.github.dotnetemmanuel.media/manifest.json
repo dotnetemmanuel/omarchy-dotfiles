@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "io.github.dotnetemmanuel.media",
+  "name": "Media",
+  "version": "1.0.0",
+  "author": "Emmanuel Duchene",
+  "description": "MPRIS now playing with artwork, transport controls and track progress.",
+  "kinds": [
+    "service",
+    "bar-widget"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "Service.qml",
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Media",
+    "description": "Now playing with artwork, controls and progress",
+    "category": "Media",
+    "allowMultiple": false,
+    "defaultSection": "center"
+  },
+  "omarchy": {
+    "clonedFrom": "omarchy.media"
+  }
+}

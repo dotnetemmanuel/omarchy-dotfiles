@@ -59,13 +59,34 @@ Set `QGIS_PROFILE` to target a profile other than `default`.
 
 `omarchy/.config/omarchy/plugins/` is ignored except for plugins written here.
 
-**Ours:** `io.github.dotnetemmanuel.sysmon` is tracked. It puts the processor
-temperature in the bar and folds out load per hardware thread (hover a bar for
-its share), memory, graphics, temperatures, and the five heaviest processes
-labelled by working directory so two agents in different projects are told
-apart. Readings come from `/proc` and sysfs via its own `stats.sh`; right-click
-the bar entry for btop. Enable it on a new machine with `omarchy plugin enable
-io.github.dotnetemmanuel.sysmon`.
+**Ours** are tracked, and any directory under the `io.github.dotnetemmanuel.`
+prefix is picked up without touching `.gitignore`. Enable each on a new machine
+with `omarchy plugin enable <id>`.
+
+`io.github.dotnetemmanuel.sysmon` puts the processor temperature in the bar and
+folds out load per hardware thread (hover a bar for its share), memory,
+graphics, temperatures, and the five heaviest processes labelled by working
+directory so two agents in different projects are told apart. Readings come from
+`/proc` and sysfs via its own `stats.sh`; right-click the bar entry for btop.
+
+`io.github.dotnetemmanuel.media` is a clone of Omarchy's `omarchy.media` with
+three changes, so `omarchy.media` stays disabled while ours is enabled:
+
+- track progress in the popup, driven from a snapshot plus elapsed time rather
+  than polling MPRIS every second
+- the bar follows whatever started playing most recently; the shipped rule
+  preferred the oldest, so a second source never took over
+- clicking a row in the source list plays or pauses that source and pauses the
+  others, instead of transferring playback
+
+It also ignores video conferencing entirely (Slack, Discord, Zoom, Teams, Meet
+and friends), matched in `Service.qml`. That filter guards the whole service, so
+starting music or pressing a headphone button can never pause a call.
+
+When cloning any built-in plugin, two things need fixing by hand afterwards: the
+widget keeps pointing at the source plugin's service, which breaks the moment
+that plugin is disabled, and the new id uses a bare `$USER.` prefix rather than
+ours.
 
 **Upstream clones** are not tracked, so a plugin `shell.json` references by id
 has to be cloned back before the bar can show it:
