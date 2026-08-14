@@ -55,6 +55,27 @@ are backed up here, so run the script on a new machine (with QGIS closed):
 It pulls the plugin from upstream, so re-running it also updates the plugin.
 Set `QGIS_PROFILE` to target a profile other than `default`.
 
+## Samba share for the Windows VM (not a stow package)
+
+`samba-vm-share/setup.sh` restores the share that the Windows 11 QEMU/KVM guest
+mounts as `Z:`. Both files it installs live in `/etc`, so stow cannot carry them:
+
+- `smb.conf` — the share itself, bound only to loopback and the libvirt bridge
+- `virbr0.conf` — a systemd drop-in that makes Samba wait for `virbr0` to hold
+  192.168.122.1 before it binds
+
+The drop-in exists because Samba binds `virbr0` by name at startup. Without it,
+Samba can start in the ~150 ms before libvirt gives the bridge its address, find
+no bridge, and bind loopback only. The share then looks fine on the host while
+the VM cannot reach it at all.
+
+```bash
+./samba-vm-share/setup.sh
+```
+
+The share password is not in this repo (it lives in `/etc/samba/private`). The
+script tells you to set it with `sudo smbpasswd -a $USER` if it is missing.
+
 ## JetBrains themes (not stow packages)
 
 `jetbrains-retro82-theme/` and `jetbrains-event-horizon-theme/` are theme **source
