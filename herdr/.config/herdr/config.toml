@@ -26,9 +26,13 @@ new_workspace = "prefix+w"
 workspace_picker = "prefix+s"
 rename_workspace = "prefix+$"
 close_workspace = "prefix+shift+k"
-previous_workspace = "prefix+shift+p"
-next_workspace = "prefix+shift+n"
+previous_workspace = ["prefix+shift+p", "alt+shift+up"]
+next_workspace = ["prefix+shift+n", "alt+shift+down"]
 new_worktree = "prefix+shift+g"
+
+# Step through the sidebar agent list the way shift+left/right steps through tabs.
+previous_agent = "shift+up"
+next_agent = "shift+down"
 
 new_tab = "prefix+c"
 rename_tab = "prefix+r"
