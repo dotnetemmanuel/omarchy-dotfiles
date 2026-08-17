@@ -61,4 +61,8 @@ omarchy/.config/omarchy/current/background
 omarchy/.config/omarchy/plugins/*
 !omarchy/.config/omarchy/plugins/io.github.dotnetemmanuel.*/
 
+# omacal rewrites this entry on every launch; it is masked in systemd and
+# replaced by hypr/.local/bin/omacal-tray-start
+autostart/.config/autostart/omacal.desktop
+
 .fizzy.yaml

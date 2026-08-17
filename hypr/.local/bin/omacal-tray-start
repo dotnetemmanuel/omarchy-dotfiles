@@ -1,0 +1,34 @@
+#!/bin/bash
+# omacal always shows its window on launch and has no flag to start hidden, so
+# park it out of sight behind a temporary rule and close it down to the tray.
+set -u
+
+omacal="$HOME/.local/bin/omacal"
+
+if [[ -z ${HYPRLAND_INSTANCE_SIGNATURE:-} ]]; then
+  exec "$omacal"
+fi
+
+drop_rule() {
+  hyprctl eval 'if omacal_boot_rule then omacal_boot_rule:set_enabled(false) end' >/dev/null
+}
+
+drop_rule
+trap drop_rule EXIT
+hyprctl eval 'omacal_boot_rule = hl.window_rule({ match = { class = "^omacal$" }, workspace = "special:omacal-boot silent" })' >/dev/null
+
+"$omacal" &
+app=$!
+
+for _ in {1..300}; do
+  address=$(hyprctl -j clients | jq -r 'first(.[] | select(.class == "omacal") | .address) // empty')
+  [[ -n $address ]] && break
+  sleep 0.1
+done
+
+if [[ -n ${address:-} ]]; then
+  hyprctl dispatch "hl.dsp.window.close({ window = \"address:$address\" })" >/dev/null
+fi
+
+drop_rule
+wait "$app"

@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Version=1.0
-Name=omacal
-Comment=omacalstartup script
-Exec=/home/emmanuel/.local/bin/omacal 
-StartupNotify=false
-Terminal=false
