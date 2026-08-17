@@ -1,0 +1,3 @@
+#!/bin/bash
+# Any policy here makes Helium and Chromium claim an organization manages them.
+rm -f /etc/chromium/policies/managed/color.json
