@@ -35,13 +35,16 @@
       ],
       "right": [
         {
-          "id": "omarchy.tray"
-        },
-        {
           "id": "io.github.dotnetemmanuel.sysmon"
         },
         {
+          "id": "omarchy.tray"
+        },
+        {
           "id": "io.github.fabean.herdr"
+        },
+        {
+          "id": "io.github.tomdavenport.cam-stream"
         },
         {
           "id": "omarchy.agents"
@@ -67,7 +70,7 @@
       ]
     },
     "position": "top",
-    "transparent": false
+    "transparent": true
   },
   "idle": {
     "lock": 300,
