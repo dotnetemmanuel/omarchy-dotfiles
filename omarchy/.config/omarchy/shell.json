@@ -41,19 +41,22 @@
           "id": "omarchy.tray"
         },
         {
-          "id": "io.github.fabean.herdr"
+          "id": "leyanora.libvirt"
         },
         {
-          "id": "io.github.tomdavenport.cam-stream"
+          "id": "io.github.fabean.herdr"
         },
         {
           "id": "omarchy.agents"
         },
         {
-          "id": "omarchy.bluetooth"
+          "id": "omarchy.network"
         },
         {
-          "id": "omarchy.network"
+          "id": "io.github.tomdavenport.cam-stream"
+        },
+        {
+          "id": "omarchy.bluetooth"
         },
         {
           "id": "omarchy.audio"
@@ -66,6 +69,9 @@
         },
         {
           "id": "omarchy.power"
+        },
+        {
+          "id": "shavanced.notification-center"
         }
       ]
     },
