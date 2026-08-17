@@ -1,0 +1,106 @@
+#!/bin/bash
+# Omarchy themes carry no libadwaita colours, so Nautilus keeps whatever it was last given.
+set -u
+
+out="$HOME/.config/gtk-4.0/gtk.css"
+mkdir -p "$(dirname "$out")"
+
+python3 - "$out" \
+  "$(omarchy-theme-color accent '#3584e4')" \
+  "$(omarchy-theme-color background '#1e1e1e')" \
+  "$(omarchy-theme-color foreground '#ffffff')" \
+  "$(omarchy-theme-color mode)" <<'PY'
+import sys
+
+out, accent, bg, fg, mode = sys.argv[1:6]
+BLACK, WHITE = (0, 0, 0), (255, 255, 255)
+
+def rgb(h):
+    h = h.lstrip("#")
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+def mix(colour, target, amount):
+    parts = (c + (t - c) * amount for c, t in zip(rgb(colour), target))
+    return "#%02x%02x%02x" % tuple(max(0, min(255, round(p))) for p in parts)
+
+def readable_on(colour):
+    r, g, b = rgb(colour)
+    return "#000000" if 0.299 * r + 0.587 * g + 0.114 * b > 150 else "#ffffff"
+
+if mode == "light":
+    chrome, card, border = mix(bg, BLACK, .07), mix(bg, WHITE, .60), mix(bg, BLACK, .18)
+else:
+    chrome, card, border = mix(bg, BLACK, .30), mix(bg, WHITE, .07), mix(bg, BLACK, .50)
+
+open(out, "w").write(f"""/* Generated from the active Omarchy theme by the recolor-gtk hook. Edits are lost on the next theme change. */
+
+@define-color accent_color {accent};
+@define-color accent_bg_color {accent};
+@define-color accent_fg_color {readable_on(accent)};
+
+@define-color window_bg_color {bg};
+@define-color window_fg_color {fg};
+
+@define-color headerbar_bg_color {chrome};
+@define-color headerbar_fg_color {fg};
+@define-color headerbar_border_color {border};
+@define-color headerbar_backdrop_color {chrome};
+
+@define-color sidebar_bg_color {chrome};
+@define-color sidebar_fg_color {fg};
+@define-color sidebar_backdrop_color {chrome};
+@define-color sidebar_border_color {border};
+@define-color sidebar_shade_color {border};
+
+@define-color secondary_sidebar_bg_color {chrome};
+@define-color secondary_sidebar_fg_color {fg};
+@define-color secondary_sidebar_backdrop_color {chrome};
+@define-color secondary_sidebar_border_color {border};
+@define-color secondary_sidebar_shade_color {border};
+
+@define-color card_bg_color {card};
+@define-color card_fg_color {fg};
+
+@define-color popover_bg_color {card};
+@define-color popover_fg_color {fg};
+
+@define-color view_bg_color {bg};
+@define-color view_fg_color {fg};
+
+/* libadwaita 1.6 onwards reads these rather than the names above. */
+:root {{
+  --accent-color: {accent};
+  --accent-bg-color: {accent};
+  --accent-fg-color: {readable_on(accent)};
+
+  --window-bg-color: {bg};
+  --window-fg-color: {fg};
+
+  --headerbar-bg-color: {chrome};
+  --headerbar-fg-color: {fg};
+  --headerbar-border-color: {border};
+  --headerbar-backdrop-color: {chrome};
+
+  --sidebar-bg-color: {chrome};
+  --sidebar-fg-color: {fg};
+  --sidebar-backdrop-color: {chrome};
+  --sidebar-border-color: {border};
+  --sidebar-shade-color: {border};
+
+  --secondary-sidebar-bg-color: {chrome};
+  --secondary-sidebar-fg-color: {fg};
+  --secondary-sidebar-backdrop-color: {chrome};
+  --secondary-sidebar-border-color: {border};
+  --secondary-sidebar-shade-color: {border};
+
+  --card-bg-color: {card};
+  --card-fg-color: {fg};
+
+  --popover-bg-color: {card};
+  --popover-fg-color: {fg};
+
+  --view-bg-color: {bg};
+  --view-fg-color: {fg};
+}}
+""")
+PY
