@@ -5,6 +5,7 @@ name = "terminal"
 
 [ui]
 show_agent_labels_on_pane_borders = true
+sidebar_collapsed_mode = "hidden"
 
 [ui.toast]
 delivery = "system"
@@ -19,7 +20,7 @@ reload_config = "prefix+q"
 settings = "prefix+shift+s"
 open_notification_target = "prefix+shift+o"
 goto = "prefix+g"
-toggle_sidebar = "prefix+b"
+toggle_sidebar = ["prefix+b", "alt+s"]
 edit_scrollback = "prefix+e"
 
 new_workspace = "prefix+w"
@@ -45,7 +46,7 @@ next_tab = "shift+right"
 split_horizontal = "prefix+h"
 split_vertical = "prefix+v"
 close_pane = "prefix+x"
-zoom = "prefix+z"
+zoom = ["prefix+z", "alt+f"]
 focus_pane_left = "alt+left"
 focus_pane_down = "alt+down"
 focus_pane_up = "alt+up"
@@ -56,7 +57,7 @@ swap_pane_up = "prefix+shift+up"
 swap_pane_right = "prefix+shift+right"
 cycle_pane_next = "prefix+o"
 cycle_pane_previous = "prefix+shift+tab"
-last_pane = "prefix+semicolon"
+last_pane = ["prefix+semicolon", "alt+q"]
 rename_pane = "prefix+comma"
 resize_mode = "prefix+shift+z"
 copy_mode = "prefix+["
