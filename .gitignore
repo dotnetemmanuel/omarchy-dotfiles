@@ -55,11 +55,10 @@ omarchy/.config/omarchy/themes/
 # current/theme/ is a copy of the selected theme; keep only theme.name
 omarchy/.config/omarchy/current/theme/
 omarchy/.config/omarchy/current/background
-# Shell plugins: ours are tracked, upstream clones are not (see the README).
-# Plugin ids are reverse-DNS, so our own prefix identifies them without needing
-# a rule per plugin.
+# Shell plugins: only ones with no home of their own are tracked here. sysmon
+# now lives in its own repo and is installed like any other git plugin.
 omarchy/.config/omarchy/plugins/*
-!omarchy/.config/omarchy/plugins/io.github.dotnetemmanuel.*/
+!omarchy/.config/omarchy/plugins/io.github.dotnetemmanuel.media/
 
 # omacal rewrites this entry on every launch; it is masked in systemd and
 # replaced by hypr/.local/bin/omacal-tray-start
