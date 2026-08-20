@@ -35,13 +35,13 @@
       ],
       "right": [
         {
-          "id": "io.github.dotnetemmanuel.vitals"
-        },
-        {
           "id": "leyanora.libvirt"
         },
         {
           "id": "omarchy.tray"
+        },
+        {
+          "id": "io.github.dotnetemmanuel.vitals"
         },
         {
           "id": "io.github.fabean.herdr"
